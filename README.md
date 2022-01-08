@@ -1,6 +1,8 @@
 # My learning tracker
 A complete log of my learning, skills, interests and other.
 
+[For my learning log click here](https://github.com/zolotarevandrew/my_learning_tracker/blob/main/log.md "Regular logs of my learnings")
+
 ----
 
 ## Skills
