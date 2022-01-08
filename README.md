@@ -14,4 +14,8 @@ A complete log of my learning, skills, interests and other.
 |**MongoDB**                       | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**ElasticSearch**                 | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |                                  |                   |               |               |                  |                |                 |
+|**c#/.net**                       | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**typescript**                    | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**javascript**                    | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**python**                        | ![done][done]     | ![done][done] |               |                  |                |                 |
 ----
