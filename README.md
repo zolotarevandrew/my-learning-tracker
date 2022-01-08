@@ -109,15 +109,15 @@ A complete log of my learning, skills, interests and other.
 [Algorithms and data structures - 2]: https://skillsmart.ru/
 [Algorithms and data structures - 1]: https://skillsmart.ru/
 [Clean Code]: https://skillsmart.ru/
-[Elasticsearch 7 and the Elastic Stack: In Depth and Hands On] - https://www.udemy.com/course/elasticsearch-7-and-elastic-stack/
-[Fundamentals of Database Engineering] - https://www.udemy.com/course/database-engines-crash-course
-[Instrumenting Applications with Metrics for Prometheus] - https://app.pluralsight.com/library/courses/instrumenting-applications-metrics-prometheus/table-of-contents
-[Kubernetes for Developers: Core Concepts] - https://app.pluralsight.com/library/courses/kubernetes-developers-core-concepts/table-of-contents
-[Packaging Applications with Helm for Kubernetes] - https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/table-of-contents
-[Microservices Architectural Design Patterns Playbook] - https://app.pluralsight.com/library/courses/microservices-architectural-design-patterns-playbook/table-of-contents
-[Modern Software Architecture: Domain Models, CQRS, and Event Sourcing] - https://app.pluralsight.com/library/courses/modern-software-architecture-domain-models-cqrs-event-sourcing/table-of-contents
-[Domain-Driven Design in Practice] - https://app.pluralsight.com/library/courses/domain-driven-design-in-practice/table-of-contents
-[CQRS in Practice] - https://app.pluralsight.com/library/courses/domain-driven-design-in-practice/table-of-contents
-[CQRS in Practice] - https://app.pluralsight.com/library/courses/cqrs-in-practice/table-of-contents
-[Refactoring from Anemic Domain Model Towards a Rich One] - https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model/table-of-contents
-[Creating Reusable React Components] - https://app.pluralsight.com/library/courses/react-creating-reusable-components/table-of-contents
+[Elasticsearch 7 and the Elastic Stack: In Depth and Hands On]: https://www.udemy.com/course/elasticsearch-7-and-elastic-stack/
+[Fundamentals of Database Engineering]: https://www.udemy.com/course/database-engines-crash-course
+[Instrumenting Applications with Metrics for Prometheus]: https://app.pluralsight.com/library/courses/instrumenting-applications-metrics-prometheus/table-of-contents
+[Kubernetes for Developers: Core Concepts]: https://app.pluralsight.com/library/courses/kubernetes-developers-core-concepts/table-of-contents
+[Packaging Applications with Helm for Kubernetes]: https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/table-of-contents
+[Microservices Architectural Design Patterns Playbook]: https://app.pluralsight.com/library/courses/microservices-architectural-design-patterns-playbook/table-of-contents
+[Modern Software Architecture: Domain Models, CQRS, and Event Sourcing]: https://app.pluralsight.com/library/courses/modern-software-architecture-domain-models-cqrs-event-sourcing/table-of-contents
+[Domain-Driven Design in Practice]: https://app.pluralsight.com/library/courses/domain-driven-design-in-practice/table-of-contents
+[CQRS in Practice]: https://app.pluralsight.com/library/courses/domain-driven-design-in-practice/table-of-contents
+[CQRS in Practice]: https://app.pluralsight.com/library/courses/cqrs-in-practice/table-of-contents
+[Refactoring from Anemic Domain Model Towards a Rich One]: https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model/table-of-contents
+[Creating Reusable React Components]: https://app.pluralsight.com/library/courses/react-creating-reusable-components/table-of-contents
