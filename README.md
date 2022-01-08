@@ -41,4 +41,9 @@ A complete log of my learning, skills, interests and other.
 |                                  |                   |               |               |                  |                |                 |
 |**nginx**                         | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
 |**iis**                           | ![done][done]     | ![done][done] | ![done][done] |  ![done][done]   |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**prometheus**                    | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**grafana**                       | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**monitoring tools**              | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
+|**tracing tools**                 | ![done][done]     | ![done][done] |               |                  |                |                 |
 ----
