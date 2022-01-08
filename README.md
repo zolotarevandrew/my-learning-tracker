@@ -14,8 +14,22 @@ A complete log of my learning, skills, interests and other.
 |**MongoDB**                       | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**ElasticSearch**                 | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |                                  |                   |               |               |                  |                |                 |
-|**c#/.net**                       | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**c#/**                           | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**typescript**                    | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**javascript**                    | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
 |**python**                        | ![done][done]     | ![done][done] |               |                  |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**.net 5/6**                      | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**ef core**                       | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**python flask**                  | ![done][done]     | ![done][done] |               |                  |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**react**                         | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**react native**                  | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**redux**                         | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**html5**                         | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**css3**                          | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**less**                          | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**webpack5**                      | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**responsive design**             | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**web app design to prod**        | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 ----
