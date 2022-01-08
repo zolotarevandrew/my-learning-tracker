@@ -139,5 +139,5 @@ A complete log of my learning, skills, interests and other.
 [Compilers: Principles, Techniques, and Tools]: https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811
 [Computer Networking]: https://www.amazon.com/Computer-Networking-Top-Down-Approach-Featuring/dp/0201477114
 [Unix Network Programming Volume 1]: https://www.amazon.com/Unix-Network-Programming-Sockets-Networking/dp/9332549745
-[Dotnext] - https://dotnext.ru/
-[Clean Code] - https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882
+[Dotnext]: https://dotnext.ru/
+[Clean Code]: https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882
