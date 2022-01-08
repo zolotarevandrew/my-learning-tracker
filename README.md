@@ -35,7 +35,7 @@ A complete log of my learning, skills, interests and other.
 |**webpack5**                      | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**responsive design**             | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**web app design to prod**        | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
-|**task based ud**                 | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**task based ui**                 | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |                                  |                   |               |               |                  |                |                 |
 |**docker**                        | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
 |**kubernetes**                    | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
@@ -69,6 +69,7 @@ A complete log of my learning, skills, interests and other.
 |**ddd**                           | ![done][done]     | ![done][done] |               |                  |                |                 |
 |**event driven architecture**     | ![done][done]     | ![done][done] |               |                  |                |                 |
 |**microservices**                 | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**CQRS**                          | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 |**modular monolith**              | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 |**startups**                      | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 |                                  |                   |               |               |                  |                |                 |
