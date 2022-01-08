@@ -90,6 +90,12 @@ A complete log of my learning, skills, interests and other.
 
 |            Status           |   Year   | Course                                                          |                Tutor                        |
 |:---------------------------:|:---------|:----------------------------------------------------------------|:-------------------------------------------:|
+| ![Soon][Soon]               | 2022     | Read [Unix Network Programming Volume 1]                        | [Richard Stevens]                           |
+| ![Soon][Soon]               | 2022     | Read [Computer Networking]                                      | [James Kurose]                              |
+| ![Soon][Soon]               | 2022     | Read [Compilers: Principles, Techniques, and Tools]             | [Alfred aho]                                |
+| ![Soon][Soon]               | 2022     | Read [Modern Operating Systems]                                 | [Andrew Tanenbaum]                          |
+| ![In Progress][In Progress] | Jan 2022 | Reread [CLR via c#]                                             | [Jeffry Richter]                            |
+| ![In Progress][In Progress] | 2022     | Complete [Structure and interperation of computer programs]     | [Harold Abelson]                            |
 | ![Completed][Completed]     | Dec 2021 | [Clean Code]                                                    |                                             |
 | ![Completed][Completed]     | Dec 2021 | [Algorithms and data structures - 2]                            |                                             |
 | ![Completed][Completed]     | Nov 2021 | [Algorithms and data structures - 1]                            |                                             |
@@ -115,9 +121,15 @@ A complete log of my learning, skills, interests and other.
 [Kubernetes for Developers: Core Concepts]: https://app.pluralsight.com/library/courses/kubernetes-developers-core-concepts/table-of-contents
 [Packaging Applications with Helm for Kubernetes]: https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/table-of-contents
 [Microservices Architectural Design Patterns Playbook]: https://app.pluralsight.com/library/courses/microservices-architectural-design-patterns-playbook/table-of-contents
-[Modern Software Architecture: Domain Models, CQRS, and Event Sourcing]: https://app.pluralsight.com/library/courses/modern-software-architecture-domain-models-cqrs-event-sourcing/table-of-contents
+[Modern Software Architecture]: https://app.pluralsight.com/library/courses/modern-software-architecture-domain-models-cqrs-event-sourcing/table-of-contents
 [Domain-Driven Design in Practice]: https://app.pluralsight.com/library/courses/domain-driven-design-in-practice/table-of-contents
 [CQRS in Practice]: https://app.pluralsight.com/library/courses/domain-driven-design-in-practice/table-of-contents
 [CQRS in Practice]: https://app.pluralsight.com/library/courses/cqrs-in-practice/table-of-contents
 [Refactoring from Anemic Domain Model Towards a Rich One]: https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model/table-of-contents
 [Creating Reusable React Components]: https://app.pluralsight.com/library/courses/react-creating-reusable-components/table-of-contents
+[CLR via c#]: https://www.amazon.com/CLR-via-4th-Developer-Reference/dp/0735667454
+[Structure and interperation of computer programs]: https://www.amazon.com/Structure-Interpretation-Computer-Programs-Engineering/dp/0262510871
+[Modern Operating Systems]: https://www.amazon.com/Modern-Operating-Systems-Andrew-Tanenbaum/dp/013359162X
+[Compilers: Principles, Techniques, and Tools]: https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811
+[Computer Networking]: https://www.amazon.com/Computer-Networking-Top-Down-Approach-Featuring/dp/0201477114
+[Unix Network Programming Volume 1]: https://www.amazon.com/Unix-Network-Programming-Sockets-Networking/dp/9332549745
