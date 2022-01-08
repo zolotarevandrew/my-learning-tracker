@@ -13,4 +13,4 @@ Put my github in order
 
 ----------------------------------------------------------
 
-[Log Index]: https://github.com/Syknapse/My-Learning-Tracker/blob/master/log-index.md#log-index
+[Log Index]: https://github.com/zolotarevandrew/my_learning_tracker/blob/main/log-index.md#log-index
