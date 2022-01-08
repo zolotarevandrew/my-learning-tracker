@@ -60,4 +60,13 @@ A complete log of my learning, skills, interests and other.
 |**azure service bus**             | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 |**rabbitmq**                      | ![done][done]     | ![done][done] |               |                  |                |                 |
 |**kafka**                         | ![done][done]     | ![done][done] |               |                  |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**webscrapping**                  | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**selenium**                      | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**ddd**                           | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**event driven architecture**     | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**microservices**                 | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**modular monolith**              | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**startups**                      | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 ----
