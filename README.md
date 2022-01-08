@@ -33,6 +33,7 @@ A complete log of my learning, skills, interests and other.
 |**webpack5**                      | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**responsive design**             | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**web app design to prod**        | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**task based ud**                 | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |                                  |                   |               |               |                  |                |                 |
 |**docker**                        | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
 |**kubernetes**                    | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
@@ -46,4 +47,13 @@ A complete log of my learning, skills, interests and other.
 |**grafana**                       | ![done][done]     | ![done][done] |               |                  |                |                 |
 |**monitoring tools**              | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
 |**tracing tools**                 | ![done][done]     | ![done][done] |               |                  |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**git/git bash**                  | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**command line**                  | ![done][done]     | ![done][done] |  ![done][done]|                  |                |                 |
+|**creating scripts**              | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**webapi building**               | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**api integrations**              | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |  ![done][done] |  ![done][done]  |
+|**whatsapp business api/bots **   | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
+|**telegram bots/api **            | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
 ----
