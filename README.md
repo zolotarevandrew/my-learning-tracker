@@ -98,6 +98,7 @@ A complete log of my learning, skills, interests and other.
 | ![Soon][Soon]               | 2022     | Read [Modern Operating Systems]                                 | [Andrew Tanenbaum]                          |
 | ![In Progress][In Progress] | Jan 2022 | Reread [CLR via c#]                                             | [Jeffry Richter]                            |
 | ![In Progress][In Progress] | 2022     | Complete [Structure and interperation of computer programs]     | [Harold Abelson]                            |
+| ![Completed][Completed]     | 2020     | [Dotnext]                                                       |                                             |
 | ![Completed][Completed]     | Dec 2021 | [Clean Code]                                                    |                                             |
 | ![Completed][Completed]     | Dec 2021 | [Algorithms and data structures - 2]                            |                                             |
 | ![Completed][Completed]     | Nov 2021 | [Algorithms and data structures - 1]                            |                                             |
@@ -112,6 +113,9 @@ A complete log of my learning, skills, interests and other.
 | ![Completed][Completed]     | Jun 2020 | [CQRS in Practice]                                              | [Vladimir Khorikov] - [Pluralsight]         |
 | ![Completed][Completed]     | Jun 2020 | [Refactoring from Anemic Domain Model Towards a Rich One]       | [Vladimir Khorikov] - [Pluralsight]         |
 | ![Completed][Completed]     | Sep 2019 | [Creating Reusable React Components]                            | [Cory House] - [Pluralsight]                |
+| ![Completed][Completed]     | 2017     | [Dotnext]                                                       |                                             |
+| ![Completed][Completed]     | 2016     | read [CLR via c#]                                               | [Jeffry Richter]                            |
+| ![Completed][Completed]     | 2015     | [Clean Code]                                                    | [Martin Fowler]                             |
 
 [//]: # (Reference links to courses)
 [Algorithms and data structures - 2]: https://skillsmart.ru/
@@ -135,3 +139,5 @@ A complete log of my learning, skills, interests and other.
 [Compilers: Principles, Techniques, and Tools]: https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811
 [Computer Networking]: https://www.amazon.com/Computer-Networking-Top-Down-Approach-Featuring/dp/0201477114
 [Unix Network Programming Volume 1]: https://www.amazon.com/Unix-Network-Programming-Sockets-Networking/dp/9332549745
+[Dotnext] - https://dotnext.ru/
+[Clean Code] - https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882
