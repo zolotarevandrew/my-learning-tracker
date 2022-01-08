@@ -54,6 +54,10 @@ A complete log of my learning, skills, interests and other.
 |                                  |                   |               |               |                  |                |                 |
 |**webapi building**               | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 |**api integrations**              | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |  ![done][done] |  ![done][done]  |
-|**whatsapp business api/bots **   | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
-|**telegram bots/api **            | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
+|**whatsapp business api/bots**    | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
+|**telegram bots/api**             | ![done][done]     | ![done][done] |  ![done][done]| ![done][done]    |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**azure service bus**             | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**rabbitmq**                      | ![done][done]     | ![done][done] |               |                  |                |                 |
+|**kafka**                         | ![done][done]     | ![done][done] |               |                  |                |                 |
 ----
