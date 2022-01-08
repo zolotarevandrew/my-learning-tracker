@@ -21,6 +21,7 @@ A complete log of my learning, skills, interests and other.
 |                                  |                   |               |               |                  |                |                 |
 |**.net 5/6**                      | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**ef core**                       | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**SignalR**                       | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
 |**python flask**                  | ![done][done]     | ![done][done] |               |                  |                |                 |
 |                                  |                   |               |               |                  |                |                 |
 |**react**                         | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
