@@ -14,7 +14,7 @@ A complete log of my learning, skills, interests and other.
 |**MongoDB**                       | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**ElasticSearch**                 | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |                                  |                   |               |               |                  |                |                 |
-|**c#/**                           | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|**c#**                            | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**typescript**                    | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**javascript**                    | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
 |**python**                        | ![done][done]     | ![done][done] |               |                  |                |                 |
@@ -32,4 +32,12 @@ A complete log of my learning, skills, interests and other.
 |**webpack5**                      | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**responsive design**             | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
 |**web app design to prod**        | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**docker**                        | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**kubernetes**                    | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**helm**                          | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**gitlab ci/cd**                  | ![done][done]     | ![done][done] | ![done][done] |   ![done][done]  |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**nginx**                         | ![done][done]     | ![done][done] | ![done][done] |                  |                |                 |
+|**iis**                           | ![done][done]     | ![done][done] | ![done][done] |  ![done][done]   |                |                 |
 ----
