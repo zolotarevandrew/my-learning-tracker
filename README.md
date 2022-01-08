@@ -1,2 +1,2 @@
-# my_learning_tracker
--
+# My learning tracker
+A complete log of my learning, skills, interests and other.
