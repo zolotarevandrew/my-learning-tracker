@@ -69,4 +69,13 @@ A complete log of my learning, skills, interests and other.
 |**microservices**                 | ![done][done]     | ![done][done] |               |                  |                |                 |
 |**modular monolith**              | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
 |**startups**                      | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|                                  |                   |               |               |                  |                |                 |
+|**azure blob storage**            | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**azure vm**                      | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**azure cosmodb/mongodb**         | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**selectel postgres**             | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**selectel s3 storage**           | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**selectel vm**                   | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**selectel CDN**                  | ![done][done]     | ![done][done] |  ![done][done]|  ![done][done]   |                |                 |
+|**AWS api gateway**               | ![done][done]     | ![done][done] |               |                  |                |                 |
 ----
