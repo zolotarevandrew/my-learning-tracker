@@ -20,8 +20,11 @@ Should learn more about LayoutKind for struct.
 - copy fields from heap to stack
 
 String concat using a objects in args - so should be very attentive to writing code with boxing unboxing
+
 GetType - method from object, so value type be boxed
+
 Сasting to interface - value type be boxed
+
 Using ILDasm to find boxing - good solution.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/BoxingUnboxing/Program.cs
