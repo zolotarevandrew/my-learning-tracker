@@ -41,32 +41,47 @@ Used wildcard search for contains string filter:
 (*Query*) OR (Query*) OR (Query)
 
 **.net LinkedList internal structure**
+
 list is Doubly linked circular list, node has next and prev ref.
+
 has mutable and immutable methods.
+
 adding, deleting, searching - nothing special
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/LinkedListInternal.cs
 
 
 **.net SortedList internal structure**
+
 Default capacity - zero. Then 4, then multiplied by 2.
+
 Capacity increased only after full filling.
+
 Removing - nothing special. Capacity not decreasing (optimization?)
+
 Contains arrays of keys and values. Keys are unique.
+
 Adding is done using a binary search. BinarySearch gives index to insert.
+
 Binary search has interesting implementation with bitwise operators.
+
 If key exists exception throws.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/SortedListInternal.cs
 
 **.net HashSet internal structure**
+
 Has slots array (hashcode, next entry index and value) and array of indexes.
 Hash code using get hash code and bitwise and operator to store lower 31 bits of hash code. (need learn more)/
 
 Contains - gets hash code and iterate over slots.next items until found equal value.
+
 Remove - same approach like contains.
+
 Add - add value if its not present.
+
 Additionally has a variable m_freeList, for fast insertion into free part of array.
+
 Has method trim excess - Sets the capacity of this list to the size of the list (rounded up to nearest prime)
 
 
