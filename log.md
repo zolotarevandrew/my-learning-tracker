@@ -5,6 +5,42 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 
+## 11 Jan 22
+
+**Docker:**
+
+Looking for a problem - resource temporarily unavailable, cant fork process.
+
+So the problem was with docker container and chrome in it.
+
+Docker container has 512 default pids. But my container created over 1000, because of chrome driver starting by each request.
+After execution stops a lot of pids, more than 500 just hang.  
+
+Tested on local docker.
+
+So should never span a lot of processes inside container. Knew it, but just thought it would be okay.
+
+Instead selenoid was used and problem was solved.
+
+**c# records, structs, classes*:
+
+record is just wrapper around class, has some additional methods, and implements iequatable.
+record created like this record MyRecord(string Name) - has a deconstruct method, and init only setters.
+
+simple struct has no equality operator ==, should only use Equals (no boxing).
+record struct implements IEquatable and has equality operator ==, useful for DDD ValueObjects.
+
+operator with for structs - copy struct and changes values.
+operator with for classes, records - copy class by Clone Method and changes values.
+
+readonly ref record struct - useful for immutable DDD ValueObjects.
+ref struct - lives only stack, useful for low optimizations.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+
 ## 10 Jan 22
 
 Should learn more about LayoutKind for struct.
