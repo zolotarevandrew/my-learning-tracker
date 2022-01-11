@@ -22,7 +22,7 @@ So should never span a lot of processes inside container. Knew it, but just thou
 
 Instead selenoid was used and problem was solved.
 
-**c# records, structs, classes*:
+**c# records, structs, classes**:
 
 record is just wrapper around class, has some additional methods, and implements iequatable.
 record created like this record MyRecord(string Name) - has a deconstruct method, and init only setters.
@@ -36,6 +36,14 @@ operator with for classes, records - copy class by Clone Method and changes valu
 readonly ref record struct - useful for immutable DDD ValueObjects.
 ref struct - lives only stack, useful for low optimizations.
 
+https://github.com/zolotarevandrew/.net-internals/tree/main/ClassesStructsRecords
+
+**.net**
+
+IL has call and callvirt methods. callvirt called polymorphically.
+
+Sealed class cant use inheritance.
+So compiler can optimize virtual methods, such as ToString.
 
 [Log Index]
 ----------------------------------------------------------
