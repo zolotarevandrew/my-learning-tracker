@@ -3,6 +3,29 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+
+----------------------------------------------------------
+
+## 12 Jan 22
+
+**.net expressions**
+
+Interesting topic. But looks very unusual and unreadable.
+I have never used even once in production.
+
+Read more about this in enterpise development - https://habr.com/ru/company/jugru/blog/423891/
+It is good that expressions way more faster than Activator and other Reflection tools for creating objects.
+
+Should warmup expression because of slow compilation (start from 300 milliseconds).
+
+Should learn more about projections by expressions (how it works in automapper and other providers).
+
+Topic not interesting to me, for now.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Expressions/Program.cs
+
+[Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 
 ## 11 Jan 22
