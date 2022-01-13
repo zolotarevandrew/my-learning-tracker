@@ -3,7 +3,48 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+----------------------------------------------------------
 
+## 13 Jan 22
+
+**.net hashtable**
+
+Hashtable was implemented a long ago. It is because bucket key and value has object type.
+Bucket is struct.
+Then there was no generics, and struct type was boxed.
+It is using double hashing technique - h(key, n) = h1(key) + n*h2(key).
+h1 - can be any number, h2 - can be only from to table size.
+
+They called func to get hash - InitHash, wtf ?:) 
+Because of Bucket implemented as struct.
+
+Was used load factor (0.72 by perfomance tests).
+Was used _occupancy - total number of collision bits set.
+
+InitHash - has two out parameters, for h1 and h2. h2 using only then there is collision.
+
+For contains key, buckets copied in stack (Take a snapshot of buckets, in case another thread resizes table)
+
+Insert - Has a lot of strange conditions because of optimizations and collision bits.
+
+Has a lot of complex details, worth a look later. 
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/HashTableInternal.cs
+
+
+**.net dictionary**
+Has a bucket and entry arrays.
+Bucket array stores indexes, and entry array stores entries.
+Entry struct - hash code, key, value, next - next entry in chain.
+Size Expanding uses prime number close to count.
+For insertions entries copied in new stack frame (same as for hastable case another thread resizes table).
+Collision resolves by chaining, because of entry has a next field.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/DictionaryInternal.cs
+
+
+[Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 
 ## 12 Jan 22
