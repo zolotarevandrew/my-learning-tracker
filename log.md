@@ -18,6 +18,14 @@ Instead wilcard queries with boost was used.
 
 surf coff - (surf* and coff*)^3 or (surf*)^2 or (coff*)^1.
 
+5:08
+So the problem was with docs in elastic search, they don't put this "Sometimes, though, it can make sense to use a different analyzer at search time, such as when using the edge_ngram tokenizer for autocomplete or when using search-time synonyms."
+into edge n gram docs. 
+
+I just changed search_analyzer to standard. And my query became simple - "query": "surf coff".
+So now search became faster, because of using index correctly.
+
+
 **.net stack**
 
 has a simple array implementation.
