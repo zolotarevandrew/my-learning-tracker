@@ -7,20 +7,24 @@
 
 ## 14 Jan 22
 **.net**
+
 Default parameters stores in metadata, so compiler can add them at execution.
 params always allocate some space in heap, so better not to use it.
 
 **ElasticSearch:**
+
 Finally implemented search, still dont understand why edge n gram did not solve the problem for contains queries.
 Instead wilcard queries with boost was used.
 
 surf coff - (surf* and coff*)^3 or (surf*)^2 or (coff*)^1.
 
 **.net stack**
+
 has a simple array implementation.
 Capacity started from 4, and then multiply by 2.
 
 **.net queue**
+
 has a simple array implementation.
 has _head and _tail index.
 Capacity started from 4, and then multiply by 2.
@@ -28,6 +32,7 @@ On enqueue, then increment _tail my method with ref index parameter.
 Has a comment (JIT produces better code than with ternary operator ?:) - i think it is  branch to target operator, should learn more about this.
 
 **.net list**
+
 has a simple array implementation.
 Capacity started from 4, and then multiply by 2.
 Interesting, they avoid the extra generic instantiation for Array.Empty<T>() - by static instantiation of new T[0];
