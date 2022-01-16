@@ -5,6 +5,30 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 
+## 15 Jan 22
+**.net**
+
+**Events:**
+If event delegate used in multithread scenarios, there can be some problems.  
+
+(Good use case, should learn more about memory barriers)
+
+- event handler can be copied to temp var by ref, but compiler can remove this var;
+- So it is better to use memory barrier and call Volatile.Read. Processor can not move calling delegate before assign to variable;
+
+For registering and removing event handlers, compilers add methods add, remove, which using interlocked.compareexchange for thread safe swap, old and new handler.
+
+**Generics.**
+
+Each type has object type. 
+
+CLR optimizes generated IL code to not overgrow, Generic that has a ref type can use same code.
+But its not true for value types.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+
 ## 14 Jan 22
 **.net**
 
@@ -18,7 +42,6 @@ Instead wilcard queries with boost was used.
 
 surf coff - (surf* and coff*)^3 or (surf*)^2 or (coff*)^1.
 
-5:08
 So the problem was with docs in elastic search, they don't put this "Sometimes, though, it can make sense to use a different analyzer at search time, such as when using the edge_ngram tokenizer for autocomplete or when using search-time synonyms."
 into edge n gram docs. 
 
@@ -31,13 +54,17 @@ So now search became faster, because of using index correctly.
 has a simple array implementation.
 Capacity started from 4, and then multiply by 2.
 
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/StackInternal.cs
+
 **.net queue**
 
 has a simple array implementation.
 has _head and _tail index.
 Capacity started from 4, and then multiply by 2.
-On enqueue, then increment _tail my method with ref index parameter. 
+On enqueue, they increment _tail my method with ref index parameter. 
 Has a comment (JIT produces better code than with ternary operator ?:) - i think it is  branch to target operator, should learn more about this.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/QueueInternal.cs
 
 **.net list**
 
@@ -45,6 +72,7 @@ has a simple array implementation.
 Capacity started from 4, and then multiply by 2.
 Interesting, they avoid the extra generic instantiation for Array.Empty<T>() - by static instantiation of new T[0];
 
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/ListInternal.cs
 
 [Log Index]
 ----------------------------------------------------------
@@ -120,10 +148,10 @@ https://github.com/zolotarevandrew/.net-internals/blob/main/Expressions/Program.
 
 Looking for a problem - resource temporarily unavailable, cant fork process.
 
-So the problem was with docker container and chrome in it.
+So the problem was with the docker container and chrome in it.
 
-Docker container has 512 default pids. But my container created over 1000, because of chrome driver starting by each request.
-After execution stops a lot of pids, more than 500 just hang.  
+The docker container has 512 default pids. But my container created over 1000, because of chrome driver starting by each request.
+After execution stops, a lot of pids, more than 500 just hang.  
 
 Tested on local docker.
 
@@ -134,7 +162,7 @@ Instead selenoid was used and problem was solved.
 **c# records, structs, classes**:
 
 record is just wrapper around class, has some additional methods, and implements iequatable.
-record created like this record MyRecord(string Name) - has a deconstruct method, and init only setters.
+record created like this: record MyRecord(string Name) - has a deconstruct method, and init only setters.
 
 simple struct has no equality operator ==, should only use Equals (no boxing).
 record struct implements IEquatable and has equality operator ==, useful for DDD ValueObjects.
@@ -151,8 +179,7 @@ https://github.com/zolotarevandrew/.net-internals/tree/main/ClassesStructsRecord
 
 IL has call and callvirt methods. callvirt called polymorphically.
 
-Sealed class cant use inheritance.
-So compiler can optimize virtual methods, such as ToString.
+Sealed class cant use inheritance. So compiler can optimize virtual methods, such as ToString.
 
 [Log Index]
 ----------------------------------------------------------
@@ -163,28 +190,28 @@ So compiler can optimize virtual methods, such as ToString.
 Should learn more about LayoutKind for struct.
 
 **Struct Boxing mechanism:**
-- Allocated memory in heap
-- Memory size = length of struct + object type ref + sync block indes
-- Fields copied to heap
-- Ref for object returned
+- Memory allocated in heap;
+- Memory size = length of struct + object type ref + sync block indes;
+- Fields copied to heap;
+- Ref for object returned.
 
 **Struct unboxing mechanism:**
-- get object ref
-- copy fields from heap to stack
+- get object ref;
+- copy fields from heap to stack.
 
-String concat using a objects in args - so should be very attentive to writing code with boxing unboxing
+String concat uses a objects in args - so should be very attentive to writing code with boxing.
 
-GetType - method from object, so value type be boxed
+GetType - method from object, so value type be boxed.
 
-Сasting to interface - value type be boxed
+Сasting to interface - value type be boxed.
 
-Using ILDasm to find boxing - good solution.
+Using ILDasm/sharplab.io to find boxing - good solution.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/BoxingUnboxing/Program.cs
 
 **ElasticSearch:**
 
-Found and used word delimeter graph token filter, which splits tokens by  non alphanumeric characters and by other good stuff.
+Found and used word delimeter graph token filter, which splits tokens by non alphanumeric characters and by other good stuff.
 for example: favorit—42+ to favorit, 42
 
 Found and used shingle filter to produce n grams by concatenating.
@@ -199,7 +226,7 @@ list is Doubly linked circular list, node has next and prev ref.
 
 has mutable and immutable methods.
 
-adding, deleting, searching - nothing special
+adding, deleting, searching - nothing special.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/LinkedListInternal.cs
 
@@ -208,24 +235,19 @@ https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresIntern
 
 Default capacity - zero. Then 4, then multiplied by 2.
 
-Capacity increased only after full filling.
-
-Removing - nothing special. Capacity not decreasing (optimization?)
-
 Contains arrays of keys and values. Keys are unique.
 
 Adding is done using a binary search. BinarySearch gives index to insert.
 
 Binary search has interesting implementation with bitwise operators.
 
-If key exists exception throws.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/SortedListInternal.cs
 
 **.net HashSet internal structure**
 
 Has slots array (hashcode, next entry index and value) and array of indexes.
-Hash code using get hash code and bitwise and operator to store lower 31 bits of hash code. (need learn more)/
+Hash code using get hash code and bitwise and operator to store lower 31 bits of hash code. (need learn more)
 
 Contains - gets hash code and iterate over slots.next items until found equal value.
 
@@ -236,7 +258,6 @@ Add - add value if its not present.
 Additionally has a variable m_freeList, for fast insertion into free part of array.
 
 Has method trim excess - Sets the capacity of this list to the size of the list (rounded up to nearest prime)
-
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/HashSetInternal.cs
 
@@ -257,13 +278,13 @@ Another point to learn assembler.
 M1()
 string name
 M2(name)
-- Process thread gets a 1mb size stack.
-- Name address pushed to stack - m1 local var
-- S address pushed to stack - m2 parameter
-- Return address M1 pushed to stack
-- M2 local variables pushed to stack
-- M2 code executed
-- Write return address into cpu instruction pointer
+- Process thread gets a 1 mb size stack;
+- Name address pushed to stack - m1 local var;
+- S address pushed to stack - m2 name parameter;
+- Return address to M1 pushed to stack;
+- M2 local variables pushed to stack;
+- M2 code executed;
+- Write return address into cpu instruction pointer.
 
 **CLR method execution with objects.**
 We have Employee and Manager class.
@@ -273,28 +294,27 @@ e = Employee.Lookup()
 e.GetProgressReport
 
 **Then JIT stage comes**
-- Found all types which M3 has
-- CLR load all assemblies for found types
-- Using metadata CLR creates objects types in heap
-- Each object type has - sync block index, object type ref, static fields, methods table.
- M3 compiles and then execution starts
-- Employee object created in heap
-- Object has sync block index, object type ref, bytes for fields and bytes for base type fields
--  Employee ref pushed to stack - variable e
+- Found all types which M3 has;
+- CLR load all assemblies for found types;
+- Using metadata CLR creates objects types in heap;
+- Each object type has - sync block index, object type ref, static fields, methods table. M3 compiles and then execution starts;
+- Employee object created in heap;
+- Object has sync block index, object type ref, bytes for fields and bytes for base type fields;
+- Employee ref pushed to stack - variable e.
 
 **Calling static method lookup**
-- Search object type by ref
-- Search entrypoint to method by method table
+- Search object type by ref;
+- Search entrypoint to method by method table.
 
 **Calling virtual method GetProgressReport**
-- using variable go to address
-- search object type by ref
-- Search entrypoint to method by method table
+- using variable go to address;
+- search object type by ref;
+- Search entrypoint to method by method table.
 
 Object types has ref to System.Type which CLR creates at startup.
-System.Type object type too and it refers to itself
+System.Type object type too and it refers to itself.
 
-compiler has flag /checked+ prevent number overflows
+compiler has flag /checked+ prevent number overflows.
 
 ![clrexecution](https://user-images.githubusercontent.com/49956820/148688808-8a5cc92c-e986-4678-b532-cb259c82584b.png)
 
