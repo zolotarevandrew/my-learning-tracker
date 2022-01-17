@@ -5,6 +5,69 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 
+## 17 Jan 22
+**.ElasticSearch**
+
+Edge n gram has issues with exact matches in my analyzer setup.
+
+So when I typed: “Surf”, it is not returned exact match “surf” with highest score.
+
+- "SURFPRIZE, SURFPRIZE, SURFRIZE, SURF, PRIZE, SURFRIZE, RIZE"
+- "SURF COFFEE SURFING NEVER ALONE"
+- "КАЙТВИНД, КАЙТВИНД, КАЙТ, ВИНД, СЁРФИНГ, MYSURF, SURF, SURFLIFE, MYSURFLIFE"
+- "SURFJAZZ, СЁРФДЖАЗ, SURF, JAZZ, СЁРФ, ДЖАЗ"
+- "SURF'N'FRIES ORIGINAL NATURAL ORIGINAL FRIES"
+
+So i learnt about similarity models and why it is happened.
+
+Default model - tf/idf. 
+Position of words in document are not used, doc is just a bag of words.
+Tf - It uses logarithm term frequency.
+Idf - total number of docs divided by the number docs contains the word. It also uses logarithm.
+
+But default model in elasticsearch is BM25.
+It is probabilistic model and it also uses tf and idf.
+
+Found this:
+"Indeed, this is due to the fact that the ngram FILTER writes terms at the
+same position (like synonyms) while the TOKENIZER generates a stream of
+tokens which have consecutive positions. This gives blablablafoobarbarbar a
+larger number of positions and thus a smaller length normalization."
+
+So after changing from filter to tokenizer, problem with scores was solved. 
+Also was used multi_match query with most_fields. Most_fields - "useful when querying multiple fields that contain the same text analyzed in different ways". 
+For that i added multi_field with standard analyzer to my text field.
+But there is problem with space-ignoring search.
+
+Found this good approach, which uses keyword tokenizer.
+
+https://medium.com/@davedash/writing-a-space-ignoring-autocompleter-with-elasticsearch-6c3c28e3a974
+
+But is also has a problem with score (then text contains search term twice or higher).
+
+**.net Priority Queue**
+Elements is array of tuples (struct) with Value and its priority.
+Uses standard grow factors, starts with 4, then multiplying by 2.
+Uses standard heapify algorithm (non-recursive). Parent and child indexes calculated by bitwise operators (index - 1 >> 2).
+Uses tuple because it allows simple swap without using third variable. (nodes[nodeIndex] = tuple).
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/PriorityQueueInternal.cs
+
+**.net Object pool**
+New feature, very cool that you don't have to write from scratch.
+Has a thread safe implementation, using Interlocked.CompareExchange.
+Always stores first item.
+Elements stored in array of objectwrapper struct. (// PERF: the struct wrapper avoids array-covariance-checks from the runtime when assigning to elements of the array.)
+Learnt about array covariance checks.
+https://codeblog.jonskeet.uk/2013/06/22/array-covariance-not-just-ugly-but-slow-too/
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/DefaultObjectPoolInternal.cs
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+
 ## 15 Jan 22
 **.net**
 
