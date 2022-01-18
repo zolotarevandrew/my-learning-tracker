@@ -4,7 +4,40 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 18 Jan 22
+**.net concurrent dictionary**
+internal classes are sealed, because of performance improvements.
+all nodes stored in wrapper class Table, which has array of locks and nodes.
+Node has next pointer, so it is implemented in linked list manner.
+Table variable uses volatile keyword. Should learn more about this keyword.
+Has the bool static variable isValueWriteAtomic, which checks is generic type a value type.
 
+On add tables and locks copied in local variables, because of other threads can change size of this arrays.
+Using locks array helps different threads, change different buckets. 
+Size of locks array can be changed by concurrency level in constructor.
+Index is returned along with lockNo - index in array of locks.
+After got index, exclusive lock acquired by lockNo.
+
+It is interesting to use an array of locks so that more threads can do more work.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/ConcurrentDictionaryInternal.cs
+
+**.net concurrent stack**
+Internal classes are also sealed.
+Node has next pointer, so it is implemented in linked list manner.
+Has a pointer to head Node, variable uses volatile keyword.
+Push and pop simply implemented with using spinwait and compare exchange swap.
+So it is lock free implementation.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/ConcurrentStack.cs
+
+**.ElasticSearch**
+Yesterday's problem with term frequency solved by changing index options.
+I deployed current solution and we should give this first version to clients.
+
+
+[Log Index]
+----------------------------------------------------------
 ## 17 Jan 22
 **.ElasticSearch**
 
