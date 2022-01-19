@@ -4,6 +4,24 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 19 Jan 22
+**.net Monitor**
+Watched CLRium video about monitor - 
+https://www.youtube.com/watch?v=GkWDcsVHh0M&ab_channel=%D0%9C%D0%B8%D0%BD%D0%B8-%D0%BA%D0%BE%D0%BD%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B8CLRium
+
+Monitor.TryEnter works only in os user mode and can use spin lock.
+Thread.Sleep uses timer, thread awakes with higher priority.
+
+Monitor.Enter first tries to spinwait. In worst case kernel mode lock allocated.
+After allocating we use kernel lock, waiting for specified timeout.
+Then it tries use spinwait to get a lock. 
+Thread can awakes before timeout elapsed, so it uses while true cycle and reduces timeout on each iteration.
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 18 Jan 22
 **.net concurrent dictionary**
 internal classes are sealed, because of performance improvements.
