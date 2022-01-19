@@ -17,8 +17,11 @@ After allocating we use kernel lock, waiting for specified timeout.
 Then it tries use spinwait to get a lock. 
 Thread can awakes before timeout elapsed, so it uses while true cycle and reduces timeout on each iteration.
 
-+ Test
-- Test
+Pluses:
+Test
+
+Minuses:
+Test
 
 [Log Index]
 ----------------------------------------------------------
