@@ -17,11 +17,13 @@ After allocating we use kernel lock, waiting for specified timeout.
 Then it tries use spinwait to get a lock. 
 Thread can awakes before timeout elapsed, so it uses while true cycle and reduces timeout on each iteration.
 
-Pluses:
-Test
+**Pluses**:
+- I can reduce locks duration to increase the throughput of my backends;
+- I can reduce threads waiting time in kernel mode by timeouts, to increase the throughput of my backends;
 
-Minuses:
-Test
+**Minuses**:
+- I  Need to study the Monitor in more detail, for better use in practice.
+
 
 [Log Index]
 ----------------------------------------------------------
@@ -52,6 +54,14 @@ Push and pop simply implemented with using spinwait and compare exchange swap.
 So it is lock free implementation.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/ConcurrentStack.cs
+
+**Pluses**:
+- I can build effective concurrent cache, or pool of locks by objects;
+- I can use technique array of locks, to build more responsive apps;
+- I can implement simple lock free implementation for some data structures using learnt techniques;
+
+**Minuses**:
+- I didn't quite get use cases for volatile keyword in concurrent environment;
 
 **.ElasticSearch**
 Yesterday's problem with term frequency solved by changing index options.
@@ -118,6 +128,13 @@ https://codeblog.jonskeet.uk/2013/06/22/array-covariance-not-just-ugly-but-slow-
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/DefaultObjectPoolInternal.cs
 
+**Pluses**:
+- I can build simple thread safe object pool using implemented default object pool;
+- I can build custom search analyzers for elastic search for a better user experience;
+- I can build custom search queries for elastic search for a better user experience;
+
+**Minuses**:
+- I can't use PriorityQueue's in concurrent environment;
 
 [Log Index]
 ----------------------------------------------------------
@@ -233,6 +250,12 @@ Collision resolves by chaining, because of entry has a next field.
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/DictionaryInternal.cs
 
+**Pluses**:
+- I can use technique to copy my data structs in new stack frame for concurrent environments;
+- I can use dictionary more smart, to reduce the use of extra memory;
+
+**Minuses**:
+- I am not going to use HashSet, because it is outdated;
 
 [Log Index]
 ----------------------------------------------------------
@@ -298,6 +321,14 @@ https://github.com/zolotarevandrew/.net-internals/tree/main/ClassesStructsRecord
 IL has call and callvirt methods. callvirt called polymorphically.
 
 Sealed class cant use inheritance. So compiler can optimize virtual methods, such as ToString.
+
+**Pluses**:
+- I can use sealed .net classes to improve my applications performance;
+- I can use readonly record structs as my DDD Value objects.
+- I can use ref structs to create low-level optimizations.
+
+**Minuses**:
+- I will never use docker container to create a lot of processes inside of it;
 
 [Log Index]
 ----------------------------------------------------------
@@ -378,6 +409,11 @@ Additionally has a variable m_freeList, for fast insertion into free part of arr
 Has method trim excess - Sets the capacity of this list to the size of the list (rounded up to nearest prime)
 
 https://github.com/zolotarevandrew/.net-internals/blob/main/DataStructuresInternals/HashSetInternal.cs
+
+**Pluses**:
+- I can create more optimized classes under .net;
+- I can search unnecessary boxing by ILDasm, to improve memory allocations.
+- I can create search with ignoring spaces by elastic search shingle token filter.
 
 [Log Index]
 
