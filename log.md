@@ -4,6 +4,32 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 20 Jan 22
+**.net Mutex**
+I should learn more about implementation of mutex, but a lot of resources says about it uses kernel mode.
+And it so expensive to use. We can use named mutex for inteprocess communication.
+The main problem with mutex with async/await code. It is because async continuation can be executed by other thread.
+But in mutex release should be called by thread, which called waitone. And this is the problem.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/MutexInternals.cs
+
+**.net SemaphoreSlim**
+Internal implementation of SemaphoreSlim uses lock and has methods for async code.
+Should investigate more about that.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/SemaphoreSlimInternals.cs
+
+**Pluses**:
+- I can use SemaphoreSlim as my mutex, semaphore for async/await methods.
+
+**Minuses**:
+- As because i always using async/await i will not use Mutex, because of its problems with async code.
+
+To my surpise, creating SemaphoreSlim executed longer than creating Semaphore. Should investigate more about that.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 19 Jan 22
 **.net Monitor**
 Watched CLRium video about monitor - 
