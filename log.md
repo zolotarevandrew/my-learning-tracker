@@ -4,6 +4,32 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 21 Jan 22
+**.net EventWaitHandle**
+AutoResetEvent and ManualResetEvent just using EventWaitHandle with some enum and nothing else.
+It's good thread signaling mechanism.
+
+AutoResetEvent works as exclusive lock, so only one thread can get access to resource at point of time. 
+Then thread job has done, we can call set to signal one or more thread, so they can start work.
+
+ManualResetEvent works differently from autoresetevent. In signaled state it allow all threads to execute some work.
+ManualResetEventSlim has the cancellation token support. And it has spinning with Monitor implementation.
+
+
+**Pluses**:
+- I can use AutoResetEvent for concurrent operations, if only one thread can get access for a point of time (write to file of something).
+- I am going to ManualResetEventSlim for sort of thread signaling operations, because of it has cancellation tokens support.
+
+**Minuses**:
+- Should learn more about sleeping state of thread, and how it affect on performance.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/AutoResetEventInternals.cs
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/ManualResetEventInternals.cs
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/ManualResetEventSlimInternals.cs
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 20 Jan 22
 **.net Mutex**
 I should learn more about implementation of mutex, but a lot of resources says about it uses kernel mode.
