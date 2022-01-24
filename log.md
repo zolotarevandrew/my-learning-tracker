@@ -4,6 +4,25 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 22 Jan 22
+**.net strings**
+in .net5/6 has optimized equality == operator, which uses spans and it is more faster than Equals method, richter book was outdated:)
+In benchmarks slowest was compareTo method with current culture param. So i am going to try avoid this comparisons.
+
+.net 6 has improved interpolated string by DefaultInterpolatedStringHandler, so it is more memory efficient than stringbuilder.
+https://github.com/zolotarevandrew/.net-internals/blob/main/Strings/StringComparisonBenchmarks.cs
+https://github.com/zolotarevandrew/.net-internals/blob/main/Strings/StringCreationBenchmarks.cs
+
+**Pluses**:
+- I should avoid strings comparison with Culture for increase my app perfomance;
+- I should use string interpolation instead of strinbguiler for lesser memory allocations in my apps (.net5/6).
+- I should use string concat method, because of value types can be boxed, for lesser memory allocations in my apps.
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 21 Jan 22
 **.net EventWaitHandle**
 AutoResetEvent and ManualResetEvent just using EventWaitHandle with some enum and nothing else.
