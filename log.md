@@ -4,6 +4,24 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 24 Jan 22
+**.net ReaderWriterLockSlim**
+Unfortunately readerwriterlock has no support for async/await statements.
+So i found Microsoft.Extensions.Threading which has Async implementation for reader writer lock, but internally it uses lock.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/AsyncReaderWriterLockSlimInternals.cs
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/ReaderWriterLockSlimInternals.cs
+
+**Minuses**:
+- I don't think i will use readerwritelock slim, because of i always using async/await.
+- I should compare benchmarks with simple lock and Microsoft.Extensions.Threading.AsyncReaderWriterLock.
+- I should learn more about implementation details of Microsoft.Extensions.Threading.AsyncReaderWriterLock.
+- WTF when used same code with tasks and AsyncReaderWriterLock, my main thread starts hanging.
+- I think there should better option for case a lot of reads and single write, and maybe simple lock would be the case.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 22 Jan 22
 **.net strings**
 in .net5/6 has optimized equality == operator, which uses spans and it is more faster than Equals method, richter book was outdated:)
