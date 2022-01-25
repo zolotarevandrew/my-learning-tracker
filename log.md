@@ -4,6 +4,34 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 25 Jan 22
+**.net CountdownEvent**
+Internally it just uses ManualResetEventSlim. On each signal it just uses Interlocked.Decrement, 
+when count goes to zero, it calls Set method of ManualResetEventSlim.
+It is have wait method which support cancellation token.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/CountDownEventInternals.cs
+
+
+Minuses:
+- Simply i can use await Task.WhenAll for simple fork/join scenarios;
+- Main thread start hanging, when task completed with exception, Task.WhenAll solves this problem..;
+
+**.net Barrier**:
+Internally it also uses ManualResetEventSlim. I think it is very useful primitive, to split jobs between multiple tasks(threads).
+It is also has post callback when all jobs has done.
+
+**Pluses**:
+- I can use Barrier in cases then jobs count are determined in execution time and can be decreased or increased.
+
+**Minuses**:
+- Sometimes simple tasks approach can be a better solution, should do some benchmarks;
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/BarrierInternals.cs
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 24 Jan 22
 **.net ReaderWriterLockSlim**
 Unfortunately readerwriterlock has no support for async/await statements.
