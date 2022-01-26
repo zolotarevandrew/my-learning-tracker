@@ -4,6 +4,34 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 26 Jan 22
+**.net SpinWait**
+SpinWait internally uses Thread.Yield and Thread.Sleep methods and CLR internall Thread.SpinWait.
+Thread.Yield will interrupt the current thread to allow other threads to do work.
+Spinning should only be attempted when you have good guarantee thad doing so is more efficient than a context switch,
+because is hust utilizes CPU time.
+
+**.net SpinLock**
+Microsoft says that SpinLock should only be used for improving performance. It is good for quick locks.
+
+**.net Interlocked**
+
+
+**Pluses**:
+- I can implement some lock free algorithms and structures by using SpinLock and SpinWait.
+- I can use Interlocked class for async code, which has stateful data using by many threads.
+
+**Minuses**:
+- I think i will rarely use SpinWait in my apps, but it is good to know structure.
+- SpinLock internally uses while cycle, so it utilizes CPU time, that is not good.
+- Can't use spinlock with async/await because it is exlusive kind of lock.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/SpinLockInternals.cs
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/InterlockedInternals.cs
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 25 Jan 22
 **.net CountdownEvent**
 Internally it just uses ManualResetEventSlim. On each signal it just uses Interlocked.Decrement, 
