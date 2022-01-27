@@ -4,6 +4,26 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 27 Jan 22
+**.net GC**
+.net GC uses two strategies. 
+First, by size - small and large object heap.
+Compact - squeeze heap, objects should be copied and will be compacted.
+Sweep - use free parts of the heap.
+SOH < 85000 bytes, LOH > 85000 bytes.
+SOH uses compacting and sweep. LOH uses only sweep.
+
+Because a lot of objects less than 85000, they goes to SOH and that's why generations came.
+0 gen - time between creation and nearest GC.
+1 gen - relatively long living objects;
+2 gen - long living objects;
+
+
+https://www.youtube.com/watch?v=DVnmGW6964o&t=429s&ab_channel=%D0%9C%D0%B8%D0%BD%D0%B8-%D0%BA%D0%BE%D0%BD%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B8CLRium
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 26 Jan 22
 **.net SpinWait**
 SpinWait internally uses Thread.Yield and Thread.Sleep methods and CLR internall Thread.SpinWait.
