@@ -4,6 +4,31 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 28 Jan 22
+**.net GC**
+GC modes: 
+- low latency mode, which ignores 2-nd generation.
+- batch, disables parallel execution, for maximum throughput;
+- interactive, enabled parallel execution;
+
+GC:
+- pause all threads;
+- Marking - Go through all heap roots that has objects ref and mark them By Sync block index, so marked objects will stay in heap;
+- Compacting - objects which stays at heap moving to near memory blocks;
+
+**Finalization**
+If object type has finalizator, before calling ctor, object ref goes to finalization list.
+Clr has high priority thread for finalization.
+When object added to finalizaition queue this thread awakes.
+Object that has finalizers lives more than 2 gcs.
+
+**Minuses**:
+- Should investigate each mode by concrete app types;
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 27 Jan 22
 **.net GC**
 .net GC uses two strategies. 
