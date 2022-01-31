@@ -4,6 +4,24 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 31 Jan 22
+**.net Threads**
+Each thread:
+Thread kernel object - os creates internal structure
+Thread environment block - address space created in user mode. Local storage for thread. It is only 4 kbs. 
+User mode stack - local args and variables, by default 1 mb.
+Kernel mode stack - for safety when code goes to kernel mode, all data copied from user mode stack.
+Before thread created - windows load each dll by dll main.
+
+Windows executed threads  with highest priority fiest. So there can be thread starvation.
+Priority calculated by process priority and thread priority.
+
+There are two types of threads in clr: foreground and background.
+Thread poll threads are background.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 28 Jan 22
 **.net GC**
 GC modes: 
