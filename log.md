@@ -4,6 +4,31 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 1 feb 22
+**.net Exceptions**
+Managed exceptions in .NET are implemented on top of the Win32 structured exception handling mechanism.
+SEH has two mechanisms, exception handlers and termination handlers.
+Nothing interesting was found about exceptions.
+
+**net ThreadPool**
+Thread pool has a global task queue and each thread has its own queue.
+Then thread queue is empty, it can get tasks from other thread, but its requires synchronization mechanism.
+
+If there is no tasks in all queues, thread goes to sleeping mode. If it lasts long, thread awakes and self destructs.
+
+If some thread locked by sync mechanism, thread pool will create new thread.
+
+https://github.com/zolotarevandrew/.net-internals/blob/main/Concurrent/ThreadPoolInternals.cs
+
+**Pluses**:
+- Another point to avoid locks if possible in my applications, so threads count will be stable (gc will be faster);
+
+**Minuses**:
+- Locks increases threads in thread pool.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 31 Jan 22
 **.net Threads**
 Each thread:
