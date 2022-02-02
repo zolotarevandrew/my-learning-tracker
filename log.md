@@ -58,11 +58,73 @@ select sum(qnt*price) from sales
 we get $155, when it should be $130, we got non repeatable read, because parallel transaction was committed.
 ```
 
-Consistency - 
+*Phantom read*:
+|PID | qnt | price   |
+|:--:|:---:|:-------:|
+| P1 | 10  | 5       |
+| P2 | 20  | 4       |
+```
+select pid, qnt*price from sales
+p1, 50
+p2, 80
 
-Durability - 
+then concurrently
+insert into sales('Product3', 10, 1)
+and commit
+
+select sum(qnt*price) from sales
+
+we get $140, when it should be $130, we had a phantom read.
+```
+
+*Lost updates*
+|PID | qnt | price   |
+|:--:|:---:|:-------:|
+| P1 | 10  | 5       |
+| P2 | 20  | 4       |
+```
+update sales set qnt = qnt + 10 where pid = 1
+
+then concurrently
+update sales set qnt = qnt + 5 where pid = 1
+and commit
+so qnt will be 15, not 20.
+
+select sum(qnt*price) from sales
+
+we get $155, when it should be $180, we had a lost update.
+```
+
+Isolation levels:
+Read uncommitted - no isolation.
+Read committed - only see committed changes by other transactions.
+Repeatable read - transaction will make sure than when a query reads a row,
+that row will remain unchanged the transaction while it's running.
+Snapshot - each query see changes that committed up to the start of the transaction.
+Serializable - each transactions run one by one, no concurrency.
+
+Isolation levels vs read phenomena:
+
+|Level              | Dirty | Lost upd | Non repeatable | Phantom |
+|:-----------------:|:-----:|:--------:|:--------------:|:-------:|
+| Read uncommitted  | +     |  +       | +              | +       |
+| Read committed    | -     | +        | +              | +       |
+| Repeatable read   | -     | -        | -              | +       |
+| Serializable      | -     | -        | -              | -       |
 
 
+*Consistency* - in reads, in data.
+In data:
+- defined by user;
+- foreign keys;
+incorrect isolation level can lead to incosistent data.
+replicas leads to eventual consistency.
+
+*Durability* - changes made by committed transactions must be persisted in a durable storage.
+Techniques:
+- write ahead log (OS cache problem, can be possible data loss).
+- Async snapshots.
+- Append only file.
 
 [Log Index]
 ----------------------------------------------------------
