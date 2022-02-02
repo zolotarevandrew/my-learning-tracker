@@ -4,6 +4,49 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 2 feb 22
+**ACID**
+Transaction is a collection of queries, one unit of work, which implements all or nothing rule.
+Transactions can be readonly to guarantee you are getting consistent snapshot of data.
+
+Atomicity - all queries in a transaction must succeed. 
+If one query fails, all prior successful in the transaction should rollback;
+If the database went down prior to a commit, all the successful queries in the transaction should rollback;
+ 
+Isolation - transaction see changes made by other transactions (even running transactions concurrently).
+Read phonomenas:
+- Dirty reads, if you wrote something, and it is not really committed, but you see it in your transactions.
+- Non-repeatable reads, then you read value, then select sum, which also has a prev readed value, and value was changed during the transaction.
+- Phantom reads - when you reads aggregated data, there can be new row inserted.
+- Lost updates - when you write and other transaction changes that row, then you will see lost update.
+
+Dirty reads:
+|PID | qnt | price   |
+|:--:|:---:|:-------:|
+| P1 | 15  | 5       |
+| P2 | 20  | 4       |
+```
+select pid, qnt*price from sales
+p1, 50
+p2, 80
+
+then concurrently
+update sales set qnt = qnt + 5 where pid = 1
+
+select sum(qnt*price) from sales
+
+we get $155, when it should be $130, we read a dirty value
+```
+
+Consistency - 
+
+Durability - 
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 1 feb 22
 **.net Exceptions**
 Managed exceptions in .NET are implemented on top of the Win32 structured exception handling mechanism.
