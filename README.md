@@ -96,8 +96,8 @@ A complete log of my learning, skills, interests and other.
 | ![Soon][Soon]               | 2022     | Read [Unix Network Programming Volume 1]                        | [Richard Stevens]                           |
 | ![Soon][Soon]               | 2022     | Read [Computer Networking]                                      | [James Kurose]                              |
 | ![Soon][Soon]               | 2022     | Read [Compilers: Principles, Techniques, and Tools]             | [Alfred aho]                                |
-| ![Soon][Soon]               | 2022     | Read [Modern Operating Systems]                                 | [Andrew Tanenbaum]                          |
-| ![In Progress][In Progress] | Jan 2022 | Reread [CLR via c#]                                             | [Jeffry Richter]                            |
+| ![In Progress][In Progress] | 2022     | Read [Modern Operating Systems]                                 | [Andrew Tanenbaum]                          |
+| ![Completed][Completed]     | Jan 2022 | Reread [CLR via c#]                                             | [Jeffry Richter]                            |
 | ![In Progress][In Progress] | 2022     | Complete [Structure and interperation of computer programs]     | [Harold Abelson]                            |
 | ![Completed][Completed]     | 2020     | [Dotnext]                                                       |                                             |
 | ![Completed][Completed]     | Dec 2021 | [Clean Code]                                                    |                                             |
