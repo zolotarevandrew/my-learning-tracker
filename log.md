@@ -4,6 +4,41 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 3 feb 22
+**ACID**
+Played some examples about ACID, serializable, phantom reads and atomicity;
+
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/atomicity.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/phantom_reads.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/repeatable_read.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/serializable.sql
+
+Interesting thing postgres resolved phantom reads even in repeatable read isolation level.
+
+**OS**
+Os can load tasks from disk to free memory space - spooling.
+*Cpu*:
+It is a computer brain. He chooses commands from memory and execute them. 
+Selecting command, decode to find type and operands, executing.
+Each cpu has its own commands, so x86 commands cant be executed on ARM. 
+Registers intended for storing variables and intermediate result.
+Other registers available for programmers:
+- Command counter - stores memory address with next executing command;
+- Stack pointer - ref to stack top;
+- Program status word - bits for cond operators, bits for cpu priority,  kernel and user mode bits and other;
+ Modern cpus can execute more than one command at time by using conveyors. 
+
+Also we have superscalar cpus, which has different executing blocks (logical operators, integers).
+As a result commands executing in different order
+
+
+**Pluses**
+- I can build better apis, knowing the facts of read replicas are eventual consistent.
+- I can use correct isolation levels, to prevent some read phenomenas in my applications.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 2 feb 22
 **ACID**
 
