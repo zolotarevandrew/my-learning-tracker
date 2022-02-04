@@ -4,6 +4,61 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 4 feb 22
+**Db and Data**
+
+each row has a additionall unique id, for postgres it is tuple_id, pair (block number, tuple index).
+
+```
+select *, ctid from sales p ;
+```
+
+*Page*
+- Database doesn't read a single row, it reads a page or more in a single IO and we get a lot of rows in that IO;
+- Each page has a size (8KB in postgres), (8KB in MSSQL).
+
+*I/O*
+- request to the disk;
+- can't read a single row;
+- can goes to OS cache.
+
+*Heap*
+- data structure where the table is stored with all its pages;
+- traversing expensive;
+- that's why we need indexes that help tell us exactly that part of the heap we need to read.
+
+*Index*
+- data structure, which has pointers to the heap.
+- has a part of data;
+- one data was found, you go to the heap to get additional data;
+- also store as pages and cost IO;
+
+Learnt about explain analyze and primary and secondary indexes.
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/indexes/explain_analyze.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/indexes/simple_table.sql
+
+
+**OS**
+
+Registers - 1ns, 1kb
+Cache - 2ns, 4 mb
+Ram - 10ns, 1gb+
+Disk - 10 ms, 100gb+
+
+Ram splits up to cache strings by 64 bytes.
+Often used strings goes to cpu cache.
+It takes two tacts to get data from cache.
+If string does not exist in cache, we should go to ram so it is more time expensive.
+Modern Cpus has two levels of cache - l1, l2.
+Intel uses shared cache, amd uses cache for each core.
+I/O devices has a controllers.
+Controllers has a different interfaces, thats why drivers were created. Manufacturers are creating drivers for each supported OS.
+Os can load drivers dynamically like for usb or load them only then os starts.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 3 feb 22
 **ACID**
 Played some examples about ACID, serializable, phantom reads and atomicity;
