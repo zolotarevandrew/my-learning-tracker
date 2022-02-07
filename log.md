@@ -4,6 +4,58 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 7 feb 22
+**OS**
+Interrupt process:
+- driver send command to controller
+- Controller send interrupt signal when read or write was finished
+- If interrupt controller ready to receive interruption, he send signal to cpu
+- Interrupt controller send device number to bus
+- Then cpu ready command counter goes to stack and then goes to kernel mode
+cpu can block and continue interruption.
+
+Processes:
+Unix process has
+- Text segment - program
+- Data segment - variables
+- Stack segment
+
+Processes in unix has hierarchy structure and init process is on top.
+Windows has no hierarchy, and child process just has parent descriptor.
+
+Process state:
+- executing, using cpu
+- ready, working but stopped, for executing other process
+- blocked until some event will happen
+Os has table of processes like array or list.
+Os has a vector of interruptions, for each device it store a address for execution procedure.
+Cpu time = 1 - p^n
+Where n - count of processes
+
+
+*Db views*
+
+Simple view:
+- just a virtual table;
+- updated every time then a table updated;
+- slow processing;
+- not pre-computed;
+- no storage space needed;
+
+Materialized view:
+- physical copy of a table;
+- updated manually or using triggers;
+- fast processing;
+
+
+**Pluses**:
+- I will use materialized views for some statistical reports, whicn can be updated by analytics of by cache miss.
+- I will use views for some frequently used queries with complex logic;
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 4 feb 22
 **Db and Data**
 
@@ -37,6 +89,12 @@ Learnt about explain analyze and primary and secondary indexes.
 https://github.com/zolotarevandrew/databases/blob/main/postgresql/indexes/explain_analyze.sql
 https://github.com/zolotarevandrew/databases/blob/main/postgresql/indexes/simple_table.sql
 
+
+**Pluses**
+- I can use indexes with include statements, to prevent index scan and use index only scan.
+- I can create index on two or more fields, for better using where statement with AND operator;
+- I can use explain, to change by indexes structure;
+- I can create index concurrently, which won't block the table inserts.
 
 **OS**
 
