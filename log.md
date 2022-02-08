@@ -4,6 +4,43 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+##8 feb 22
+**Postgres statistics**
+
+Query Executing process:
+- creating connection (maybe using connection pool);
+- parsing query, split to tokens;
+- building a tree, going to rewrite system;
+- using planner/optimizer;
+- the more table you have the more ways to execute the query;
+- for each operation estimates number of rows and execution time;
+- executor comes in after getting the plan 
+
+Number of rows or pages recalculated by:
+- auto-vacuum
+- auto-analyze
+- created index, or some DDL operation was executed (CREATE, ALTER, DROP, TRUNCATE, COMMENT, RENAME)
+
+inserted + updated + deleted > threshold = run autoanalyze
+```threshold = analyze_threshold + reltuples(pgclass)*analyze factor```
+analyze_threshold - default 50, can be changed by ALTER TABLE;
+analyze_factor - default 0.1
+
+pg_stats has most_common_vals and most_common_freqs values.
+if there is a lot of frequent values, we can exclude this data from index.
+
+ANALYZE command updates statistics in pg_statistics catalog, like update statistics in MSSQL.
+
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/statistics/statistics.sql
+
+**Pluses**
+- I can optimize my tables by sometimes changing default analyze_threshold or factor, when table grows very fast;
+- I can exclude some data from index, to optimize search speed and size of the index.
+- I will prefer to use jsonb over json in postgres, because postgres don't store statistics for json fields.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 7 feb 22
 **OS**
 Interrupt process:
