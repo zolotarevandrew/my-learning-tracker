@@ -4,6 +4,61 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+##10 feb 22
+**Db locks**
+Exclusive lock - no one can read or change data, if some thread entered in exclusive lock.
+Shared lock - lock for value, so nobody can change it inside a transaction.
+
+Postgres has a row level lock by - FOR UPDATE statement.
+
+I should always test parallel transactions.
+So for example first transaction update somethins gets an exclusive lock, and other transaction blocked
+until first transaction not committed. So postgres can refresh update statement before commit and see what row changed,
+but he can also  not call refreshing the row if some fields were indexed.
+
+https://github.com/zolotarevandrew/databases/tree/main/postgresql/locks
+
+**Pluses**
+- I can solve double/booking and some other problems, using exclusive locks in postgres;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##9 feb 22
+**Db B trees/B+ trees**
+To fund a row in a large table we perform full table scan. Reading large tables is slow.
+Requires many I/O to read all pages.
+
+B tree element has a key and value. The value is usually data pointer to the row.
+Data pointer point to primary key or tuple.
+A node = disk page.
+
+B tree limitations:
+- Store keys and values;
+- Internal node take more space this require more IO and can slow traversal;
+- Range queries problem 1-5;
+
+B+ trees:
+- Store keys in internal nodes;
+- Values stored in leaf nodes;
+- Internal node are smaller because store only keys;
+- Leaf nodes are linked;
+- Great for range queries;
+
+
+*OS*
+Critical sections:
+- Forbid interruptions, because cpu changes process by timers or other interruptions (it works only on systems which has one cpu);
+- Active waiting, spin lock, consumes cpu time, can used for a fast locking;
+- Peterson algorithm - cycle plus bool variables;
+- TSL - cpu blocks memory bus then executing instruction;
+- Semaphores - has up and down methods, up increases counter, down decreases counter, this should be atomic operations;
+- Mutex - exclusive lock can use TSL and thread yield instructions to free some threads.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ##8 feb 22
 **Postgres statistics**
 
