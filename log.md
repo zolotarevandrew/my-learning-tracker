@@ -4,6 +4,25 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+##11 feb 22
+**Db MVCC/Locks**
+Snapshot isolation - isolation protocol based on snapshots.
+In postgresql snapshot isolation is multiversion based. 
+Db can have multiple versions of the same row.
+In fact only changing the same row is blocked.
+Writing transaction doesn't block reading transactions.
+Reading transactions doesn't block anything.
+
+By using snapshots in postgresql it also resolve phantom read anomalia.
+
+Solutions to some isolation problems:
+- don't write code:) just use constraints;
+- INSERT/UPDATE/DELETE ON CONFLICT;
+- LOCK SELECT FOR UPDATE;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ##10 feb 22
 **Db locks**
 Exclusive lock - no one can read or change data, if some thread entered in exclusive lock.
