@@ -5,6 +5,32 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ##11 feb 22
+**Db Other anomalies**
+
+Inconsistent read:
+First transaction update data, then second transaction read data, first transaction update data, then second transaction read data.
+So the last read for the second transaction will be incosistent, we can solve this by sum agrregation, because we have correct state when transaction starts.
+
+The problem can appear by functions volatility classification (VOLATILE, STABLE, IMMUTABLE), by default function has a VOLATILE behaviour.
+If we calling volatile function that has a select statement inside other select operator, it can read incosistent data. So we can solve it by STABLE keyword.
+(Should learn more about this)
+
+Inconsistent write:
+we have a rule to have sum by accounts greater than zero, we start two repeatable read transaction and remove amount from two separate accounts and the problem comes in.
+
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/inconsistent_read.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/inconsistent_read_by_update.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/inconsistent_read_volatile_functions.sql
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/repeatable_read_incosistent_write.sql
+
+**Pluses**
+- I can prevent some incosistent read anomalies in my projects, which use postgresql;
+- I can prevent some incosistent write anomalies in my projects, which use postgresql;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##11 feb 22
 **Db MVCC/Locks**
 Snapshot isolation - isolation protocol based on snapshots.
 In postgresql snapshot isolation is multiversion based. 
