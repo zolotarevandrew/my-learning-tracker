@@ -4,7 +4,39 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
-##11 feb 22
+##15 feb 22
+**Postgres mvcc**
+Each relation (table, view, index and other) has a multiple forks.
+Every fork has a type and it's own data.
+
+Fork can grow up to 1gb, and then new fork will be created.
+
+So tables, indexes more than 1gb would be stored in separate files.
+Each file splitted by 8 kb pages.
+
+Fork types:
+- Initialization, exists only for UNLOGGED tables;
+- Free space map, where the presence of empty space in the pages is marked, when new row is added space reduced, when cleaning started in expands
+It used for adding new rows, so db should fast find place to add data.
+- Visibility map, one bit marks pages that contain only actual versions of rows;
+
+Pages:
+- Header;
+- Ref array to row versions (for indexes);
+- empty spaces;
+- row versions;
+
+Each version of a rows should be inside one page, but if it exceeds page size, TOAST will be used.
+TOAST (The Oversized Attributes Storage Technique).
+TOASTR it's a separate table with it's own indexes.
+If table has text or numeric field, TOAST table will be created.
+
+https://github.com/zolotarevandrew/databases/tree/main/postgresql/mvcc
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##14 feb 22
 **Db Other anomalies**
 
 Inconsistent read:
