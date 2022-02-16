@@ -4,6 +4,18 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+##16 feb 22
+**Postgres relations**
+one to one
+one to many
+many to many
+just remembered
+
+https://github.com/zolotarevandrew/databases/tree/main/postgresql/relations
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ##15 feb 22
 **Postgres mvcc**
 Each relation (table, view, index and other) has a multiple forks.
