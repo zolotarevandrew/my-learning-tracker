@@ -5,6 +5,42 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ##16 feb 22
+**Postgres nested loop joins**
+
+nested loop:
+first loop called (external) and second loop called (internal).
+each found pair returns immediatly as part of result.
+
+for cartesian product:
+Nested Loop
+-> Seq Scan (external set)
+−> Materialize (internal set)
+Materialize also uses seq scan, but upon repeated access, the node reads the previously memorized rows.
+
+In general, the total cost of the join:
+- cost of getting all external rows;
+- cost of one time getting all internal rows;
+- N-1 cost of repeatedly getting internal rows (N external rows);
+- cost of processing each row;
+
+Postgresql 14 has memoize node, which can cache internal rows.
+
+Nested loop can be used in left join, but can't be used in full and right joins, 
+because some rows will not be viewed.
+
+Antijoin - returns first set rows, if there is no match for them in another set. 
+(can be represented as left join with where is null).
+
+Semijoin - return first set rows, if there is at least one match for them in the second set.
+
+Nested loop allows parallel mode, where external nodes can be paralllel
+
+https://github.com/zolotarevandrew/databases/blob/main/postgresql/joins/simple.sql
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##16 feb 22
 **Postgres relations**
 one to one
 one to many
