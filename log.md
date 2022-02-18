@@ -4,7 +4,51 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
-##16 feb 22
+##17 feb 22
+**Postgres hash joins**
+Base idea is to use hash table to get correct rows.
+
+First stage:
+- sequantially read internal rows, and foreach row hash functions is calculated;
+- hash key is join condition;
+It is effectively working if all rows can be in ram.
+
+Second stage:
+- for each external rows, we searching internal row in a hash table by join key.
+- all found data return as results;
+
+Two-way hashing:
+- on planning stage db calculating if internal rows can fit within the given memory.
+- internal rows splits by on separate batches;
+- batch count is powers of two.
+
+First stage:
+- reading internal rows and bulding hash table;
+- if rows is within a batch it goes to a temp file, not to a ram;
+
+Second stage:
+- reading external rows;
+- all external rows splitted as in a first stage, by temp files if its needed.
+- start matching rows in memory;
+- start matching internal and external batches;
+
+Parallel hashing:
+the hash table is not created in the local memory of the process, but in the shared dynamically allocated memory. So all parallel processes can access needed data.
+
+- Creating hash table in parallel;
+- Match external rows in parallel;
+
+Hash join can be used in all join types, but only if join condition is equality operator;
+
+
+**Pluses**
+- I should get  only needed fields, when my queries uses hash join, because all rows  goes to ram;
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##17 feb 22
 **Postgres nested loop joins**
 
 nested loop:
