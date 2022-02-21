@@ -4,6 +4,26 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+##18 feb 22
+**Postgres merge joins and sorting**
+merge join works only on joins where results ordered by sort condition key.
+
+Merge join uses only one iteration for each set of internal and external rows.
+It uses two pointers for internal and external rows because rows sorted.
+
+Sort types:
+- Quick sort, when rows set can be placed in  the memory;
+- Top n Heap sort, when rows are limited;
+- Merge sort, when rows can't be placed in the memory;
+
+Merge sort - readed rows sorted in memory by quick sort and write to temp file, until all rows readed;
+
+Unique values and grouping:
+- distinct fields can get easily by one loop if rows are sorted;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ##17 feb 22
 **Postgres hash joins**
 Base idea is to use hash table to get correct rows.
