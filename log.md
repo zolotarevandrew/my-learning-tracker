@@ -5,6 +5,19 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ##18 feb 22
+**Postgres ef core relations**
+Ef core has a good mechanism for db first approach.
+I have tested all relations approaches (one to one, one to many, many to many)
+
+https://github.com/zolotarevandrew/databases/tree/main/postgresql/ef-core/BaseRelations
+
+**Minuses**
+- I should always check, which sql query ef core produces, because it can be inefficient;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##18 feb 22
 **Postgres merge joins and sorting**
 merge join works only on joins where results ordered by sort condition key.
 
