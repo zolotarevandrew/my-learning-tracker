@@ -5,6 +5,23 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ##18 feb 22
+**Postgres ef value objects and simple load testing**
+Ef core has a good perfomance for simple scenarios. 
+I used k6 script to load simple get and insert queries and there was no memory leaks.
+
+https://github.com/zolotarevandrew/databases/tree/main/postgresql/ef-core/WebApi
+
+**Pluses**
+- I can use ef core in my projects, since it has no perfomance leaks, then dbcontext is scoped to http requests (depends on query and situation);
+
+**Minuses**
+- I couldn't create correctly tiny type for id int column;
+
+[Log Index]
+----------------------------------------------------------
+
+----------------------------------------------------------
+##18 feb 22
 **Postgres ef core relations**
 Ef core has a good mechanism for db first approach.
 I have tested all relations approaches (one to one, one to many, many to many)
