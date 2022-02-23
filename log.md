@@ -54,7 +54,7 @@ Unique values and grouping:
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##17 feb 22
+##18 feb 22
 **Postgres hash joins**
 Base idea is to use hash table to get correct rows.
 
