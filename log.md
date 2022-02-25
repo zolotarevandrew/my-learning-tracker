@@ -5,6 +5,46 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ##24 feb 22
+**Postgres connection pooling**
+Postgres spawns new process on each connection and it's can be more than 2mb, 
+there could be a memory problem because of a lot connections.
+
+Connection pooling, like a thread pooling, solves this problem.
+
+There are two popular types of poolers:
+- pgbouncer
+- pgpool
+
+pgbouncer has three modes:
+- session pooling (default), after client disconnects.
+- transaction pooling, after transaction finishes;
+- statement pooling, after statement finishes.
+
+session - long living;
+transaction - living based on transactions;
+statement - short living based on statements;
+
+npgsql - .net postgresl provider has also in memory connection pooling, (100 default).
+
+I tried disable npgsql pooling, it a little bit reduced throghput (10% inserts);
+
+```
+SELECT count(*) FROM pg_stat_activity where query <> '<insufficient privilege>'
+```
+Interesting thing, there was only 30 connections pgbouncer used, even if a run more than 1000 virtual users load test.
+
+
+**Pluses**
+- I can use correct connection pooling by pgbouncer, for increasing my databases performance;
+- I can change pooling setting in my npgsql driver, to increase my application and database perfomance and throughput;
+
+**Minuses**
+- Session pooling is the default method;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+##24 feb 22
 **Postgres ef optimistic concurrency**
 ef core has a simple mechanism for optimistic concurrency, i simply used rowVersion row.
 
@@ -45,6 +85,9 @@ Merge sort - readed rows sorted in memory by quick sort and write to temp file, 
 
 Unique values and grouping:
 - distinct fields can get easily by one loop if rows are sorted;
+
+**Pluses**
+- I can write better queries with join, because i can decide which type of join database will choose, based on my query. 
 
 [Log Index]
 ----------------------------------------------------------
@@ -87,7 +130,7 @@ Hash join can be used in all join types, but only if join condition is equality 
 
 
 **Pluses**
-- I should get  only needed fields, when my queries uses hash join, because all rows  goes to ram;
+- I should get only needed fields, when my queries uses hash join, because all rows  goes to ram;
 
 
 [Log Index]
