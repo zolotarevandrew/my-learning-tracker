@@ -4,7 +4,7 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
-##24 feb 22
+## 25 feb 22
 **Postgres connection pooling**
 Postgres spawns new process on each connection and it's can be more than 2mb, 
 there could be a memory problem because of a lot connections.
@@ -44,7 +44,7 @@ Interesting thing, there was only 30 connections pgbouncer used, even if a run m
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##24 feb 22
+## 23 feb 22
 **Postgres ef optimistic concurrency**
 ef core has a simple mechanism for optimistic concurrency, i simply used rowVersion row.
 
@@ -56,7 +56,7 @@ https://github.com/zolotarevandrew/databases/tree/main/postgresql/ef-core/WebApi
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##23 feb 22
+## 22 feb 22
 **Postgres ef core relations**
 Ef core has a good mechanism for db first approach.
 I have tested all relations approaches (one to one, one to many, many to many)
@@ -69,7 +69,7 @@ https://github.com/zolotarevandrew/databases/tree/main/postgresql/ef-core/BaseRe
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##21 feb 22
+## 21 feb 22
 **Postgres merge joins and sorting**
 merge join works only on joins where results ordered by sort condition key.
 
@@ -92,7 +92,7 @@ Unique values and grouping:
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##18 feb 22
+## 18 feb 22
 **Postgres hash joins**
 Base idea is to use hash table to get correct rows.
 
@@ -136,7 +136,7 @@ Hash join can be used in all join types, but only if join condition is equality 
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##17 feb 22
+## 17 feb 22
 **Postgres nested loop joins**
 
 nested loop:
@@ -184,7 +184,7 @@ https://github.com/zolotarevandrew/databases/tree/main/postgresql/relations
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##15 feb 22
+## 15 feb 22
 **Postgres mvcc**
 Each relation (table, view, index and other) has a multiple forks.
 Every fork has a type and it's own data.
@@ -216,7 +216,7 @@ https://github.com/zolotarevandrew/databases/tree/main/postgresql/mvcc
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##14 feb 22
+## 14 feb 22
 **Db Other anomalies**
 
 Inconsistent read:
@@ -242,7 +242,7 @@ https://github.com/zolotarevandrew/databases/blob/main/postgresql/acid/repeatabl
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##11 feb 22
+## 11 feb 22
 **Db MVCC/Locks**
 Snapshot isolation - isolation protocol based on snapshots.
 In postgresql snapshot isolation is multiversion based. 
@@ -261,7 +261,7 @@ Solutions to some isolation problems:
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##10 feb 22
+## 10 feb 22
 **Db locks**
 Exclusive lock - no one can read or change data, if some thread entered in exclusive lock.
 Shared lock - lock for value, so nobody can change it inside a transaction.
@@ -281,7 +281,7 @@ https://github.com/zolotarevandrew/databases/tree/main/postgresql/locks
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##9 feb 22
+## 9 feb 22
 **Db B trees/B+ trees**
 To fund a row in a large table we perform full table scan. Reading large tables is slow.
 Requires many I/O to read all pages.
@@ -316,7 +316,7 @@ Critical sections:
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-##8 feb 22
+## 8 feb 22
 **Postgres statistics**
 
 Query Executing process:
@@ -352,6 +352,7 @@ https://github.com/zolotarevandrew/databases/blob/main/postgresql/statistics/sta
 
 [Log Index]
 ----------------------------------------------------------
+
 ----------------------------------------------------------
 ## 7 feb 22
 **OS**
