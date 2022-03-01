@@ -4,6 +4,43 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 29 feb 22
+**MongoDB Indexes**
+Mongo indexes has sort order, but it is needed only for sorting operations in compound indexes.
+
+Multikey indexes is used for content stored in array, it creates separate index entries for every element of the array.
+
+Text indexes - can be only one per collection, so it should be compound text index for some scenarios. 
+They.
+
+Index properties:
+- ttl indexes - can be used to automatically remove documents from a collection;
+- unique indexes - can't contain duplicate values;
+- partial indexes - filter expression indexes, has lower storage requirements and reduced performance costs for index creation and maintenance;
+- hidden indexes - hide index from a planner;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 28 feb 22
+**MongoDB Transactions**
+From mongo 4.2 transactions can be used across multiple shards.
+From mongodb 4.4 collections and indexes can be made inside transactions.
+
+For starting one or more transaction we needed to start a session.
+
+Read concern - by default it uses local concern.
+
+Local read concern - returns the most recent data available from the node but can be rolled back;
+Available read concern - no guarantee that the data has been written to a majority of the replica set members can getting orphaned documents;
+Majority read concern - data that has been acknowledged by a majority of the replica set members;
+Snapshot read concern - data from a snapshot of majority committed data;
+
+Needs to test on cluster with replicas.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 25 feb 22
 **Postgres connection pooling**
 Postgres spawns new process on each connection and it's can be more than 2mb, 
