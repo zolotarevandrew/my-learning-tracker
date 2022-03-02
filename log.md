@@ -4,6 +4,29 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 30 feb 22
+**MongoDB relations**
+In mongo related data can be embed in a single document (denormalized model).
+
+Embedded data:
+- Contains relationship;
+- Can update data in single atomic operation;
+- Better performance for read operations;
+
+Subset data - separate collection which contains additional, less frequently-accessed data.
+
+Relations:
+- One to one, embedded documents can be used or subset collection;
+- One to many, embedded documents can be used or subset collection or references (you can also store top ten elements which needed to query);
+- Many to many, embedded documents or references.
+
+For refs lookup operator act as left outer join.
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/relations.js
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 29 feb 22
 **MongoDB Indexes**
 Mongo indexes has sort order, but it is needed only for sorting operations in compound indexes.
@@ -18,6 +41,8 @@ Index properties:
 - unique indexes - can't contain duplicate values;
 - partial indexes - filter expression indexes, has lower storage requirements and reduced performance costs for index creation and maintenance;
 - hidden indexes - hide index from a planner;
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/indexes.js
 
 [Log Index]
 ----------------------------------------------------------
@@ -37,6 +62,8 @@ Majority read concern - data that has been acknowledged by a majority of the rep
 Snapshot read concern - data from a snapshot of majority committed data;
 
 Needs to test on cluster with replicas.
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/transactions_simple.js
 
 [Log Index]
 ----------------------------------------------------------
