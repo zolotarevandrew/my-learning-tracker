@@ -4,7 +4,24 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
-## 30 feb 22
+## 3 mar 22
+**MongoDB aggregations**
+Aggregation pipeline consists of one or more stages.
+- Each stage perform an operation on the input docs.
+- Outputs are passes to then next stage;
+
+The query planner analyzes an aggregation pipeline to determine if indexes can be used to improve pipeline performance.
+
+Operators which can use indexes:
+- match, sort, group,
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/aggregations.js
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 2 mar 22
 **MongoDB relations**
 In mongo related data can be embed in a single document (denormalized model).
 
@@ -27,7 +44,7 @@ https://github.com/zolotarevandrew/databases/blob/main/mongodb/relations.js
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-## 29 feb 22
+## 1 mar 22
 **MongoDB Indexes**
 Mongo indexes has sort order, but it is needed only for sorting operations in compound indexes.
 
