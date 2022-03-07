@@ -4,6 +4,51 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 7 mar 22
+**MongoDB locks**
+Mongo uses multi-granularity locking and global, database or collection level.
+It uses reader writer locks.
+
+Intent locks are at the top of the hierarchy and their purpose is to prevent unnecessary checking of low level locks where possible.
+
+For most read and write operations, mongo uses optimistic concurrency control.
+When the storage engine detects conflicts, one will incur a write conflict causing retry that operation.
+
+From mongodb 5 find and aggregate queries are lock free.
+
+Locking modes.
+
+Shared - shared between multiple readers, in read operations.
+Exclusive - resource not available for concurrent readers, in write operations.
+Intent shared - indicates that the lock holder will read the resource at a granular level.
+Intent exclusive - lock holder will modify the resource at a granular level.
+
+Parallel transaction making changes to one field, for one transaction there can be a error
+"Plan executor error during findAndModify :: caused by :: WriteConflict error"
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/locks.js
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 4 mar 22
+**MongoDB views**
+Views can be useful:
+- For remove joining collection inside app;
+- add computed fields or metrics;
+- exclude some sensitive data;
+
+Materialized views:
+Aggregation pipeline results can be merge into collection.
+Data can be replaced every time.
+
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/views.js
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 3 mar 22
 **MongoDB aggregations**
 Aggregation pipeline consists of one or more stages.
