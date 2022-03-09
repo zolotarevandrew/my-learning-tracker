@@ -4,6 +4,28 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 9 mar 22
+**MongoDB statistics**
+Collection stats has following informations:
+- storage stats, indexes size, colection size, count documents and other;
+- query exec stats, collection scans;
+- cache stats, currently in cache, reads, writes;
+- compression;
+- transactions, update conflicts, rollback info;
+- index details;
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 8 mar 22
+**MongoDB deadlocks**
+Nothing special found about deadlocks
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 7 mar 22
 **MongoDB locks**
 Mongo uses multi-granularity locking and global, database or collection level.
