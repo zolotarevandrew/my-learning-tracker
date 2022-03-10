@@ -4,6 +4,28 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 10 mar 22
+**MongoDB explain**
+The explain results present the query plans as a tree of stages.
+Each stage passes its results to the parent node.
+Stages:
+- COLLSCAN collection scan;
+- IXSCAN scan index;
+- FETCH retrieve documents;
+- SHARD_MERGE merging results from shards;
+- SHARDING_FILTER filtering orphan documents from shards.
+
+When an index covers a query, mongo can return results using only index keys.
+So there will be no FETCH stage as parent stage for IXSCAN. (totalDocsExamined = 0)
+
+For index intersection parent stage can be AND_SORTED or AND_HASH.
+
+Sort and Group stage has a additional flag usedDisk, is disk was used.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 9 mar 22
 **MongoDB statistics**
 Collection stats has following informations:
