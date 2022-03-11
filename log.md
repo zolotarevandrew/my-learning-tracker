@@ -5,6 +5,28 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ## 10 mar 22
+**MongoDB connection pooling**
+MongoClient provides connection pooling.
+MongoClient instance per application should be used, unless the application is connecting to many separate clusters.
+
+Tuning:
+- High CPU Usage, reduce maxPoolSize;
+- load small, increase maxPoolSize;
+- slow connection creation, change minPoolSize, to increase connections created in before startup;
+
+Slow connection creation, should found from logs;
+
+Database profiler.
+The profiler writes all the data it collects to a system.profile collection, a capped collection in each profiled database. Than means in has fixed amount documents by the time.
+
+When enabled, profiling has an effect on database performance. Profiling also consumes disk space, as it logs to both the system.profile collection and also the logfile.
+
+I think it is better to have logging metrics by some queries and commands than enable this feature.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 10 mar 22
 **MongoDB explain**
 The explain results present the query plans as a tree of stages.
 Each stage passes its results to the parent node.
