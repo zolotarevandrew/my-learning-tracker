@@ -23,6 +23,15 @@ When enabled, profiling has an effect on database performance. Profiling also co
 
 I think it is better to have logging metrics by some queries and commands than enable this feature.
 
+**Pluses**
+- I can profile database queries and hot paths by using database profiler sometimes;
+- I can use correctly mongodbdriver knowing the fact of connection pooling is inside driver;
+
+**Minuses**
+- I should really think about using profiling in production, because it is can affect perfomance;
+- It is hard to find connection startup info inside mongodb logs, to profile connection creation;
+
+
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -44,6 +53,10 @@ For index intersection parent stage can be AND_SORTED or AND_HASH.
 
 Sort and Group stage has a additional flag usedDisk, is disk was used.
 
+**Pluses**
+- I can use combines indexes to skip documents fetching from the disk;
+- I can know if there is collection scan, and add indexes;
+
 
 [Log Index]
 ----------------------------------------------------------
@@ -58,7 +71,8 @@ Collection stats has following informations:
 - transactions, update conflicts, rollback info;
 - index details;
 
-
+**Pluses**
+- I can create metrics based on collection statistics to identify, caching problems, slow queries and other problems;
 
 [Log Index]
 ----------------------------------------------------------
@@ -92,6 +106,14 @@ Intent exclusive - lock holder will modify the resource at a granular level.
 Parallel transaction making changes to one field, for one transaction there can be a error
 "Plan executor error during findAndModify :: caused by :: WriteConflict error"
 
+**Pluses**
+- I can use lock free methods from version 5 mongodb, to increase my apps perfomance;
+- I can use atomic operations such as inc and others, to prevent race conditions problems;
+
+**Minuses**
+- Sometimes i need to use optimistic concurreny by using replace documents without atomic operations;
+- I need know and handle writeconflict exception then using transactions;
+
 https://github.com/zolotarevandrew/databases/blob/main/mongodb/locks.js
 
 [Log Index]
@@ -111,6 +133,12 @@ Data can be replaced every time.
 
 https://github.com/zolotarevandrew/databases/blob/main/mongodb/views.js
 
+**Pluses**
+- I can use views for some security reasons, to exclude payment cards, roles and other;
+- I can use materialized views to store some frequent slow queries;
+
+**Minuses**
+- I had to store aggregation inside my applications to use materialized views;
 
 [Log Index]
 ----------------------------------------------------------
@@ -150,6 +178,10 @@ Relations:
 
 For refs lookup operator act as left outer join.
 
+**Pluses**
+- I will prefer using embedded documents in my apps, to increase apps perfomance;
+- I can use subset of data, to store more needed information in separate collections;
+
 https://github.com/zolotarevandrew/databases/blob/main/mongodb/relations.js
 
 [Log Index]
@@ -169,6 +201,10 @@ Index properties:
 - unique indexes - can't contain duplicate values;
 - partial indexes - filter expression indexes, has lower storage requirements and reduced performance costs for index creation and maintenance;
 - hidden indexes - hide index from a planner;
+
+**Pluses**
+- I can use ttl indexes for some event logs collections;
+- I can use partial indexes to increase some queries perfomances;
 
 https://github.com/zolotarevandrew/databases/blob/main/mongodb/indexes.js
 
