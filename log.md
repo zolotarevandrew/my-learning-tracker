@@ -4,6 +4,34 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 14 mar 22
+**MongoDB replication**
+A replica set in MongoDB is a group of mongod processes that maintain the same data set.
+Replica sets provide redundancy and high availability.
+Replication provides a level of fault tolerance against the loss of a single database server.
+
+A replica s44et contains several data bearing nodes and optionally one arbiter node.
+Of the data bearing nodes, one member is deemed the primary node, while the other secondary nodes.
+
+Primary receives all write operations. Records all changes to its data sets in its operation log, i.e. oplog.
+Secondaries replicate the primary's oplog and apply the operations to their data sets asynchronously.
+
+Replication lags - amount of time that it takes to copy (i.e. replicate) a write operation on the primary to a secondary.
+
+Failover:
+When a primary does not communicate with the other members of the set for more than the configured electionTimeoutMillis period (10 seconds by default), an eligible secondary calls for an election to nominate itself as the new primary.
+
+Read preference - by default clients read from the primary.
+
+Multi-document transactions that contain read operations must use read preference primary. All operations in a given transaction must route to the same member.
+Depending on the read concern, clients can see the results of writes before the writes are durable.
+
+Mirrored Reads reduce the impact of primary elections following an outage or planned maintenance.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 10 mar 22
 **MongoDB connection pooling**
 MongoClient provides connection pooling.
