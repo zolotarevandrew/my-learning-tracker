@@ -4,6 +4,44 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 16 mar 22
+**MongoDB replication secondaries, oplog, data sync**
+Secondaries can be:
+- Priority 0, Prevent it from becoming a primary in an election, reside secondary or a cold standby.
+- Hidden, prevent reasing from applications;
+- Delayed, historical snapshot.
+
+Priority 0:
+Might be desired if the particular member is deployed in a data center that is distant from the main deployment and therefore has higher latency.
+
+In some replica sets, it might not be possible to add a new member in a reasonable amount of time. 
+A standby member keeps a current copy of the data to be able to replace an unavailable member.
+
+Hidden:
+Can vote in elections. Useful for dedicated tasks such as reporting and backups.
+
+Delayed:
+Applied operations with delay.
+
+Arbiter:
+Vote only secondary, has no data, useful just for voting.
+
+*Oplog*
+The oplog (operations log) is a special capped collection that keeps a rolling record of all operations that modify the data stored in your databases.
+Retention period can be specified.
+Each operation in the oplog is idempotent.
+
+When large oplog needed:
+- Updates to multiple documents at once, oplog translate multi-updates into individual operations.
+- A lot of deletions and inserts;
+- Significant portion of the workload is updates;
+
+Slow oplog operations in secondaries can be found in logs.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 14 mar 22
 **MongoDB replication**
 A replica set in MongoDB is a group of mongod processes that maintain the same data set.
