@@ -4,6 +4,48 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 18 mar 22
+**MongoDB time series collections**
+Time series collections efficiently store sequences of measurements over a period of time.
+Contains:
+- timeField, timestamp for document;
+- metaField, should rarely changed;
+- granularity, seconds by default, can be hours, minutes;
+- expireAfterSeconds, ttl, automatic deletion of documents;
+
+MongoDB treats time series collections as writable non-materialized views on internal collections that automatically organize time series data into an optimized storage format on insert.
+
+The implementation of time series collections uses internal collections that reduce disk usage and improve query efficiency. Time series collections automatically order and index data by time.
+
+https://github.com/zolotarevandrew/databases/blob/main/mongodb/timeSeries.js
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 17 mar 22
+**MongoDB sharding**
+Mongodb doesn't have a partition mechanism such as relation databases.
+Sharded cluster:
+- shard - subset of sharded data, each shard can be a replica set.
+- mongos - query router, can use hedged-reads (to get first response from multiple replicas)
+- config servers - cluster settings
+
+High Availability:
+If one ore more shards replicas becomes unavailable, other shard can process requests.
+
+Once a collection has been sharded, MongoDB provides no method to unshard a sharded collection.
+
+Unsharded collections are stored on a primary shard. Each database has its own primary shard.
+
+*Hashed sharding*
+range-based queries can target more than one shard.
+
+*Range based sharding*
+Poorly considered shard keys can result in uneven distribution of data, which can negate some benefits of sharding or can cause performance bottlenecks.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 16 mar 22
 **MongoDB replication secondaries, oplog, data sync**
 Secondaries can be:
