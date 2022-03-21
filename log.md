@@ -4,6 +4,44 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 21 mar 22
+**Postgres base performance problems, replication**
+Metrics:
+- High cpu usage >50%;
+- Transactions count > 20-30 thousands;
+- I/O usage;
+- Exclusive Locks count;
+- Long running transactions;
+
+Solutions:
+- write only needed things;
+- read only needed data;
+- split writing information;
+- removing distinct by joins;
+- a lot of aggregations, count, sum and other remove it;
+- create different users for different purposes, analytics and other.
+- partial indexes;
+
+Replication:
+- First we creating async replica and Moving aggregations to them.
+- Second we createing async lagging replica for long running operations;
+- Third creating sync/async replica with low latency (network should be good);
+
+Sync replica problems:
+- vacuum problems on master;
+- table index bloat;
+
+Streaming replication - by tcp connection (some transactions can be lost);
+- async by it manner;
+
+Cascade replication - by other secondaries replication.
+Sync replication - wal should be writed on primary and secondary.
+Because of latency, can be problems with locks.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 18 mar 22
 **MongoDB time series collections**
 Time series collections efficiently store sequences of measurements over a period of time.
