@@ -4,6 +4,32 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 22 mar 22
+**Postgres partitioning**
+
+Types:
+- By date;
+- By id ranges;
+- By first char of name;
+
+By date and By Id:
+- Easy to understand;
+- Stable number of rows;
+- Need to add partitions sometimes;
+- Can be table scans if query without date or id;
+
+Partition is separate table, it can't have primary key and be a foreign key.
+
+**Pluses**
+- I can create postgres partitions to increate my apps db queries perfomance;
+
+**Minuses**
+- In some cases, it is better to optimize db queries, rather than make partitions.
+- It is need to add new partitions, based on partition types (can be leverared by DDL scripts)
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 21 mar 22
 **Postgres base performance problems, replication**
 Metrics:
@@ -39,6 +65,11 @@ Sync replication - wal should be writed on primary and secondary.
 Because of latency, can be problems with locks.
 
 
+**Pluses**
+- I can choose correct replica type, based on datacenters location and other factors;
+- I can rely on many new metrics to increase my databases perfomance;
+
+
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -56,6 +87,10 @@ MongoDB treats time series collections as writable non-materialized views on int
 The implementation of time series collections uses internal collections that reduce disk usage and improve query efficiency. Time series collections automatically order and index data by time.
 
 https://github.com/zolotarevandrew/databases/blob/main/mongodb/timeSeries.js
+
+**Pluses**
+- I can use timeseries collection for some metrics, if i can't use grafana or influxdb or something;
+
 
 [Log Index]
 ----------------------------------------------------------
@@ -118,6 +153,14 @@ When large oplog needed:
 
 Slow oplog operations in secondaries can be found in logs.
 
+**Pluses**
+- I can choose correct replica types in mongodb to increase my app availability and resiliency;
+- I can use correct combination of replicas, such as arbiters, hidden, delayed secondaries if bussiness really needs it.
+- I can change oplog size then a lot of write or delete operations perfomed on collection;
+
+
+**Minuses**
+- I had to find slow connection creations and oplog operations in mongodb logs;
 
 [Log Index]
 ----------------------------------------------------------
@@ -128,7 +171,7 @@ A replica set in MongoDB is a group of mongod processes that maintain the same d
 Replica sets provide redundancy and high availability.
 Replication provides a level of fault tolerance against the loss of a single database server.
 
-A replica s44et contains several data bearing nodes and optionally one arbiter node.
+A replica set contains several data bearing nodes and optionally one arbiter node.
 Of the data bearing nodes, one member is deemed the primary node, while the other secondary nodes.
 
 Primary receives all write operations. Records all changes to its data sets in its operation log, i.e. oplog.
@@ -145,7 +188,6 @@ Multi-document transactions that contain read operations must use read preferenc
 Depending on the read concern, clients can see the results of writes before the writes are durable.
 
 Mirrored Reads reduce the impact of primary elections following an outage or planned maintenance.
-
 
 [Log Index]
 ----------------------------------------------------------
