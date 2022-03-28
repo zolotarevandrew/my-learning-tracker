@@ -4,6 +4,56 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 28 mar 22
+**Postgres Rabbitmq AMQP**
+AMQP - Advanced message queueing protocol.
+It is a binary application layer protocol. 
+
+Provides Deliver guarantees:
+- at-most-once (where each message is delivered once or never);
+- at-least-once (where each message is certain to be delivered, but may do so multiple times);
+- exactly-once (where the message will always certainly arrive and do so only once).
+
+Support authentication and encryption. Based on TCP.
+
+AMQP defines a self-describing encoding scheme, allowing representation of a wide range of commonly used type.
+
+The basic unit of data in AMQP is a frame.
+There are 9 AMQP frame bodies:
+- open (the connection)
+- begin (the session)
+- attach (the link)
+- transfer
+- flow
+- disposition
+- detach (the link)
+- end (the session)
+- close (the connection)
+
+link - heart of amqp.
+attach - initiate new link, detach - detach new link.
+links may be established in order to receive or send messages.
+messages sent over a established link using the transfer frame.
+
+each transferred message must eventually be settled. 
+settlement ensures that the sender and receiver agree on the state of the transfer, providing reliability guarantees.
+
+Ensuring the message as sent by the application is immutable allows for end-to-end message signing and/or encryption and ensures that any integrity checks (e.g. hashes or digests) remain valid.
+
+
+Messages are published to exchanges (postoffice, mailbox).
+
+Exchanges distritbute copies to queues using bindings (rules).
+Then broker deliver messages to consumers subscribed to queues, or consumers pull messages from queues on demand.
+
+Publisher can specify message metadata.
+Application can fail process messages, so message acknowledgements are used.
+
+AMQP programmable protocol, entities routing schemes defines by application, not a broker.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 22 mar 22
 **Postgres partitioning**
 
