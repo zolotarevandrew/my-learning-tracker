@@ -5,7 +5,18 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ## 28 mar 22
-**Postgres Rabbitmq AMQP**
+**Rabbitmq Exchanges**
+Direct - sends message to concrete queue by routing key.
+Topic - sends message to concrete queue by routing key template.
+Fanout - send message to all queues.
+Headers - send message by header parameters;
+
+https://github.com/zolotarevandrew/rabbitmq/tree/main/exchanges/Exchanges
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 28 mar 22
+**Rabbitmq AMQP**
 AMQP - Advanced message queueing protocol.
 It is a binary application layer protocol. 
 
