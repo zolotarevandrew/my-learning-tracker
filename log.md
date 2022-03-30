@@ -5,6 +5,70 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ## 28 mar 22
+**Rabbitmq Queues**
+Queues in RabbitMq FIFO.
+
+Queue properties:
+- Name, can max be 255 bytes
+- Durable (survive on restart)
+- Exclusive (will be deleted when that connection closes)
+- Auto-delete (deleted when last consumer unsubscribes)
+
+
+Before a queue can be used it has to be declared. 
+Declaring a queue will cause it to be created if it does not already exist.
+
+Optional arguments:
+- length limitat
+- mirroring settings
+- max number of priorities
+- consumer priorities
+
+Ordering can be affected by the presence of multiple competing consumers, consumer priorities, message redeliveries.
+
+Initial deliveries - redelivered(false), single consumer can process in FIFO order.
+Repeated delivery - ordering can be affected by the timing of consumer acknowledgements and redeliveries.
+
+If all of the consumers have equal priorities, they will be picked on a round-robin basis.
+
+Durable queues will be recovered on node boot, including messages in them published as persistent. 
+Messages published as transient will be discarded during recovery, even if they were stored in durable queues.
+
+Throughput and latency of a queue is not affected by whether a queue is durable or not in most cases.
+The choice between durable and transient queues comes down to the semantics of the use case.
+
+Temporary queues:
+- transient clients
+- temporary WebSocket connections
+
+Deleting temp queue automatically:
+- Exclusive queues (declaring connection is closed or gone (e.g. due to underlying TCP connection loss))
+(x-queue-master-locator="client-local" when declaring the queue)
+- TTL 
+- Auto delete queue (deleted when its last consumer is cancelled)
+
+
+Queues can have their length limited. Queues and messages can have a TTL.
+Queues keep messages in RAM and/or on disk.
+Publishing messages as transient suggests that RabbitMQ should keep as many messages as possible in RAM.
+
+Queues can have priorities from 1 to 10.
+Publishers specify message priority using the priority field in message properties.
+
+Delivered messages can be acknowledged by consumer explicitly or automatically as soon as a delivery is written to connection socket.
+
+High number of unacknowledged messages will lead to higher memory usage by the broker.
+Automatic acknowledgement can be problem if consumer process can't process a lot of messages.
+Consumers using higher (several thousands or more) prefetch levels can experience the same overload problem.
+
+
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 28 mar 22
 **Rabbitmq Exchanges**
 Direct - sends message to concrete queue by routing key.
 Topic - sends message to concrete queue by routing key template.
