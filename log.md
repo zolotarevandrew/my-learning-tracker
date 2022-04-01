@@ -3,8 +3,35 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+
 ----------------------------------------------------------
-## 28 mar 22
+## 1 apr 22
+**Rabbitmq Bindings**
+Create binding parameters:
+- queue name
+- exchange name
+- routing key
+- arguments
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 31 mar 22
+**Rabbitmq Topics**
+Internally uses trie.
+Partially matching routing key.
+
+Can be "#" - one or more words
+Can be "*" - one word, faster than "#".
+
+https://github.com/zolotarevandrew/rabbitmq/tree/main/exchanges/Topic
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 30 mar 22
 **Rabbitmq Queues**
 Queues in RabbitMq FIFO.
 
@@ -62,13 +89,10 @@ Automatic acknowledgement can be problem if consumer process can't process a lot
 Consumers using higher (several thousands or more) prefetch levels can experience the same overload problem.
 
 
-
-
-
 [Log Index]
 ----------------------------------------------------------
 ----------------------------------------------------------
-## 28 mar 22
+## 29 mar 22
 **Rabbitmq Exchanges**
 Direct - sends message to concrete queue by routing key.
 Topic - sends message to concrete queue by routing key template.
