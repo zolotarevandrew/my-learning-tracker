@@ -5,6 +5,20 @@
 |     |Learnt, thoughts, progress, ideas, links|
 
 ----------------------------------------------------------
+## 25 apr 22
+**Rabbitmq Routing**
+Bindings can take an extra routing_key parameter.
+The fanout exchanges, simply ignored its value.
+
+Routing keys are on messages, so the producer has a control by sending message by using correct routing key.
+
+Exchanges compare a messages routing key to each route's binding key to determine if the message should be sent to the queue on that route.
+
+https://github.com/zolotarevandrew/rabbitmq/tree/main/routing/DirectLogging
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 1 apr 22
 **Rabbitmq Bindings**
 Create binding parameters:
