@@ -5,6 +5,22 @@
 |     |Learnt, thoughts, progress, ideas, links|
 
 ----------------------------------------------------------
+## 26 apr 22
+**Rabbitmq WorkQueues**
+By default, RabbitMQ will send each message to the next consumer, in sequence. 
+On average every consumer will get the same number of messages. (Round robin).
+
+Interesting note:
+"Marking messages as persistent doesn't fully guarantee that a message won't be lost. Although it tells RabbitMQ to save the message to disk, there is still a short time window when RabbitMQ has accepted a message and hasn't saved it yet. Also, RabbitMQ doesn't do fsync(2) for every message -- it may be just saved to cache and not really written to the disk. The persistence guarantees aren't strong, but it's more than enough for our simple task queue. If you need a stronger guarantee then you can use publisher confirms."
+
+RabbitMQ dispatches a message when the message enters the queue. It doesn't look at the number of unacknowledged messages for a consumer. It just blindly dispatches every n-th message to the n-th consumer. To defeat this problem it is better to use prefetch_count, so worker will process only one message at time.
+
+
+https://github.com/zolotarevandrew/rabbitmq/tree/main/work-queues
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 25 apr 22
 **Rabbitmq Routing**
 Bindings can take an extra routing_key parameter.
