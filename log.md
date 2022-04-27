@@ -6,6 +6,31 @@
 
 ----------------------------------------------------------
 ## 26 apr 22
+**Rabbitmq Consumers**
+Сonsumer is a subscription for message delivery that has to be registered before deliveries begin and can be cancelled by the application.
+A successful subscription operation returns a subscription identifier (consumer tag). It can later be used to cancel the consumer.
+
+When registering a consumer applications can choose one of two delivery modes:
+- Automatic
+- Manual
+
+With manual acknowledgement mode consumers have a way of limiting how many deliveries can be "in flight" by using prefetch count.
+
+The exclusive flag can be set to true to request the consumer to be the only one on the target queue.
+Consuming with only one consumer is useful when messages must be consumed and processed in the same order they arrive in the queue.
+
+Single active consumer "x-single-active-consumer", allows to have only one consumer at a time consuming from a queue and to fail over to another registered consumer in case the active one is cancelled or dies.
+
+Priorities - when consumer priorities are in use, messages are delivered round-robin if multiple active consumers exist with the same high priority.
+
+.NET clients guarantee that deliveries on a single channel will be dispatched in the same order there were received regardless of the degree of concurrency. 
+
+https://github.com/zolotarevandrew/rabbitmq/tree/main/consumers
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 26 apr 22
 **Rabbitmq WorkQueues**
 By default, RabbitMQ will send each message to the next consumer, in sequence. 
 On average every consumer will get the same number of messages. (Round robin).
