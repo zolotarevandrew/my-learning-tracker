@@ -3,7 +3,19 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+----------------------------------------------------------
+## 27 apr 22
+**Rabbitmq Priority Queues**
+RabbitMq has priority queues, by using x-max-priority optional queue argument.
+By default, consumers may be sent a large number of messages before they acknowledge any, limited only by network backpressure.
 
+
+
+https://github.com/zolotarevandrew/rabbitmq/tree/main/priority-consumers
+https://github.com/zolotarevandrew/rabbitmq/tree/main/priority-queues
+
+[Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 ## 26 apr 22
 **Rabbitmq Consumers**
