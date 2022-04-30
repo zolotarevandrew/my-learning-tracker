@@ -5,11 +5,42 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ## 27 apr 22
+**Rabbitmq Streams**
+Streams cover 4 use-cases that queue types can not provide:
+- Large fan-outs
+Users have to bind a dedicated queue for each consumer. If the number of consumers is large this becomes potentially inefficient. Streams will allow any number of consumers to consume the same messages from the same queue in a non-destructive manner. Stream consumers will also be able to read from replicas allowing read load to be spread across the cluster.
+
+- Replay, time-travelling
+Streams will allow consumers to attach at any point in the log and read from there.
+
+- Throughput Performance
+No persistent queue types are able to deliver throughput that can compete with any of the existing log based messaging systems. Streams have been designed with performance as a major goal.
+
+- Large logs
+Streams are designed to store larger amounts of data in an efficient manner with minimal in-memory overhead.
+
+Any consumer can start reading/consuming from any point in the log.
+
+As streams persist all data to disks before doing anything it is recommended to use the fastest disks possible.
+
+*Minuses*
+- .NET has a raw library for it;
+- Kafka can be a better solution with distributed log type such as rabbit streams;
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 27 apr 22
 **Rabbitmq Priority Queues**
 RabbitMq has priority queues, by using x-max-priority optional queue argument.
 By default, consumers may be sent a large number of messages before they acknowledge any, limited only by network backpressure.
 
+*Pluses*
+- I can use message priorities and priority queues for some load-balancing tasks or somethis that has priorities.
 
+*Minuses*
+- There is bad documentation for consumer priorities, i need to test it more.
 
 https://github.com/zolotarevandrew/rabbitmq/tree/main/priority-consumers
 https://github.com/zolotarevandrew/rabbitmq/tree/main/priority-queues
@@ -37,6 +68,14 @@ Priorities - when consumer priorities are in use, messages are delivered round-r
 
 .NET clients guarantee that deliveries on a single channel will be dispatched in the same order there were received regardless of the degree of concurrency. 
 
+*Pluses*
+- I can use exclusive consumers for web sockets or other transient connections in my projects;
+- I can use single active consumer to support correct message ordering;
+
+*Minuses*
+- I think i will not use automatic acks, because of message loss possibility.
+
+
 https://github.com/zolotarevandrew/rabbitmq/tree/main/consumers
 
 [Log Index]
@@ -52,6 +91,11 @@ Interesting note:
 
 RabbitMQ dispatches a message when the message enters the queue. It doesn't look at the number of unacknowledged messages for a consumer. It just blindly dispatches every n-th message to the n-th consumer. To defeat this problem it is better to use prefetch_count, so worker will process only one message at time.
 
+*Pluses*
+- I can use work queues in some simple scenarios in projects;
+
+*Minuses*
+- There can be situations, then two workers can receive and save same message.
 
 https://github.com/zolotarevandrew/rabbitmq/tree/main/work-queues
 
@@ -80,7 +124,7 @@ Create binding parameters:
 - routing key
 - arguments
 
-
+There can be exchange to exchange bindings, exchange to queue bindings.
 
 [Log Index]
 ----------------------------------------------------------
@@ -92,6 +136,9 @@ Partially matching routing key.
 
 Can be "#" - one or more words
 Can be "*" - one word, faster than "#".
+
+*Pluses*
+- I can use topics for complex pub/sub scenarions;
 
 https://github.com/zolotarevandrew/rabbitmq/tree/main/exchanges/Topic
 
@@ -155,6 +202,8 @@ High number of unacknowledged messages will lead to higher memory usage by the b
 Automatic acknowledgement can be problem if consumer process can't process a lot of messages.
 Consumers using higher (several thousands or more) prefetch levels can experience the same overload problem.
 
+*Pluses*
+- I can configure properly queue settings for my use cases;
 
 [Log Index]
 ----------------------------------------------------------
@@ -165,6 +214,9 @@ Direct - sends message to concrete queue by routing key.
 Topic - sends message to concrete queue by routing key template.
 Fanout - send message to all queues.
 Headers - send message by header parameters;
+
+*Pluses*
+- I can choose the suitable exchange type in rabbitmq for my future tasks;
 
 https://github.com/zolotarevandrew/rabbitmq/tree/main/exchanges/Exchanges
 [Log Index]
