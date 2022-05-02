@@ -4,6 +4,38 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 02 may 22
+**FTP**
+ftp has control TCP connection and data TCP connections.
+Uses authentication based on text.
+
+Passive mode:
+- Then client is behind firewall, client uses the control connection to send PASV command to server, and then receives server port and ip address to establish connection.
+
+Active mode:
+- clients starts listening for incoming data connections from the server.
+
+FTPS -e xtension to FTP, that adds support TLS.
+
+Implicit: 
+- Negotiation is not supported with implicit FTPS configurations. A client is immediately expected to challenge the FTPS server with a TLS ClientHello message. If such a message is not received by the FTPS server, the server should drop the connection.
+
+Explicit:
+- FTPS client must "explicitly request" security from an FTPS server and then step up to a mutually agreed encryption method. If a client does not request security, the FTPS server can either allow the client to continue in insecure mode or refuse the connection.
+
+**Pluses**
+- I can use FTPS server in my simple case scenarios.
+
+**Minuses**
+- FTP deprecated in latest browser versions.
+- FTP not secure;
+
+Tried ftps by local IIS - https://www.pcwdld.com/install-secure-ftp-server-using-iis
+and filezilla client.
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 27 apr 22
 **Rabbitmq Streams**
 Streams cover 4 use-cases that queue types can not provide:
