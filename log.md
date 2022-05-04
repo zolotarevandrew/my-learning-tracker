@@ -4,6 +4,86 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 04 may 22
+**SMTP/ESMTP**
+E-Mailing system has three main parts:
+- user agents (browsers, mobile devices and other)
+- email servers
+- SMTP protocol
+
+User agents - read, answer, resend, send emails.
+When user creates new email, agent will send it to email server (queue).
+
+SMTP uses TEXT commands, which is not encrypted.
+SMTP requires 7-bit ASCII symbols for every message header. 
+
+Because of SMTP message can contain video images and other data.
+Content-Type and Content-Tranfer-Encoding headers have to presented.
+
+First SMTP client creates TCP connection by port 25,587 of email server. 
+When client and server do handshake.
+
+Agent delivers message to a transfer agent - TA. 
+TA uses DNS to look up the MX (mail exchanger) record for the recipient's domain.
+Then it selects a recipient server and connects to it to complete the mail exchange.
+
+Once delivered to the local mail server, the mail is stored for batch retrieval by authenticated mail clients.
+
+SMTP AUTH extension
+Usually, servers reject RCPT TO commands that imply relaying unless authentication credentials have been accepted.
+
+Encryption:
+Port 587 is often used to encrypt SMTP messages using STARTTLS, which allows the email client to establish secure connections by requesting that the mail server upgrade the connection through TLS.
+
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 03 may 22
+**DNS**
+Dns - hierarhical  distributed database and also application protocol for interaction between hosts and servers
+
+Dns uses 53 port and work over UDP.
+Http ftp and other protocol uses dns to get ip addresses.
+
+Functions:
+- Host aliases by its canonical name (eu1.host.eu - host.eu)
+- Mail aliases 
+- Load balancing, if web has replicas with different ip addresses, dns can contain list of ip addresses
+
+Why not centralized?
+- Single Point of failure
+- Traffic volume
+- Remoteness
+- Service
+
+Local dns servers - for every internet provider
+If provider owns searching host it will give fast answer
+
+Root dns servers - base dns servers about 10 worldwide.
+
+If local dns server cant find host, it sends request to root server and becoming a client. If root server cant find host it sends address of Plenipotentiary server.
+
+Plenipotentiary dns server - server where host has been registered.
+
+Dns requests can be iterative of recursive.
+
+Caching - servers  caches dns Responses
+
+Dns servers store resource records
+- Name
+- Value
+- Type
+- TTL
+Type A - Name host name, Value ip address
+Type Ns - name domain, value host name or dns server
+Type CNAME - value canonical name, name alias
+Type MX - value canonical name, name alias
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 02 may 22
 **FTP**
 ftp has control TCP connection and data TCP connections.
