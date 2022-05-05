@@ -5,6 +5,52 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
 ## 04 may 22
+**POP3/IMAP**
+Popular email providers supports both protocols.
+
+POP - receive emails from a remote server and send to a local client. "store-and-forward" service.
+Once the email is on the client, POP3 then deletes it from the server.
+Users or an administrator can specify that mail be saved for some time, allowing users to download email as many times as they wish within the specified period.
+
+Port 110 - non encrypted connection.
+Port 995 - encrypted connection.
+
+The server starts POP3 service by listening on TCP port 110. 
+When a client wishes to use POP3 for email retrieval, it establishes a TCP connection with the server host. Once this connection is established, the POP3 server sends a greeting. At this point, the session enters the authorization state.
+
+When the client issues the quit command, the session enters the update state. The POP3 server releases any resources acquired during the transaction state, and says "goodbye," which is when the TCP connection is closed. After the POP3 session enters the update state, the POP3 server deletes the message.
+
+Pluses
+- POP3 useful then users need to accesc ther email offline, and for sending and storing bulk email messages;
+
+Minuses
+- POP3 not intent to support sync with server.
+
+IMAP - stores email messages on a mail server and enables the recipient to view and manipulate them as thoug they were stored locally on their device(s).
+
+Enables users to organize messages into folders, flag messages for urgency or follow-up, and save draft messages on the server. Users can also have multiple email client applications that sync with the email server to consistently show which messages have been read or are still unread.
+
+- User sign in to email client, client contact server using IMAP;
+- TCP connection is made;
+- The headers of all emails are displayed by the email client;
+- IMAP only downloads a message to the client when the user clicks on it; attachments are not automatically downloaded.
+- Email messages remain on the server unless the user explicitly deletes them;
+
+Port 143 - non encrypted connection.
+Port 993 - encrypted connection.
+
+With POP3, email is saved for users in a single mailbox on the server. It is moved from the server to their device when the mail client opens.
+
+Pluses
+- emails accessible from multiple devices
+- a single mailbox can be shared by multiple users
+- users can organize emails on the server by creating folders and subfolders
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 04 may 22
 **SMTP/ESMTP**
 E-Mailing system has three main parts:
 - user agents (browsers, mobile devices and other)
