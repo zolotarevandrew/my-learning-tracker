@@ -3,6 +3,87 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 09-10 may 22
+**TCP**
+TCP provides reliable, ordered, and error-checked delivery of a stream of octets (bytes) between applications running on hosts communicating via an IP network.
+
+Three-way handshake (active open), retransmission, and error detection adds to reliability but lengthens latency.
+
+TCP achieves reliability using a technique known as positive acknowledgement with re-transmission. 
+This requires the receiver to respond with an acknowledgement message as it receives the data. 
+The sender keeps a record of each packet it sends and maintains a timer from when the packet was sent. 
+The sender re-transmits a packet if the timer expires before receiving the acknowledgement. 
+The timer is needed in case a packet gets lost or corrupted.
+
+TCP protocol operations may be divided into three phases
+1) Connection establishment is a multi-step handshake process
+2) data transfer phase
+3) connection termination closes the connection and releases all allocated resources
+
+- Before a client attempts to connect with a server, the server must first bind to and listen at a port to open it up for connections: this is called a passive open.
+- Connection termination, client transmits a FIN and ACK. After the side that sent the first FIN has responded with the final ACK, it waits for a timeout before finally closing the connection, 
+during which time the local port is unavailable for new connections.
+
+Resources:
+
+Whenever a packet is received, the TCP must perform a lookup on table to find the destination process. 
+Each entry in the table is known as a Transmission Control Block or TCB. 
+It contains information about the endpoints (IP and port), status of the connection, running data about the packets that are being exchanged and buffers for sending and receiving data.
+
+Reliable transmission:
+TCP uses a sequence number to identify each byte of data.
+Reliability is achieved by the sender detecting lost data and retransmitting it.
+
+Dupack-based retransmission:
+Hence the receiver acknowledges packet again on the receipt of another data packet. This duplicate acknowledgement is used as a signal for packet loss. If the sender receives three duplicate acknowledgements, it retransmits the last unacknowledged packet.
+
+Timeout-based retransmission:
+When a sender transmits a segment, it initializes a timer with a conservative estimate of the arrival time of the acknowledgement. The segment is retransmitted if the timer expires, with a new timeout threshold of twice the previous value, resulting in exponential backoff behavior.
+
+To assure correctness a checksum field is included.
+
+Flow control:
+
+TCP uses a sliding window flow control protocol. In each TCP segment, the receiver specifies in the receive window field the amount of additionally received data (in bytes) that it is willing to buffer for the connection. The sending host can send only up to that amount of data before it must wait for an acknowledgement and receive window update from the receiving host.
+
+When a receiver advertises a window size of 0, the sender stops sending data and starts its persist timer.
+
+Congestion control:
+
+Acknowledgments for data sent, or lack of acknowledgments, are used by senders to infer network conditions between the TCP sender and receiver. Coupled with timers, TCP senders and receivers can alter the behavior of the flow of data.
+
+Maximum segment size:
+
+For best performance, the MSS should be set small enough to avoid IP fragmentation, which can lead to packet loss and excessive retransmissions.
+
+
+[Log Index]
+----------------------------------------------------------
+## 05 may 22
+**Kafka introduction**
+Event streaming is capturing data in realtime from databases and other resources in the form of stream of events, for later retrieval, routing to 
+different sources as needed.
+
+kafka using tcp Connections for server and client.
+
+Servers:
+Cluster one more servers. Some servers forms the storage layer - brokers. Other server runs kafka connect to  import export data to integrate with other systems.
+
+Events are durably stored in topics.
+Topic can have zero or more producers and consumers. Events are not deleted after consumption.
+
+Topics are partitioned, spread over number Of buckets located in different brokers.
+
+Use cases:
+- messaging, better than traditional rabbit, throughput, partitioning, replication, fault tolerance.
+- Website activity tracking - original use case
+- Metrics
+- Log aggregation
+- Stream processing
+- Commit log
+
+[Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 ## 04 may 22
 **POP3/IMAP**
