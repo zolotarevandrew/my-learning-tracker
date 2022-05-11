@@ -3,6 +3,45 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 11 may 22
+**HTTP 1**
+HTTP is an application layer protocol designed within the framework of the Internet protocol suite. Its definition presumes an underlying and reliable transport layer protocol.
+
+HTTP resources are identified and located on the network by Uniform Resource Locators (URLs), using the Uniform Resource Identifiers (URI's).
+
+In HTTP/1.0 a separate connection to the same server is made for every resource request.
+In HTTP/1.1 instead a TCP connection can be reused to make multiple resource requests.
+
+Persistent connections:
+
+HTTP/1.1 has keep-alive-mechanism, so that a connection could be reused for more than one request/response. Such persistent connections reduce request latency, because the client does not need to re-negotiate the TCP handshake. TCP can put multiple requests (and responses to requests) int one TCP segment;
+
+Since requests are pipelined, TCP segments are more efficient. The overall result is less Internet traffic and faster performance for the user
+
+HTTP1.1 introduces the OPTIONS method, way for a client to learn about the capabilities of a server without actually requesting a resource.
+
+Сaching:
+A cache entry is fresh until it reaches its expiration time, at which point it becomes stale.
+Uses the more general concept of an opaque cache validator string, known as an entity tag.
+
+The most basic is If-None-Match, which allows a client to present one or more entity tags from its cache entries for a resource. If none of these matches the resource’s current entity tag value, the server returns a normal response; otherwise, it may return a 304 (Not Modified) response with an ETag header that indicates which cache entry is currently valid.
+
+Adds the new Cache-Control header, uses relative expiration times, via the max-age directive.
+
+Range requests allow a client to request portions of a resource. A client makes a range
+request by including the Range header in its request, specifying one or more contiguous ranges of bytes.
+
+Includes a new status code, 100 (Continue), to inform the client that the request body should be transmitted. When this mechanism is used, the client first sends its request headers, then waits for a response.
+
+Resolves the problem of delimiting message bodies by introducing the Chunked transfer-coding. The sender breaks the message body into chunks of arbitrary length, and each chunk is sent with its length prepended; it marks the end of the message with a zero-length chunk. The sender uses the Transfer-Encoding: chunked header to signal the use of chunking.
+
+
+
+https://www.ra.ethz.ch/cdstore/www8/data/2136/pdf/pd1.pdf
+
+
+[Log Index]
+----------------------------------------------------------
 ## 09-10 may 22
 **TCP**
 TCP provides reliable, ordered, and error-checked delivery of a stream of octets (bytes) between applications running on hosts communicating via an IP network.
@@ -58,6 +97,7 @@ For best performance, the MSS should be set small enough to avoid IP fragmentati
 
 
 [Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 ## 05 may 22
 **Kafka introduction**
