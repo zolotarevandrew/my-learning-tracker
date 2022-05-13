@@ -3,6 +3,61 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 13 may 22
+**HTTP 3**
+HTTP/3 runs over QUIC – an encrypted general-purpose transport protocol that multiplexes multiple streams of data on a single connection.
+
+QUIC - The protocol utilizes space congestion control over User Datagram Protocol (UDP).
+
+QUIC will help fix some of HTTP/2's biggest shortcomings:
+- Developing a workaround for the sluggish performance when a smartphone switches from WiFi to cellular data;
+- Decreasing the effects of packet loss — when one packet of information does not make it to its destination, it will no longer block all streams of information (“head-of-line blocking”);
+
+Benefits:
+- Faster connection establishment: QUIC allows TLS version negotiation to happen at the same time as the cryptographic and transport handshakes;
+- Zero round-trip time, for servers they have already connected to, clients can skip the handshake requirement;
+- More comprehensive encryption: QUIC’s new approach to handshakes will provide encryption by default — a huge upgrade from HTTP/2 — and will help mitigate the risk of attacks;
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
+## 12 may 22
+**HTTP 2**
+- Multiple requests (html,css,js) in one tcp connection.
+- compresses a lot of unnecessary header frames by HPACK.
+
+Binary protocol:
+Binary commands will be more difficult to read than subsequent text commands, but the network will easily generate them and parse frames.
+- less network load;
+- reduced network latency and increase throughput
+
+Changes how the data is exchanged between the client and server.
+- Stream: A bidirectional flow of bytes within an established connection, which may carry one or more messages.
+- Message: A complete sequence of frames that map to a logical request or response message.
+- Frame: The smallest unit of communication, containing a frame header.
+
+Each stream has a unique identifier and optional priority information that is used to carry bidirectional messages.
+
+Each message is a logical HTTP message, such as a request, or response, which consists of one or more frames.
+
+Allows each stream to have an associated weight and dependency:
+- Each stream may be assigned an integer weight between 1 and 256.
+- Each stream may be given an explicit dependency on another stream.
+
+The combination of stream dependencies and weights allows the client to construct and communicate a "prioritization tree" that expresses how it would prefer to receive responses.
+
+Provides a set of simple building blocks that allow the client and server to implement their own stream- and connection-level flow control.
+- Flow control is directional. Each receiver may choose to set any window size that it desires for each stream and the entire connection;
+- Flow control is credit-based. Each receiver advertises its initial connection and stream flow control window;
+- Flow control cannot be disabled;
+
+Server push - ability of the server to send multiple responses for a single client request.
+
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 11 may 22
 **HTTP 1**
 HTTP is an application layer protocol designed within the framework of the Internet protocol suite. Its definition presumes an underlying and reliable transport layer protocol.
@@ -41,6 +96,7 @@ https://www.ra.ethz.ch/cdstore/www8/data/2136/pdf/pd1.pdf
 
 
 [Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 ## 09-10 may 22
 **TCP**
