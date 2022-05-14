@@ -54,6 +54,11 @@ Provides a set of simple building blocks that allow the client and server to imp
 
 Server push - ability of the server to send multiple responses for a single client request.
 
+*Pluses*
+- I can switch to HTTP2 to reduce number of TCP connection, and reduce latency.
+
+*Minuses*
+- There are the head of blocking problem with HTTP2;
 
 [Log Index]
 ----------------------------------------------------------
@@ -90,7 +95,9 @@ Includes a new status code, 100 (Continue), to inform the client that the reques
 
 Resolves the problem of delimiting message bodies by introducing the Chunked transfer-coding. The sender breaks the message body into chunks of arbitrary length, and each chunk is sent with its length prepended; it marks the end of the message with a zero-length chunk. The sender uses the Transfer-Encoding: chunked header to signal the use of chunking.
 
-
+*Pluses*
+- I can use http1.1 caching correctly in my next projects.
+- I can use http1.1 keep alive mechanism correctly to decrease latency in my next projects.
 
 https://www.ra.ethz.ch/cdstore/www8/data/2136/pdf/pd1.pdf
 
@@ -177,6 +184,9 @@ Use cases:
 - Log aggregation
 - Stream processing
 - Commit log
+
+*Pluses*
+- I can use kafka for projects which needed realtime processing, because it is faster than RabbitMq.
 
 [Log Index]
 ----------------------------------------------------------
@@ -303,6 +313,9 @@ Type A - Name host name, Value ip address
 Type Ns - name domain, value host name or dns server
 Type CNAME - value canonical name, name alias
 Type MX - value canonical name, name alias
+
+*Pluses*
+- I can use correct DNS records and its properties in my DNS providers later.
 
 [Log Index]
 ----------------------------------------------------------
