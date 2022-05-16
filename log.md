@@ -3,6 +3,36 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 16 may 22
+**UDP**
+UDP  is  defined  to  make  available  a datagram   mode  of  packet-switched   computer   communication  in  the environment  of  an  interconnected  set  of  computer  networks.
+Provides  a procedure  for application  programs  to send messages  to other programs  with a minimum  of protocol mechanism.
+Protocol  is transaction oriented, and delivery and duplicate protection are not guaranteed.
+
+Header Format:
+- source port - optional field. If not used, a value of zero is inserted;
+- destination port - context of particular dest address;
+- length - length in octets including header and data;
+- checksum - 16 bit sum of a pseudo header of information from the IP header, the UDP header, and the
+data;
+
+The pseudo  header  conceptually prefixed to the UDP header contains the source  address,  the destination  address,  the protocol,  and the  UDP length.
+- source address;
+- dest address;
+- protocol;
+- udp length;
+
+
+In .NET 5, the runtime added the concept of a Pinned Object Heap (POH) which is an area designed to hold buffers intended for native IO operations; it was initially needed for improving the performance of sockets in ASP.NET Core HTTP request handling.
+
+
+https://github.com/zolotarevandrew/protocols/tree/main/Udp
+
+https://datatracker.ietf.org/doc/html/rfc768
+https://enclave.io/high-performance-udp-sockets-net6/
+
+[Log Index]
+----------------------------------------------------------
 ## 13 may 22
 **HTTP 3**
 HTTP/3 runs over QUIC – an encrypted general-purpose transport protocol that multiplexes multiple streams of data on a single connection.
