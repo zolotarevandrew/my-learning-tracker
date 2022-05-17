@@ -3,6 +3,61 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 17-18 may 22
+**IP**
+The internet protocol provides for transmitting blocks of data called datagrams from sources to
+destinations, where sources and destinations are hosts identified by fixed length addresses.
+
+Implements two basic functions: addressing and fragmentation.
+
+Uses four key mechanisms in providing its service:  
+Type of Service - quality of the service desired. To select the actual transmission parameters for a particular network.
+Time to Live - set by the sender of the datagram and reduced at the points along the route where it is processed.
+Options - provisions for timestamps, security, and special routing.
+Header Checksum - verification that the information used in processing internet datagram has been transmitted correctly.
+
+Errors detected may be reported via the Internet Control Message Protocol (ICMP).
+
+Transmitting:
+- Prepare data;
+- Prepare datagram header and attach data to it;
+- Local network interface creates a local network header, and send datagram to local network;
+- Local network strips this header and adding from address;
+- Sending to destination host;
+
+
+The internet module maps internet addresses to local net addresses.
+An address begins with a network number, followed by local address (called the "rest" field).
+
+There are three formats or classes of internet
+- class a, the high order bit is zero, the next 7 bits are the network, and the last 24 bits are the local address; 
+- class b, the high order two bits are one-zero, the next 14 bits are the network and the last 16 bits are the local address;
+- class c, the high order three bits are one-one-zero, the next 21 bits are the network and the last 8 bits are the local address.
+
+Some hosts will also have several physical interfaces (multi-homing).
+
+Fragmentation:
+The receiver of the fragments uses the identification field to ensure that fragments of different datagrams
+are not mixed.  The fragment offset field tells the receiver the position of a fragment in the original datagram.  The fragment offset and length determine the portion of the original datagram covered by this fragment.
+
+To fragment a long internet datagram it creates two new internet datagrams and copies the contents of the internet header fields from the long datagram into both new internet headers.
+
+Header format:
+- Version 4 bits, format version 4;
+- IHL 4 bits - header length;
+- Type of service 8 bits - service quality desired;
+- Total length 16 bits - in octets, recommended 576 octets, to remove fragmentation;
+- Identification 16 bits - assembling fragments;
+- Flags 3 bit - don't fragment, fragment;
+- TTL 8 bits - every receive decreases by one.
+- Header checksum - checksum;
+- Source address 32 bits;
+- Dest address 32 bits;
+
+https://datatracker.ietf.org/doc/html/rfc791
+
+[Log Index]
+----------------------------------------------------------
 ## 16 may 22
 **UDP**
 UDP  is  defined  to  make  available  a datagram   mode  of  packet-switched   computer   communication  in  the environment  of  an  interconnected  set  of  computer  networks.
