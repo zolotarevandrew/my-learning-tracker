@@ -3,7 +3,43 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
-## 17-18 may 22
+## 18 may 22
+**QUIC**
+A UDP-Based Multiplexed and Secure Transport.
+
+Integrates the TLS handshake [TLS13], although using a customized framing for protecting packets, structured to permit the exchange of application data as soon as possible.
+
+Authenticates the entirety of each packet and encrypts as much of each packet as is practical.
+QUIC packets are carried in UDP datagrams.
+
+Application protocols exchange information over a QUIC connection via streams, which are ordered sequences of bytes.
+
+Two types of streams can be created: 
+- bidirectional streams, which allow both endpoints to send data;
+- unidirectional streams, which allow a single endpoint to send data.  
+
+Flow control:
+To enable a receiver to limit memory commitments for a connection, streams are flow controlled both individually and across a connection as a whole.
+
+Data flow control:
+- Stream flow control, limiting data in each stream;
+- Connection flow control, limiting data in all streams;
+
+An endpoint limits the cumulative number of incoming streams a peer can open.
+
+A QUIC connection is shared state between a client and a server.
+Each connection starts with a handshake phase, during which the two endpoints establish a shared secret using the cryptographic handshake protocol.
+
+QUIC relies on a combined cryptographic and transport handshake to minimize connection establishment latency.
+Uses the CRYPTO frame to transmit the cryptographic handshake.
+
+
+
+https://datatracker.ietf.org/doc/rfc9000/
+
+[Log Index]
+----------------------------------------------------------
+## 17 may 22
 **IP**
 The internet protocol provides for transmitting blocks of data called datagrams from sources to
 destinations, where sources and destinations are hosts identified by fixed length addresses.
