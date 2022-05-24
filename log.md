@@ -3,6 +3,72 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 24 may 22
+**Kafka topics**
+Topics are partitioned, meaning a topic is spread over a number of "buckets" located on different Kafka brokers. This distributed placement of your data is very important for scalability because it allows client applications to both read and write the data from/to many brokers at the same time. When a new event is published to a topic, it is actually appended to one of the topic's partitions. Events with the same event key (e.g., a customer or vehicle ID) are written to the same partition, and Kafka guarantees that any consumer of a given topic-partition will always read that partition's events in exactly the same order as they were written.
+
+Properties:
+cleanup.policy - delete or compact, based on log retention;
+compression.type - standard compression codecs on uncompressed;
+delete.retention.ms - the amount of time to retain delete tombstone markers for log compacted topics. (default 1 day);
+file.delete.delay.ms -  time to wait before deleting a file from the filesystem; (default 1min);
+flush.messages - calling fsync to prevent os caching, recommended not to use;
+index.interval.bytes - how frequently Kafka adds an index entry to its offset index, recommended not to use;
+max.message.bytes - the largest record batch size allowed by Kafka;
+message.timestamp.difference.max.ms - maximum difference allowed between the timestamp when a broker receives a message and the timestamp specified in the message. CreateTime, a message will be rejected if the difference in timestamp exceeds this threshold. ignored if message.timestamp.type=LogAppendTime;
+message.timestamp.type - CreateTime or LogAppendTime;
+retention.bytes - the maximum size a partition can grow to before discarding old log segments to free up space;
+retention.ms - maximum time retaining a log before discarding old log segments to free up space;
+segment.bytes - the segment file size for the log (default 1gb);
+segment.index.bytes - size of the index that maps offsets to file positions (default 10mb);
+message.downconversion.enable - down-conversion of message formats is enabled to satisfy consume request (broker will not perform down-conversion for consumers expecting an older message format. The broker responds with UNSUPPORTED_VERSION error for consume requests from such older clients);
+
+
+**Pluses**
+- I can use correct properties to create topic by my apps requirements;
+- I can use topics to scale my apps correctly using partitions;
+- I can use topics to increase my apps reliability;
+
+**Minuses**
+- I think i will not use, most of all topic properties in my apps;
+
+https://github.com/zolotarevandrew/kafka/tree/main/Topics
+
+[Log Index]
+----------------------------------------------------------
+## 23 may 22
+**GRPC Introduction**
+gRPC is a language agnostic, high-performance Remote Procedure Call (RPC) framework.
+main benefits:
+- Contract-first API development, using Protocol Buffers by default, allowing for language agnostic implementations.
+- Supports client, server, and bi-directional streaming calls.
+- Reduced network usage with Protobuf binary serialization.
+
+By default, uses Protocol Buffers, open source mechanism for serializing structured data.
+
+Service definitions:
+- Unary RPCs where the client sends a single request to the server and gets a single response back;
+- Server streaming RPCs where the client sends a request to the server and gets a stream to read a sequence of messages back (gRPC guarantees message ordering within an individual RPC call);
+- Client streaming RPCs where the client writes a sequence of messages and sends them to the server, again using a provided stream;
+- Bidirectional streaming RPCs where both sides send a sequence of messages using a read-write stream;
+
+Unary RPC:
+- client calling stub;
+- server is notified that the RPC has been invoked with the client’s metadata;
+- server can send back its initial metadata, or wait for the client’s request message;
+- Once the server has the client’s request message, it does whatever work is necessary to create and populate a response;
+
+Timeouts - DEADLINE_EXCEEDED property;
+
+In gRPC, both the client and server make independent and local determinations of the success of the call, and their conclusions may not match.
+
+**Minuses**
+- I should always copy or create library to share protobuf contracts for correct sending and receiving;
+
+https://github.com/zolotarevandrew/protocols/tree/main/gRPC/Simple
+
+[Log Index]
+----------------------------------------------------------
 ## 18 may 22
 **QUIC**
 A UDP-Based Multiplexed and Secure Transport.
