@@ -4,6 +4,20 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ## 24 may 22
+**GRPC streams**
+.Net 6 has load balancing mechanism for GRPC and also HTTP3 support was added, but http3 is draft in RFC.
+
+**Pluses**
+- I can use streams with async enumerable in .net projects for batch operations;
+
+**Minuses**
+- Streams have problems with errors, if there are 2 messages sent and 3 failed, server receive error and stream process will fail;
+
+https://github.com/zolotarevandrew/protocols/tree/main/gRPC/Streams
+
+[Log Index]
+----------------------------------------------------------
+## 24 may 22
 **Kafka topics**
 Topics are partitioned, meaning a topic is spread over a number of "buckets" located on different Kafka brokers. This distributed placement of your data is very important for scalability because it allows client applications to both read and write the data from/to many brokers at the same time. When a new event is published to a topic, it is actually appended to one of the topic's partitions. Events with the same event key (e.g., a customer or vehicle ID) are written to the same partition, and Kafka guarantees that any consumer of a given topic-partition will always read that partition's events in exactly the same order as they were written.
 
