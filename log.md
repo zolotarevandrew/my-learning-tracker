@@ -3,6 +3,32 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+## 25 may 22
+**GraphQL**
+A GraphQL service is created by defining types and fields on those types, then providing functions for each field on each type.
+Every field and nested object can get its own set of arguments, making GraphQL a complete replacement for making multiple API fetches.
+
+Each GraphQL query passes through three phases: parse, validate and execute.
+
+Schema - endpoint provides a schema used to inform API consumers about the functionality available for clients to consume.
+
+Has three primary operations: 
+- Query for reading data;
+- Mutation for writing data, used to add, modify, or delete data;
+- Subscription for receiving real-time updates, allow a server to send data to its clients, notifying them when events occur.
+
+**Pluses**
+- I can use graphql in my apps, which has complex queries, such as mobile apps or other.
+- I can use graphql to reduce bandwidth for my future apps;
+
+**Minuses**
+- It is difficult to implement caching or rate-limiting;
+- A little bit complex;
+
+https://github.com/zolotarevandrew/protocols/tree/main/graphQL/SimpleApi
+
+[Log Index]
+----------------------------------------------------------
 ## 24 may 22
 **GRPC streams**
 .Net 6 has load balancing mechanism for GRPC and also HTTP3 support was added, but http3 is draft in RFC.
