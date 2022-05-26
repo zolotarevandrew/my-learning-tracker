@@ -3,6 +3,82 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+----------------------------------------------------------
+## 26 may 22
+**GraphQL Queries**
+GraphQL is about asking for specific fields on objects.
+
+**Pluses**
+- I can correctly use get/join/mutate options in apps using graphql;
+
+**Minuses**
+- If using EntityFramework, some queries can affect perfomance, so every call should be checked and SQL logged;
+
+
+https://github.com/zolotarevandrew/protocols/tree/main/graphQL/SimpleApi
+
+[Log Index]
+----------------------------------------------------------
+## 26 may 22
+**Kafka consumers**
+
+A consumer group is a set of consumers which cooperate to consume data from some topics. 
+The partitions of all the topics are divided among the consumers in the group. 
+As new group members arrive and old members leave, the partitions are re-assigned so that each member receives a proportional share of the partitions - rebalancing the group.
+
+The coordinator of each group is chosen from the leaders of the internal offsets topic __consumer_offsets (which is used to store committed offsets).
+
+When the consumer starts up, it finds the coordinator for its group and sends a request to join the group.
+
+Each consumer must send heartbeats to the coordinator. If no hearbeat is received before expiration of the configured session timeout, then the coordinator will kick the member out of the group.
+
+Offsets:
+
+When the group is first created, the position is set according to a configurable offset reset policy (auto.offset.reset).
+Consumption starts either at the earliest offset or the latest offset.
+
+The offset commit policy providing the message delivery guarantees. By default, the consumer is configured to use an automatic commit policy, which triggers a commit on a periodic interval.
+
+Processing guarantees:
+- At-least-once, records are never lost but may be redelivered. (At-least-once semantics is enabled by default (processing.guarantee="at_least_once);
+- Exactly-once, records are processed once. Even if a producer sends a duplicate record, it is written to the broker exactly once (processing.guarantee="exactly_once_v2").
+write is not considered successful until it is acknowledged, and a commit is made to “finalize” the write;
+
+By default, the consumer is configured to auto-commit offsets.
+
+When auto-commit disabled and commit uses sync versions, this may reduce overall throughput since the consumer might otherwise be able to process records while that commit is pending.
+Solution - the consumer has a configuration setting fetch.min.bytes which controls how much data is returned in each fetch.
+
+The problem with asynchronous commits is dealing with commit ordering. By the time the consumer finds out that a commit has failed, you may already have processed the next batch of messages and even sent the next commit.
+
+
+if the last commit fails before a rebalance occurs or before the consumer is shut down, then offsets will be reset to the last commit and you will likely see duplicates.
+
+Rebalance:
+Each rebalance has two phases: partition revocation and partition assignment.
+
+
+Configuration:
+- session.timeout.ms, default 10s;
+- heartbeat.interval.ms, this controls how often the consumer will send heartbeats to the coordinator;
+- max.poll.interval.ms, the maximum time allowed time between calls to the consumers poll method, default 300s;
+- enable.auto.commit, default true;
+- auto.commit.interval.ms, default 5s;
+- auto.offset.reset, default latest;
+
+
+**Pluses**
+- i can use kafka consumers to reread my prev messages in my apps (create new app version, or something another);
+- I can use kafka consumers as simple message consumers with autocommit enabled in my apps, with at-least-once or exactly-once delivery guarantees;
+- I can use kafka consumers to provide at-most-once delivery guarantee with autocommit disabled, and committing before consuming in my apps;
+
+**Minuses**
+- I should very careful with, async and sync commits, kafka has a lot login upon it;
+
+https://github.com/zolotarevandrew/kafka/tree/main/Consumers
+
+[Log Index]
+----------------------------------------------------------
 ## 25 may 22
 **GraphQL**
 A GraphQL service is created by defining types and fields on those types, then providing functions for each field on each type.
