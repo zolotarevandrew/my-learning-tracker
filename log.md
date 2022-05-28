@@ -4,6 +4,31 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ----------------------------------------------------------
+## 27 may 22
+**REST best practices**
+REST - Representational State Transfer. software architectural style.
+
+Any API (Application Programming Interface) that follows the REST design principle is said to be RESTful.
+
+Best practices:
+- Use JSON as the Format for Sending and Receiving Data;
+- Use Nouns Instead of Verbs in Endpoints, Instead, it should be something like this: /posts;
+- Name Collections with Plural Nouns. You can think of the data of your API as a collection of different resources from your consumers: /posts/123;
+- Use Status Codes in Error Handling;
+- Use Nesting on Endpoints to Show Relationships, posts/postId/comments, avoid nesting that is more than 3 levels deep as this can make the API less elegant and readable;
+- Use SSL for Security;
+- Be Clear with Versioning, https://mysite.com/v1;
+- Provide Accurate API Documentation, use swagger;
+
+**Pluses:**
+- I can now use correct naming and http error codes in my projects to improve restful api quality;
+
+**Minuses**
+- There a lot misconceptions about how to implement REST;
+
+[Log Index]
+----------------------------------------------------------
+----------------------------------------------------------
 ## 26 may 22
 **GraphQL Queries**
 GraphQL is about asking for specific fields on objects.
