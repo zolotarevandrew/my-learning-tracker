@@ -3,6 +3,29 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+---------------------------------------------------------
+## 20 june 22
+**Redis Introduction**
+Redis - in-memory data structure store used as a database, cache, message broker, and streaming engine.
+has built-in replication, transactions, and different levels of on-disk persistence.
+
+works with an in-memory dataset.
+
+Can persist your data either by periodically dumping the dataset to disk or by appending each command to a disk-based log.
+
+Redis accepts clients connections on the configured TCP port.
+- Socket is put in the non-blocking state;
+- TCP_NODELAY is set to ensure that there are no delays;
+
+When Redis can't accept a new client connection because the maximum number clients (max_clients = 10000 by default) it will send an error.
+
+Processing clients - Once new data is read from a client, all the queries contained in the current buffers are processed sequentially.
+
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisCaching
+
+[Log Index]
+----------------------------------------------------------
 ----------------------------------------------------------
 ## 27 may 22
 **REST best practices**
