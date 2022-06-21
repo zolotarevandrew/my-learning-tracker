@@ -4,6 +4,42 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 21 june 22
+**Redis Caching**
+two key advantages of client-side caching:
+- Data is available with a very small latency;
+- database system receives less queries;
+
+Redis client-side caching support is called Tracking, two modes:
+- default mode, the server remembers what keys a given client accessed, and sends invalidation messages when the same keys are modified;
+- broadcasting mode, clients subscribe to key prefixes such as object: or user:, and receive a notification message every time;
+
+The server remembers the list of clients that may have cached a given key in a single global Invalidation Table.
+Inside the invalidation table just store client IDs (each Redis client has a unique numerical ID).
+
+Using the new version of the Redis protocol, RESP3, supported by Redis 6, it is possible to run the data queries and receive the invalidation messages in the same connection.
+
+Broadcasting mode:
+- Clients enable client-side caching using the BCAST option;
+- Instead of invalidation table, it uses a different Prefixes Table, where each prefix is associated to a list of clients;
+- No two prefixes can track overlapping parts of the keyspace (foo, foob);
+- Every time a key matching any of the prefixes is modified, all the clients subscribed to that prefix, will receive the invalidation message;
+
+NOLOOP - using this option, clients are able to tell the server they don't want to receive invalidation messages for keys that they modified.
+
+Race conditions:
+When implementing client-side caching redirecting the invalidation messages to a different connection, you should be aware that there is a possible race condition.
+
+**Pluses**
+- StackExchange.Redis has async methods support, i will use it my new projects.
+
+**Minuses**
+- StackExchange.Redis doesnt support these modifications..
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 20 june 22
 **Redis Introduction**
 Redis - in-memory data structure store used as a database, cache, message broker, and streaming engine.
