@@ -4,6 +4,55 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 27 june 22
+**Redis data types**
+Strings - binary safe, can contain any kind of data (max value 512mg).
+
+Sets - unordered collection of Strings (desirable property of not allowing repeated members).
+
+Hashes - are maps between string fields and string values.
+
+Sorted Sets - difference with Set is that every member of a Sorted Set is associated with a score, that is used keep the Sorted Set in order (elements in order, fast existence test, fast access to elements in the middle)
+- Retreiving data by ranges.
+
+Bitmaps - handle String values like an array of bits; (realtime analytics,Storing space efficient);
+
+HyperLogLogs - probabilistic data structure used in order to count unique things.
+
+Streams - append only collections.
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisDataTypes
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 22 june 22
+**Caching strategies**
+Two common approaches
+
+Cache-aside or lazy loading (a reactive approach), cache is updated after the data is requested.
+The cache contains only data that the application actually requests, which helps keep the cache size cost-effective;
+Problem - Overhead is added to the initial response time because additional roundtrips to the cache and database are needed.
+
+Write-through (a proactive approach), updated immediately when the primary database is updated. 
+
+With both approaches, the application is essentially managing what data is being cached and for how long.
+Data will be found in the cache, on next access. Performance of database is optimal because fewer reads are performed.
+Problem - infrequently-requested data is also written to the cache;
+
+Concurrency:
+Optimistic - application checks if data in the cache has changed since it was retrieved (infrequent updates)
+Pessmistic - when retrieveing data, the application locks it in the cache to prevent another instance from changing it;
+
+Key Expiration:
+Too short Key expiration will make objects to expires sooner. 
+Too long will make you used stale old data producing issues.
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisCachingAdvanced
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 21 june 22
 **Redis Caching**
 two key advantages of client-side caching:
@@ -36,6 +85,7 @@ When implementing client-side caching redirecting the invalidation messages to a
 **Minuses**
 - StackExchange.Redis doesnt support these modifications..
 
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisCachingAdvanced
 
 [Log Index]
 ----------------------------------------------------------
