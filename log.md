@@ -4,6 +4,39 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 28 june 22
+**Redis lists**
+From a very general point of view a List is just a sequence of ordered elements.
+Lists are implemented via Linked Lists.
+Lists can be taken at constant length in constant time.
+When fast access to the middle of a large collection of elements is important, sorted sets can be used.
+
+Common use cases:
+- Remember the latest updates posted by users into a social network;
+- Communication between processes, using a consumer-producer pattern where the producer pushes items into a list, and a consumer (usually a worker) consumes those items and executed actions;
+
+Capped lists - In many use cases we just want to use lists to store the latest items, whatever they are: social network updates, logs, or anything else.
+Redis allows us to use lists as a capped collection, only remembering the latest N items and discarding all the oldest items using the LTRIM command. (Technically O(n)).
+
+Lists have a special feature that make them suitable to implement queues.
+Redis implements commands called BRPOP and BLPOP which are versions of RPOP and LPOP able to block if the list is empty.
+
+StackExchange Redis uses multiplexing, which means it only maintains a single connection with the redis server. 
+When there are concurrent requests, it will automatically use the pipeline to send each request, and each request needs to wait until the previous request is completed.
+For this reason, StackExchange Redis does not provide the corresponding api for BRPOP/BLPOP, because these two operations are likely to block the entire Mulitplexer.
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisList
+
+**Pluses**
+- I can implement simple pub/sub queues by using redis lists;
+
+**Minuses**
+- StackExchange.Redis does not support BRPOP operations.
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 27 june 22
 **Redis data types**
 Strings - binary safe, can contain any kind of data (max value 512mg).
