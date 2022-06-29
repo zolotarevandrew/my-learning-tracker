@@ -4,6 +4,21 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 29 june 22
+**Redis sets**
+Redis' responsibility to delete keys when data types are left empty, or to create an empty data type if the key does not exist and we are trying to add elements to it.
+
+Sets are good for expressing relations between objects. For instance we can easily use sets in order to implement tags.
+A simple way to model this problem is to have a set for every object we want to tag. 
+The set contains the IDs of the tags associated with the object.
+
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisSet
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 28 june 22
 **Redis lists**
 From a very general point of view a List is just a sequence of ordered elements.
