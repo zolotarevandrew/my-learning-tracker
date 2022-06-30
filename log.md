@@ -5,6 +5,31 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
 ## 29 june 22
+**Redis sorted sets**
+Elements inside sorted sets are not ordered, every element in a sorted set is associated with a floating point value, called the score.
+
+Elements are ordered according to the following rule:
+- different scores, A > B if A.score is > B.score;
+- same score,  A > B if the A string is lexicographically greater than the B string.
+
+Sorted sets are implemented via a dual-ported data structure containing both a skip list and a hash table, so every time we add an element Redis performs an O(log(N)) operation.
+
+Redis 2.8, a new feature was introduced that allows getting ranges lexicographically.
+
+Sorted sets scores can be updated at any time. 
+Just calling ZADD against an element already included in the sorted set will update its score (and position) with O(log(N)) time complexity. 
+As such, sorted sets are suitable when there are tons of updates.
+
+
+Because of this characteristic a common use case is leader boards.
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisSortedSet
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 29 june 22
 **Redis sets**
 Redis' responsibility to delete keys when data types are left empty, or to create an empty data type if the key does not exist and we are trying to add elements to it.
 
