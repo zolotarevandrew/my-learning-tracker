@@ -5,6 +5,38 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
 ## 29 june 22
+**Redis streams**
+Redis Streams are primarily an append-only data structure.
+Being an abstract data type represented in memory, Redis Streams implement powerful operations to overcome the limitations of a log file.
+
+It implements additional, non-mandatory features: a set of blocking operations allowing consumers to wait for new data added to a stream by producers, 
+and in addition to that a concept called Consumer Groups.
+
+Every new added entry ID will be monotonically increasing, so in more simple terms, every new entry added will have a higher ID compared to all the past entries.
+Because the ID is related to the time the entry is generated, this gives the ability to query for time ranges basically for free.
+
+Reading modes:
+- get messages by ranges of time;
+- stream of messages that can be partitioned to multiple consumers that are processing such messages;
+
+XREAD - subscribe to new items arriving to the stream.
+- A stream can have multiple clients (consumers) waiting for data;
+- Can access multiple streams at once;
+
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisStreams
+
+**Pluses**
+- I can now choose correct redis data structure for my purposes;
+- I can use redis sets to implement relations model;
+
+**Minuses**
+- StackExchange.Redis doesn't support xread blocking command because of multiplexing...;
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 29 june 22
 **Redis sorted sets**
 Elements inside sorted sets are not ordered, every element in a sorted set is associated with a floating point value, called the score.
 
@@ -25,6 +57,10 @@ Because of this characteristic a common use case is leader boards.
 
 https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisSortedSet
 
+**Pluses**
+- I can use redis sets and sorted set to implement relations model;
+- I can use redis sorted set to some interesting queries for sorted data structures;
+
 
 [Log Index]
 ----------------------------------------------------------
@@ -36,7 +72,6 @@ Redis' responsibility to delete keys when data types are left empty, or to creat
 Sets are good for expressing relations between objects. For instance we can easily use sets in order to implement tags.
 A simple way to model this problem is to have a set for every object we want to tag. 
 The set contains the IDs of the tags associated with the object.
-
 
 https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisSet
 
@@ -121,6 +156,12 @@ Key Expiration:
 Too short Key expiration will make objects to expires sooner. 
 Too long will make you used stale old data producing issues.
 
+**Pluses**
+- I can use redis as a distributed cache in my future projects;
+
+**Minuses**
+- I can't use client side caching good new mechanics for improving my cache strategies in .NET projects now;
+
 https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisCachingAdvanced
 
 [Log Index]
@@ -156,7 +197,7 @@ When implementing client-side caching redirecting the invalidation messages to a
 - StackExchange.Redis has async methods support, i will use it my new projects.
 
 **Minuses**
-- StackExchange.Redis doesnt support these modifications..
+- StackExchange.Redis doesnt support client-side caching modifications..
 
 https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisCachingAdvanced
 
