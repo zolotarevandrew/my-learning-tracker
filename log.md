@@ -4,7 +4,146 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
-## 29 june 22
+## 11 jul 22
+**Redis pub/sub**
+SUBSCRIBE, UNSUBSCRIBE and PUBLISH implement the Publish/Subscribe messaging paradigm. 
+Rather, published messages are characterized into channels, without knowledge of what (if any) subscribers there may be. 
+
+Subscribers express interest in one or more channels, and only receive messages that are of interest, without knowledge of what (if any) publishers there are.
+
+A message is an array-reply with three elements:
+- subscribe: means that we successfully subscribed to the channel given as the second element in the reply;
+- unsubscribe: means that we successfully unsubscribed from the channel given as second element in the reply;
+- message: it is a message received as result of a PUBLISH command issued by another client;
+- The second element is the name of the originating channel;
+- The third argument is the actual message payload;
+
+Pub/Sub has no relation to the key space.
+The Redis Pub/Sub implementation supports pattern matching.
+
+A client may receive a single message multiple times if it's subscribed to multiple patterns matching a published message, 
+or if it is subscribed to both patterns and channels matching the message.
+
+Only connected subscribers receive messages. Every connected subscriber receives each message.
+Once the message is delivered to all current subscribers, it is deleted from the channel.
+
+If a subscriber unsubscribes (disconnects) and later subscribes to a channel again:
+- It will not receive any of the intervening messages that it missed while disconnected, and
+- It doesn’t know if it’s missed any messages.
+- If there are no current subscribers to the channel,  the message will simply be discarded and not delivered to any subscribers.
+
+The delivery semantics are, "at-most-once" per subscriber.
+Because the message must be delivered to all current subscribers before being deleted:
+- This will take longer with more subscribers.
+- This is unlike a radio broadcast, which delivers content currently at the speed of light to every receiver in range.
+
+**Pluses**
+- Redis pub/sub can be used in some simple scenarios, where messages can be lost (simple websockets, games, or other little apps);
+
+**Minuses**
+- It is better to use RabbitMQ, because a lot of broker features;
+- At most once delivery guarantees;
+- Internally uses push notifications, can be bad for perfomance;
+
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisPubSub
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 06 jul 22
+**Redis transactions**
+Redis Transactions allow the execution of a group of commands in a single step.
+Guarantees:
+- All the commands in a transaction are serialized and executed sequentially;
+- The EXEC command triggers the execution of all the commands in the transaction, so if a client loses the connection to the server in the context of a transaction before calling the EXEC command none of the operations are performed;
+
+Transaction is entered using the MULTI command. Instead of executing next commands, Redis will queue them.
+All the commands are executed once EXEC is called.
+
+Calling DISCARD instead will flush the transaction queue and will exit the transaction.
+
+Errors:
+- Starting with Redis 2.6.5, the server will detect an error during the accumulation of commands. It will then refuse to execute the transaction returning an error during EXEC, discarding the transaction;
+
+Rollbacks:
+- Redis does not support rollbacks of transactions;
+
+Optimistic locking:
+- WATCH is used to provide a check-and-set (CAS) behavior to Redis transactions;
+- Watched keys are monitored in order to detect changes against them;
+- If at least one watched key is modified before the EXEC command, the whole transaction aborts;
+
+**Pluses**
+- I can use watch command to implement distributed optimistic locking;
+- I can use redis transactions for some atomic batch operaitons;
+
+**Minuses**
+- StackExchange.Redis because of multiplexing uses WATCH instead of raw MULTI/EXEC commands;
+- Redis does not support rollbacks of transactions;
+
+https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisTransactions
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 05 jul 22
+**Redis persistence**
+Persistence options:
+- RDB, point-in-time snapshots at specified intervals;
+- AOF - append only file, logs every write operation received by the server, that will be played again at server startup, reconstructing the original dataset;
+- No persistence;
+- RDB + AOF combination;
+
+RDB advantages:
+- compact single-file point-in-time representation, perfect for backups;
+- disaster recovery, single compact file that can be transferred to far data centers;
+- maximizes Redis performances since the only work the Redis parent process needs to do in order to persist is forking a child that will do all the rest;
+- faster restarts with big datasets;
+
+RDB disadvantages:
+- NOT good if you need to minimize the chance of data loss in case Redis stops working;
+- fork() can be time consuming if the dataset is big;
+
+AOF advantages:
+- is much more durable: different fsync policies: no fsync at all, fsync every second, fsync at every query;
+fsync is performed using a background thread
+-  AOF log is an append-only log, so there are no seeks, nor corruption problems if there is a power outage;
+- Redis is able to automatically rewrite the AOF in background when it gets too big;
+- contains a log of all the operations one after the other in an easy to understand and parse format;
+
+AOF disadvantages:
+- AOF files are usually bigger than the equivalent RDB files;
+- AOF can be slower than RDB depending on the exact fsync policy;
+
+Snapshotting:
+By default Redis saves snapshots of the dataset on disk, in a binary file.
+- Redis forks (child process);
+- child starts to write the dataset to a temporary RDB file;
+
+Snapshotting is not very durable. 
+
+Log rewriting (log compaction) - while Redis continues appending to the old file, a completely new one is produced with the minimal set of operations needed to create the current data set, and once this second file is ready Redis switches the two and starts appending to the new one.
+
+- redis forks;
+- child starts writing the new base AOF in a temporary file;
+- parent opens a new increments AOF file to continue writing updates;
+- When the child is done rewriting the base file, the parent gets a signal, and uses the newly opened increment file;
+- atomic exchange of the manifest files;
+
+Three options, configure how many times Redis will fsync data on disk:
+- always, very slow;
+- everysec;
+- no;
+
+**Pluses**
+- I can now choose correct persistence settings for my redis databases;
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 1 july 22
 **Redis streams**
 Redis Streams are primarily an append-only data structure.
 Being an abstract data type represented in memory, Redis Streams implement powerful operations to overcome the limitations of a log file.
@@ -36,7 +175,7 @@ https://github.com/zolotarevandrew/databases/tree/main/redis/NetRedis/RedisStrea
 [Log Index]
 ----------------------------------------------------------
 ---------------------------------------------------------
-## 29 june 22
+## 30 june 22
 **Redis sorted sets**
 Elements inside sorted sets are not ordered, every element in a sorted set is associated with a floating point value, called the score.
 
