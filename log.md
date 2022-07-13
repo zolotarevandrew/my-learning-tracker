@@ -4,6 +4,27 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 13 jul 22
+**Redis pipelining**
+Redis pipelining is a technique for improving performance by issuing multiple commands at once without waiting for the response to each individual command.
+
+Redis is a TCP server using the client-server model.
+- The client sends a query to the server, and reads from the socket, usually in a blocking way;
+- The server processes the command and sends the response back to the client;
+
+While the client sends commands using pipelining, the server will be forced to queue the replies, using memory. It is better to send a lot of commands as batches. The speed will be nearly the same, but the additional memory used will be at most the amount needed to queue the replies for these 10k commands.
+
+Pipelining improves the number of operations you can perform per second in a given Redis server.
+
+StackExchange.Redis - when used concurrently by different callers, it automatically pipelines the separate requests, so regardless of whether the requests use blocking or asynchronous access, the work is all pipelined.
+
+**Pluses**
+- I can easily use StackExchange.Redis for pipelining redis requests;
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 11 jul 22
 **Redis pub/sub**
 SUBSCRIBE, UNSUBSCRIBE and PUBLISH implement the Publish/Subscribe messaging paradigm. 
