@@ -4,6 +4,40 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 24 jul 22
+**Redis distributed locks**
+The simplest way to use Redis to lock a resource is to create a key in an instance.
+The key is usually created with a limited time to live, using the Redis expires feature, so that eventually it will get released.
+
+To acquire the lock, the way to go - SET resource_name my_random_value NX PX 30000.
+The command will set the key only if it does not already exist (NX option), with an expire of 30000 milliseconds (PX option).
+The "lock validity time" is the time we use as the key's time to live.
+Basically the random value is used in order to release the lock in a safe way, with a script that tells Redis: remove the key only if it exists and the value stored at the key is exactly the one I expect to be.
+
+How it works - Multiple processes execute the following redis command.
+SETNX lock.foo <current Unix time + lock timeout + 1>
+- If setnx returns 1, the process obtains the lock, and setnx sets to the timeout time of the lock.
+- If setnx returns 0, it means that other processes have acquired the lock and cannot enter the critical area. 
+(Processes can continuously try setnx operations in a loop to obtain locks);
+
+Process is disconnected from redis after obtaining a lock - (if there is no effective mechanism to release the lock, other processes will be in a state of waiting, that is, “deadlock”);
+After the lock timeout is detected, the process cannot directly and simply perform the Del delete key operation to obtain the lock.
+
+To solve the problem that multiple processes may acquire locks at the same time:
+- P1 has acquired lock.foo first, and then process P1 hangs up;
+- P4 executes setnx lock.foo to try to acquire the lock;
+- P1 has acquired the lock, P4 returns 0 after executing setnx lock.foo, that is, failed to acquire the lock;
+- P4 executes get lock.foo to check whether the lock has expired. If not, wait for a period of time and check again;
+- If P4 detects that the lock has expired, (the current time is greater than the value of key lock.foo), P4 will perform the GETSET operation;
+- Because of the GETSET semantic, P4 can check if the old value stored at key is still an expired timestamp. If it is, the lock was acquired;
+
+In order to make this locking algorithm more robust, a client holding a lock should always check the timeout didn't expire before unlocking the key with DEL.
+Because client failures can be complex, not just crashing but also blocking a lot of time against some operations and trying to issue DEL after a lot of time (when the LOCK is already held by another client).
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 13 jul 22
 **Redis pipelining**
 Redis pipelining is a technique for improving performance by issuing multiple commands at once without waiting for the response to each individual command.
