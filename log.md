@@ -25,8 +25,6 @@ Element variable:
 - To access the current element of the inputCollection value within the instance, the multi-instance activity can define the inputElement variable (e.g. item). The element is stored as a local variable of the instance under the given name.
 
 
-
-
 [Log Index]
 ----------------------------------------------------------
 ---------------------------------------------------------
@@ -66,6 +64,16 @@ External task
 
 Can get and lock task by rest api.
 Lock has a timeout. On error lock is released
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests
+
+**Pluses**
+- I can use external task as scalable solution for orchestrating business flows;
+- I can use user task for managing tasks from any UI;
+- I can use camunda events for some useful notifications;
+
+**Minuses**
+- Have a lot of using problems with not java clients;
 
 [Log Index]
 ----------------------------------------------------------
