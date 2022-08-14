@@ -4,6 +4,90 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 10 aug 22
+**Camunda multi instance**
+A multi-instance activity is executed multiple times - once for each element of a given collection (like a foreach loop in a programming language).
+
+On the execution level, a multi-instance activity has two parts: a multi-instance body and an inner activity. The multi-instance body is the container for all instances of the inner activity.
+
+A multi-instance activity is executed  
+- sequentially, the instances are executed one-by-one;
+- parallel (default), independently from each other;
+
+A multi-instance activity must have an inputCollection expression.
+The output of a multi-instance activity can be collected from the instances by defining the outputCollection.
+
+Completion Condition:
+- A completionCondition defines whether the multi-instance body can be completed immediately when the condition is satisfied.It is a boolean expression that will be evaluated each time the instance of the multi-instance body completes. 
+Any instances that are still active are terminated and the multi-instance body is completed when the expression evaluates to true.
+
+Element variable:
+- To access the current element of the inputCollection value within the instance, the multi-instance activity can define the inputElement variable (e.g. item). The element is stored as a local variable of the instance under the given name.
+
+
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 02 aug 22
+**Camunda base api and modeling BMPN**
+First bmpn should be created.
+- Process can start with a key and variables;
+- Process can start with a id and variables;
+
+Business Process Model and Notation (BPMN).
+
+A simple flow for BMPN:
+- start event;
+- Task, the heart of the process, something has to happen with desired outcome (part of activities category, includes sub-processes);
+- Intermediate event, represent the status that is reached in process, throwing event;
+- End event, throwing event;
+
+User Task
+- Generated form
+- Generic form
+- Embeddeed html forms
+- External forms 
+
+Service task
+- Expression trigger by specific language
+- Connector - http and others
+- Called sync
+- External called async
+
+Script task
+- Task with javascript/groovy
+
+External task
+- Independent from camunda
+- async
+- scalable
+
+Can get and lock task by rest api.
+Lock has a timeout. On error lock is released
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 01 aug 22
+**Camunda**
+Camunda is an open source platform for modeling business processes, built on java.
+Development flow:
+- flow process in camunda modeler;
+- writing code for camunda steps;
+- delegate, read something from context, write something to context;
+
+Advantages:
+Resume process after error from point of failure - readable trace, number of attempts before failure, custom error handler;
+GUI for processes;
+
+Alternative for GUI - rest api;
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 24 jul 22
 **Redis distributed locks**
 The simplest way to use Redis to lock a resource is to create a key in an instance.
