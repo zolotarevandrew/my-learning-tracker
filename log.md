@@ -4,6 +4,18 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 23 aug 22
+**Camunda multi instance**
+Finally found how to run multiinstance task with camunda.
+The problem was with ValueInfo for java object.
+
+![parallel_multiple](https://user-images.githubusercontent.com/49956820/186442259-c127d4c2-7612-48f3-8566-2d6a47b92fbc.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleParallelMultiple
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 10 aug 22
 **Camunda multi instance**
 A multi-instance activity is executed multiple times - once for each element of a given collection (like a foreach loop in a programming language).
