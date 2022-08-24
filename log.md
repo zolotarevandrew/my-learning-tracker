@@ -5,6 +5,22 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
 ## 23 aug 22
+**Camunda gateways, events**
+Exclusive gateway - XOR-gateway allows you to make a decision based on data (i.e. on process instance variables).
+Parallel gateway - AND-gateway allows you to split the flow into concurrent paths.
+Event based gateway - must have at least two outgoing sequence flows. Each sequence flow must to be connected to an intermediate catch event of type timer or message.
+
+Message events - events which reference a message; they are used to wait until a proper message is received.
+Intermediate message catch event - then entered, a corresponding message subscription is created.
+
+![event_gateway](https://user-images.githubusercontent.com/49956820/186483800-93bcf468-570a-49dd-8cd8-0b42b28e5d59.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleEventGateway
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 23 aug 22
 **Camunda multi instance**
 Finally found how to run multiinstance task with camunda.
 The problem was with ValueInfo for java object.
