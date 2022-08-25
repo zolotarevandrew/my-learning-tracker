@@ -4,7 +4,21 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
-## 23 aug 22
+## 25 aug 22
+**Camunda call activities**
+A call activity (or reusable subprocess) allows you to call and invoke another process as part of this process.
+When a call activity is entered, a new process instance of the referenced process is created. The new process instance is activated at the none start event.
+Interrupting and non-interrupting boundary events can be attached to a call activity.
+
+
+![image](https://user-images.githubusercontent.com/49956820/186733497-32143bc2-3a67-4cc3-b531-d5bee507636a.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleCallActivity
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 24 aug 22
 **Camunda gateways, events**
 Exclusive gateway - XOR-gateway allows you to make a decision based on data (i.e. on process instance variables).
 Parallel gateway - AND-gateway allows you to split the flow into concurrent paths.
