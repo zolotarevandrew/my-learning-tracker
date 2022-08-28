@@ -15,7 +15,7 @@ Interrupting and non-interrupting boundary events can be attached to a call acti
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleCallActivity
 
 **Pluses**
-- I can now call activity to separate bpmn schemes;
+- I can now use call activities to separate bpmn schemes;
 
 **Minuses**
 - It is hard to support different bpmns and output/input mapping should be defined;
