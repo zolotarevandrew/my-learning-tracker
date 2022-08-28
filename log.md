@@ -10,7 +10,6 @@ A call activity (or reusable subprocess) allows you to call and invoke another p
 When a call activity is entered, a new process instance of the referenced process is created. The new process instance is activated at the none start event.
 Interrupting and non-interrupting boundary events can be attached to a call activity.
 
-
 ![image](https://user-images.githubusercontent.com/49956820/186733497-32143bc2-3a67-4cc3-b531-d5bee507636a.png)
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleCallActivity
@@ -106,6 +105,12 @@ External task
 
 Can get and lock task by rest api.
 Lock has a timeout. On error lock is released
+
+![image](https://user-images.githubusercontent.com/49956820/187064979-ed608c42-3100-4623-a825-f1dcee28097a.png)
+
+![image](https://user-images.githubusercontent.com/49956820/187064993-da1d1aa0-2aa9-4da4-8e46-223959ebf549.png)
+
+![image](https://user-images.githubusercontent.com/49956820/187065024-ecc83ff7-57a7-429c-9c98-f70b7b8d660b.png)
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests
 
