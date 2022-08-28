@@ -65,6 +65,7 @@ Any instances that are still active are terminated and the multi-instance body i
 Element variable:
 - To access the current element of the inputCollection value within the instance, the multi-instance activity can define the inputElement variable (e.g. item). The element is stored as a local variable of the instance under the given name.
 
+![image](https://user-images.githubusercontent.com/49956820/187065024-ecc83ff7-57a7-429c-9c98-f70b7b8d660b.png)
 
 [Log Index]
 ----------------------------------------------------------
@@ -107,6 +108,9 @@ Can get and lock task by rest api.
 Lock has a timeout. On error lock is released
 
 ![image](https://user-images.githubusercontent.com/49956820/187064979-ed608c42-3100-4623-a825-f1dcee28097a.png)
+
+![image](https://user-images.githubusercontent.com/49956820/187064993-da1d1aa0-2aa9-4da4-8e46-223959ebf549.png)
+
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests
 
