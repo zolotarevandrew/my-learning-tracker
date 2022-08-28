@@ -108,10 +108,6 @@ Lock has a timeout. On error lock is released
 
 ![image](https://user-images.githubusercontent.com/49956820/187064979-ed608c42-3100-4623-a825-f1dcee28097a.png)
 
-![image](https://user-images.githubusercontent.com/49956820/187064993-da1d1aa0-2aa9-4da4-8e46-223959ebf549.png)
-
-![image](https://user-images.githubusercontent.com/49956820/187065024-ecc83ff7-57a7-429c-9c98-f70b7b8d660b.png)
-
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests
 
 **Pluses**
