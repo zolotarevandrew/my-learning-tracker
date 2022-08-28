@@ -14,6 +14,12 @@ Interrupting and non-interrupting boundary events can be attached to a call acti
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleCallActivity
 
+**Pluses**
+- I can now call activity to separate bpmn schemes;
+
+**Minuses**
+- It is hard to support different bpmns and output/input mapping should be defined;
+
 [Log Index]
 ----------------------------------------------------------
 ---------------------------------------------------------
@@ -29,6 +35,12 @@ Intermediate message catch event - then entered, a corresponding message subscri
 ![event_gateway](https://user-images.githubusercontent.com/49956820/186483800-93bcf468-570a-49dd-8cd8-0b42b28e5d59.png)
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/SimpleEventGateway
+
+**Pluses**
+- I can now use all of the gateway types correctly;
+
+**Minuses**
+- Time event can not be good idea for some cases, it can be called in different times;
 
 [Log Index]
 ----------------------------------------------------------
@@ -66,6 +78,9 @@ Element variable:
 - To access the current element of the inputCollection value within the instance, the multi-instance activity can define the inputElement variable (e.g. item). The element is stored as a local variable of the instance under the given name.
 
 ![image](https://user-images.githubusercontent.com/49956820/187065024-ecc83ff7-57a7-429c-9c98-f70b7b8d660b.png)
+
+**Pluses**
+- I can use multi instance tasks for array multiple processing in one external task;
 
 [Log Index]
 ----------------------------------------------------------
