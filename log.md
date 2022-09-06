@@ -4,6 +4,96 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 5 aug 22
+**Camunda pizza workflow 1.1**
+
+Used workflow without participants, but with subprocesses, now its working.
+![image](https://user-images.githubusercontent.com/49956820/188666189-be0ad9ec-12d6-4844-9932-9e5351872b21.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/ComplexPizzaOrder
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 5 aug 22
+**Camunda pizza workflow 1.0**
+
+Tried to build simple pizza workflow by participants. That's not worked:)
+
+![image](https://user-images.githubusercontent.com/49956820/188658470-c749ba08-7157-4c51-a7e5-e561ceec88b0.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/ComplexPizzaOrder
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 30 aug 22
+**Camunda workers**
+
+- Minimize what data you read for your job. In your job client, you can define which process variables you will need in your worker;
+- Minimize what data you write on job completion. You should explicitly not transmit the input variables of a job upon completion;
+
+Workers can control the number of jobs retrieved at once. 
+- In a busy system it makes sense to not only request one job, but probably 20 or even up to 50 jobs in one remote request to the workflow engine, and then start working on them locally;
+- In a lesser utilized system, long polling is used to avoid delays when a job comes in; 
+
+Long polling means the client’s request to fetch jobs is blocked until a job is received.
+
+Whenever a process instance arrives at a service task, a new job is created and pushed to an internal persistent queue within Camunda. 
+A client application can subscribe to these jobs with the workflow engine by the task type name.
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 29 aug 22
+**Camunda architecture**
+
+Base components
+- Process Engine Public API - API allowing Java applications to interact with the process engine;
+- BPMN 2.0 Core Engine - lightweight execution engine for graph structures and BPMN 2.0 parser which transforms BPMN 2.0 XML files into Java Objects and a set of BPMN Behavior implementations;
+- Job Executor - processing asynchronous background work such as Timers or asynchronous continuations in a process;
+- Persistence Layer - persisting process instance state to a relational database (they using ORM).
+
+Clustering model:
+- In order to provide scale-up or fail-over capabilities, the process engine can be distributed to different nodes in a cluster. 
+Each process engine instance must then connect to a shared database.
+The individual process engine instances do not maintain session state across transactions. 
+Whenever the process engine runs a transaction, the complete state is flushed out to the shared database. 
+This makes it possible to route subsequent requests which do work in the same process instance to different cluster nodes;
+- There is no load-balancing capabilities or session replication capabilities. It should be provided by a third-party system;
+- The process engine job executor is also clustered and runs on each node;
+
+Multi-tenancy:
+- Table-level data separation by using different database schemas or databases;
+- Row-level data separation by using a tenant marker;
+Users should choose the model which fits their data separation needs.
+
+Process engine services:
+- RepositoryService - offers operations for managing and manipulating deployments and process definitions. A deployment is the unit of packaging within the engine.  
+Allows to Query on deployments and process definitions known to the engine;
+- RuntimeService - starting new process instances of process definitions. A process instance is one execution of such a process definition. 
+For each process definition there are typically many instances running at the same time. Also used to retrieve and store process variables. 
+This is data specific to the given process instance and can be used by various constructs in the process 
+(e.g., an exclusive gateway often uses process variables to determine which path is chosen to continue the process).
+Allows to query on process instances and executions. Basically an execution is a pointer pointing to where the process instance currently is. 
+Also used whenever a process instance is waiting for an external trigger and the process needs to be continued;
+- TaskService - Querying tasks assigned to users or groups. Creating new standalone tasks (not related to process instances). Manipulating to which user a task is assigned.
+Claiming - someone decided to be the assignee for the task, meaning that this user will complete the task. 
+Completing means ‘doing the work of the tasks’;
+- Identity service - allows the management (creation, update, deletion, querying, …) of groups and users. core engine actually doesn’t do any checking on users at runtime;
+- HistoryService - historical data gathered by the engine;
+- ManagementService - query capabilities and management operations for jobs. Jobs are used in the engine for various things such as timers, asynchronous continuations, delayed suspension/activation;
+- FilterService allows to create and manage filters;
+- ExternalTaskService - access to internal task instances;
+- CaseService - It deals with starting new case instances of case definitions and managing the lifecycle of case executions;
+- DecisionService - evaluate decisions that are deployed to the engine;
+
+**Minuses**
+- As a c# developer i can't use full features of camunda, because it java based;
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 25 aug 22
 **Camunda call activities**
 A call activity (or reusable subprocess) allows you to call and invoke another process as part of this process.
