@@ -5,6 +5,19 @@
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
 ## 5 aug 22
+**Camunda pizza workflow 1.2**
+
+Timer throw events works incorrect? Parallel Notify pizza didn't worked..
+
+![image](https://user-images.githubusercontent.com/49956820/188914146-24ad7de2-c67d-44a4-acca-aacbd7c5bc83.png)
+
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/ComplexPizzaOrder
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 5 aug 22
 **Camunda pizza workflow 1.1**
 
 Used workflow without participants, but with subprocesses, now its working.
