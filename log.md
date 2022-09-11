@@ -4,7 +4,50 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
-## 5 aug 22
+## 9 sep 22
+**Camunda event process**
+
+Tried to use events with subprocess. It's not working now...
+
+![image](https://user-images.githubusercontent.com/49956820/189517078-12701672-36f8-428c-97a4-092080690eb0.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/EventMessages
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 8 sep 22
+**Camunda extended events**
+
+Start events - events which creates new process;
+Intermediate events - events which can be in execution of process;
+End events - events can kill token or process; 
+
+Interrupting events - interrupt items;
+Non interrupting events - non interrupt items;
+
+Subprocess event - can only be started events;
+
+Event types - behaviour:
+- None;
+- Message;
+- Timer;
+- Error;
+- Escalation;
+- Cancel;
+- Compensation;
+- Conditional;
+- Link;
+- Signal;
+- Terminate;
+- Multiple;
+- Multiple parallel;
+
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 7 sep 22
 **Camunda pizza workflow 1.2**
 
 Timer throw events works incorrect? Parallel Notify pizza didn't worked..
@@ -14,10 +57,16 @@ Timer throw events works incorrect? Parallel Notify pizza didn't worked..
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/ComplexPizzaOrder
 
+**Pluses**
+- I can now build not so complex workflows using base elements;
+
+**Minuses**
+- I didn't solve problems with boundary events, so i am going to deep dive into it later;
+
 [Log Index]
 ----------------------------------------------------------
 ---------------------------------------------------------
-## 5 aug 22
+## 6 sep 22
 **Camunda pizza workflow 1.1**
 
 Used workflow without participants, but with subprocesses, now its working.
@@ -28,7 +77,7 @@ https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/M
 [Log Index]
 ----------------------------------------------------------
 ---------------------------------------------------------
-## 5 aug 22
+## 5 sep 22
 **Camunda pizza workflow 1.0**
 
 Tried to build simple pizza workflow by participants. That's not worked:)
