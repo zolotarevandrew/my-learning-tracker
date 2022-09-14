@@ -4,6 +4,30 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 14 sep 22
+**Camunda event process booking**
+
+Parent process not receive subprocess throwing event.
+
+![image](https://user-images.githubusercontent.com/49956820/190214012-7a1615ae-f51c-4295-adbe-d2a01b3aa388.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/BookingFlow
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 12-13 sep 22
+**Camunda event process trying**
+
+Events with subprocess now working. They should be inside the process to work..
+
+![image](https://user-images.githubusercontent.com/49956820/190204238-91061897-515f-42a8-81c3-888d66dadd8a.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/EventMessages
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 9 sep 22
 **Camunda event process**
 
