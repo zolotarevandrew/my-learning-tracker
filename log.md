@@ -4,6 +4,44 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 20 sep 22
+**Camunda events deep dive**
+
+Error + compensation events.
+
+Compensation events will work only after process completion.
+Error events can be handled in subprocess then parent process is working, can be boundary events.
+
+![image](https://user-images.githubusercontent.com/49956820/191318013-bc2e93ab-5117-41cb-9940-a099def0fc8d.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/BookingFlowV2
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
+## 15 sep 22
+**Camunda events deep dive**
+
+Boundary events;
+
+Interrupting - then received interrupt current process and token moving by new condition by event (but external task was not cancelled!!);
+![image](https://user-images.githubusercontent.com/49956820/190448423-1ba90fff-aa92-494e-bb7f-ae5e47dba861.png)
+
+Noninterrupting - then received new token created and process is splitting;
+![image](https://user-images.githubusercontent.com/49956820/190450666-05348372-dca8-468e-8ac2-e41ca23e32a5.png)
+
+Timer events - can be start events (run every week or day some task).
+Interrupting - interupt current process;
+Non interuppting - don't interrupt current process;
+
+![image](https://user-images.githubusercontent.com/49956820/190453655-d0af4a8e-d8e9-4e53-a9cb-59cda68a6c38.png)
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/BoundaryEvents
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/BoundaryEvents
+
+[Log Index]
+----------------------------------------------------------
+---------------------------------------------------------
 ## 14 sep 22
 **Camunda event process booking**
 
