@@ -4,7 +4,7 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
-## 20 sep 22
+## 20-21 sep 22
 **Camunda events deep dive**
 
 Error + compensation events.
@@ -15,6 +15,15 @@ Error events can be handled in subprocess then parent process is working, can be
 ![image](https://user-images.githubusercontent.com/49956820/191318013-bc2e93ab-5117-41cb-9940-a099def0fc8d.png)
 
 https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaTests/Models/BookingFlowV2
+
+**Pluses**
+- I can now use compensation events for process cancellation correctly;
+- I can now use subprocesses with events correctly to split up some parallel processing (microservices);
+- I can now use error events to change workflow explicitly;
+
+
+**Minuses**
+- We have a problem with events on our work, because of their async manner, they can stuck in camunda queue...;
 
 [Log Index]
 ----------------------------------------------------------
