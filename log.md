@@ -4,6 +4,181 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 19 jan 23
+**Team leading тет-а-теты**
+
+Важно подготовить личную карточку для каждого сотрудника, в которой будут храниться:
+ ◦ Мотивационные факторы;
+ ◦ История договорённостей;
+ ◦ Важные факты;
+ ◦ Перечень достижений и провалов;
+ ◦ История встреч;
+ 
+Понимаем какую пользу ожидаем от встреч, какие конкретные вещи и действия ожидаем на выходе.
+
+После встречи прислать сотруднику follow-up с кратким содержанием встречи и вашим договорённостям.
+- Обновить карточку сотрудника с учётом новой информации.
+- Запросить обратную связь по тому, как прошла встреча.
+
+**Плюсы**
+- Подготовил каверзные вопросы заранее, чтобы раскачать человека на диалог, дало мощный эффект, все полчаса
+говорил только сотрудник.
+- После встречи подбил договоренности, чтобы дать человеку понять, что оно не забудется и будет решено.
+Тем самым улучшил мотивацию.
+- Создал и заполнил карточки по каждому сотруднику в гугл таблице.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 18 jan 23
+**System design Main concepts**
+
+Failure models
+
+*Fail-stop*
+In this type of failure, a node in the distributed system halts permanently. 
+However, the other nodes can still detect that node by communicating with it.
+From the perspective of someone who builds distributed systems, fail-stop failures are the simplest and the most convenient.
+
+*Crash*
+In this type of failure, a node in the distributed system halts silently, and the other nodes can’t detect that the node has stopped working.
+
+In *omission failures*, the node fails to send or receive messages. 
+There are two types of omission failures. 
+If the node fails to respond to the incoming request, it’s said to be a send omission failure. 
+If the node fails to receive the request and thus can’t acknowledge it, it’s said to be a receive omission failure.
+
+In *temporal failures*, the node generates correct results, but is too late to be useful. 
+This failure could be due to bad algorithms, a bad design strategy, or a loss of synchronization between the processor clock.
+
+In *Byzantine failures*, the node exhibits random behavior like transmitting arbitrary messages at arbitrary times, producing wrong results, or stopping midway. 
+This mostly happens due to an attack by a malicious entity or a software bug. 
+A byzantine failure is the most challenging type of failure to deal with.
+
+
+Non functional system characteristics
+*Availability* is the percentage of time that some service or infrastructure is accessible to clients and is operated upon under normal conditions. 
+For example, if a service has 100% availability, it means that the said service functions and responds as intended (operates normally) all the time.
+We measure availability as a number of nines.
+
+*Reliability*, R, is the probability that the service will perform its functions for a specified time. R measures how the service performs under varying operating conditions.
+We often use mean time between failures (MTBF) and mean time to repair (MTTR) as metrics to measure realibility.
+
+
+Reliability and availability are two important metrics to measure compliance of service to agreed-upon service level objectives (SLO).
+The measurement of availability is driven by time loss, whereas the frequency and impact of failures drive the measure of reliability.
+
+*Scalability* is the ability of a system to handle an increasing amount of workload without compromising performance. 
+A search engine, for example, must accommodate increasing numbers of users, as well as the amount of data it indexe
+
+The workload can be of different types, including the following:
+ • Request workload: This is the number of requests served by the system.
+ • Data/storage workload: This is the amount of data stored by the system.
+
+*Maintainability*
+Besides building a system, one of the main tasks afterward is keeping the system up and running by finding and fixing bugs, adding new functionalities, keeping the system’s platform updated, and ensuring smooth system operations. One of the salient features to define such requirements of an exemplary system design is maintainability. We can further divide the concept of maintainability into three underlying aspects
+- Operability: This is the ease with which we can ensure the system’s smooth operational running under normal circumstances and achieve normal conditions under a fault;
+- Lucidity: This refers to the simplicity of the code. The simpler the code base, the easier it is to understand and maintain it, and vice versa;
+- Modifiability: This is the capability of the system to integrate modified, new, and unforeseen features without any hassle;
+
+*Fault tolerance* refers to a system’s ability to execute persistently even if one or more of its components fail. 
+Here, components can be software or hardware. 
+Conceiving a system that is hundred percent fault-tolerant is practically very difficult
+
+One of the most widely-used techniques is replication-based fault tolerance. 
+With this technique, we can replicate both the services and data. 
+We can swap out failed nodes with healthy ones and a failed data store with its replica. 
+A large service can transparently make the switch without impacting the end customers
+
+Checkpointing is a technique that saves the system’s state in stable storage when the system state is consistent. 
+Checkpointing is performed in many stages at different time intervals. 
+The primary purpose is to save the computational state at a given point. 
+When a failure occurs in the system, we can get the last computed data from the previous checkpoint and start working from there.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 17 jan 23
+**System design Consistency models**
+
+In distributed systems, consistency may mean many things. 
+One is that each replica node has the same view of data at a given point in time. 
+The other is that each read request gets the value of the recent write. 
+These are not the only definitions of consistency, since there are many forms of consistency.
+Normally, consistency models provide us with abstractions to reason about the correctness of a distributed system doing concurrent data reads, writes, and mutations.
+
+If we have to design or build an application in which we need a third-party storage system like S3 or Cassandra, 
+we can look into the consistency guarantees provided by S3 to decide whether to use it or not. Let’s explore different types of consistency.
+The two ends of the consistency spectrum are:
+ • Strongest consistency
+ • Weakest consistency
+
+Database rules are at the heart of ACID consistency. 
+If a schema specifies that a value must be unique, a consistent system will ensure that the value is unique throughout all actions. 
+If a foreign key indicates that deleting one row will also delete associated rows, a consistent system ensures that the state can’t contain related rows once the base row has been destroyed.
+
+CAP consistency guarantees that, in a distributed system, every replica of the same logical value has the same precise value at all times. 
+It’s worth noting that this is a logical rather than a physical guarantee. 
+Due to the speed of light, replicating numbers throughout a cluster may take some time. 
+By preventing clients from accessing different values at separate nodes, the cluster can nevertheless give a logical picture.
+
+
+*Eventual consistency* is the weakest consistency model. 
+The applications that don’t have strict ordering requirements and don’t require reads to return the latest write choose this model. 
+Eventual consistency ensures that all the replicas will eventually return the same value to the read request, but the returned value isn’t meant to be the latest value. 
+However, the value will finally reach its latest state.
+Eventual consistency ensures high availability.
+
+Example
+The domain name system is a highly available system that enables name lookups to a hundred million devices across the Internet. 
+It uses an eventual consistency model and doesn’t necessarily reflect the latest values.
+
+*Causal consistency*
+Causal consistency works by categorizing operations into dependent and independent operations. 
+Dependent operations are also called causally-related operations. 
+Causal consistency preserves the order of the causally-related operations
+
+The causal consistency model is used in a commenting system. 
+For example, for the replies to a comment on a Facebook post, we want to display comments after the comment it replies to. 
+This is because there is a cause-and-effect relationship between a comment and its replies.
+
+*Sequential consistency*
+Sequential consistency is stronger than the causal consistency model. 
+It preserves the ordering specified by each client’s program. 
+However, sequential consistency doesn’t ensure that the writes are visible instantaneously or in the same order as they occurred according to some global clock.
+
+Example
+In social networking applications, we usually don’t care about the order in which some of our friends’ posts appear. 
+However, we still anticipate a single friend’s posts to appear in the correct order in which they were created). 
+Similarly, we expect our friends’ comments in a post to display in the order that they were submitted. The sequential consistency model captures all of these qualities.
+
+
+A *strict consistency or linearizability* is the strongest consistency model. 
+This model ensures that a read request from any replicas will get the latest write value. 
+Once the client receives the acknowledgment that the write operation has been performed, other clients can read that value.
+
+Synchronous replication ensures linearizability, in which an acknowledgment is not sent to the client until the new value is written to all replicas.
+Linearizability affects the system’s availability, which is why it’s not always used. 
+Applications with strong consistency requirements use techniques like quorum-based replication to increase the system’s availability.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 16 jan 23
+**System design abstractions**
+System design is the process of defining components and their integration, APIs, and data models to build large-scale systems that meet a specified set of functional and non-functional requirements.
+The discipline of system design helps us tame this complexity and get the work done.
+
+System design aims to build systems that are reliable, effective, and maintainable, among other characteristics.
+ • Reliable systems handle faults, failures, and errors.
+ • Effective systems meet all user needs and business requirements.
+ • Maintainable systems are flexible and easy to scale up or down. The ability to add new features also comes under the umbrella of maintainability.
+
+Abstraction is the art of obfuscating details that we don’t need. It allows us to concentrate on the big picture.
+
+Remote procedure calls (RPCs) provide an abstraction of a local procedure call to the developers by hiding the complexities of packing and 
+sending function arguments to the remote server, receiving the return values, and managing any network retries.
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 7 jan 23
 **Курс тимлид - неделя 5**
 тех долг и качество кода
