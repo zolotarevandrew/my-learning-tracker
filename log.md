@@ -3,6 +3,120 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+
+---------------------------------------------------------
+## 24 jan 23
+**System design - Load balancer**
+Millions of requests could arrive per second in a typical data center. 
+To serve these requests, thousands (or a hundred thousand) servers work together to share the load of incoming requests.
+
+The load balancing layer is the first point of contact within a data center after the firewall. 
+A load balancer may not be required if a service entertains a few hundred or even a few thousand requests per second. 
+However, for increasing client requests, load balancers provide the following capabilities
+
+- Scalability: By adding servers, the capacity of the application/service can be increased seamlessly. Load balancers make such upscaling or downscaling transparent to the end users.
+- Availability: Even if some servers go down or suffer a fault, the system still remains available. One of the jobs of the load balancers is to hide faults and failures of servers.
+- Performance: Load balancers can forward requests to servers with a lesser load so the user can get a quicker response time. This not only improves performance but also improves resource utilization.
+- Health checking: LBs use the heartbeat protocol to monitor the health and, therefore, reliability of end-servers. Another advantage of health checking is the improved user experience.
+- TLS termination: LBs reduce the burden on end-servers by handling TLS termination with the client.
+- Predictive analytics: LBs can predict traffic patterns through analytics performed over traffic passing through them or using statistics of traffic obtained over time.
+- Reduced human intervention: Because of LB automation, reduced system administration efforts are required in handling failures.
+- Service discovery: An advantage of LBs is that the clients’ requests are forwarded to appropriate hosting servers by inquiring about the service registry.
+- Security: LBs may also improve security by mitigating attacks like denial-of-service (DoS) at different layers of the OSI model (layers 3, 4, and 7).
+
+Global server load balancing (GSLB): GSLB involves the distribution of traffic load across multiple geographical regions.
+Local load balancing: This refers to load balancing achieved within a data center. 
+This type of load balancing focuses on improving efficiency and better resource utilization of the hosting servers in a data center.
+
+Load balancers distribute client requests according to an algorithm. Some well-known algorithms :
+- Round-robin scheduling: In this algorithm, each request is forwarded to a server in the pool in a repeating sequential manner.
+- Weighted round-robin: If some servers have a higher capability of serving clients’ requests, then it’s preferred to use a weighted round-robin algorithm. In a weighted round-robin algorithm, each node is assigned a weight. LBs forward clients’ requests according to the weight of the node. The higher the weight, the higher the number of assignments.
+- Least connections: In certain cases, even if all the servers have the same capacity to serve clients, uneven load on certain servers is still a possibility. For example, some clients may have a request that requires longer to serve. Or some clients may have subsequent requests on the same connection. In that case, we can use algorithms like least connections where newer arriving requests are assigned to servers with fewer existing connections. LBs keep a state of the number and mapping of existing connections in such a scenario. We’ll discuss more about state maintenance later in the lesson.
+- Least response time: In performance-sensitive services, algorithms such as least response time are required. This algorithm ensures that the server with the least response time is requested to serve the clients.
+- IP hash: Some applications provide a different level of service to users based on their IP addresses. In that case, hashing the IP address is performed to assign users’ requests to servers.
+- URL hash: It may be possible that some services within the application are provided by specific servers only. In that case, a client requesting service from a URL is assigned to a certain cluster or set of servers. The URL hashing algorithm is used in those scenarios.
+
+Layer 4 load balancers: Layer 4 refers to the load balancing performed on the basis of transport protocols like TCP and UDP. 
+These types of LBs maintain connection/session with the clients and ensure that the same (TCP/UDP) communication ends up being forwarded to the same back-end server. 
+Even though TLS termination is performed at layer 7 LBs, some layer 4 LBs also support it.
+
+
+Layer 7 load balancers: Layer 7 load balancers are based on the data of application layer protocols. 
+It’s possible to make application-aware forwarding decisions based on HTTP headers, URLs, cookies, and other application-specific data—for example, user ID. 
+Apart from performing TLS termination, these LBs can take responsibilities like rate limiting users, HTTP routing, and header rewriting.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 22 jan 23
+**System design - Bulding blocks**
+Bulding blocks
+- Dns;
+- Load balancers;
+- Databases;
+- Key value store;
+- Cdn;
+- Sequencer;
+- Service monitoring;
+- Distributed caching;
+- Distributed message queue;
+- Pub sub system;
+- Rate limiter;
+- Blob store;
+- Distributed search;
+- Distributed logging;
+- Distributed task scheduler;
+- Sharded counters;
+
+Functional requirements: These represent the features a user of the designed system will be able to use. 
+For example, the system will allow a user to search for content using the search bar.
+
+Non-functional requirements (NFRs): The non-functional requirements are criteria based on which the user of a system will consider the system usable. 
+NFR may include requirements like high availability, low latency, scalability, and so on.
+
+
+ ---------------------------------------------------------
+---------------------------------------------------------
+## 21 jan 23
+**System design - back of envelope**
+A distributed system has compute nodes connected via a network. 
+There’s a wide variety of available compute nodes and they can be connected in many different ways. 
+Back-of-the-envelope calculations help us ignore the nitty-gritty details of the system (at least at the design level) and focus on more important aspects.
+
+Some examples of a back-of-the-envelope calculation could be:
+ • The number of concurrent TCP connections a server can support.
+ • The number of requests per second (RPS) a web, database, or cache server can handle.
+ • The storage requirements of a service.
+
+Data centers don’t have a single type of server. 
+Enterprise solutions use commodity hardware to save cost and develop scalable solutions. 
+Below, we discuss the types of servers that are commonly used within a data center to handle different workloads
+
+For scalability, the web servers are decoupled from the application servers. 
+Web servers are the first point of contact after load balancers. 
+Data centers have racks full of web servers that usually handle API calls from the clients. 
+Depending on the service that’s offered, the memory and storage resources in web servers can be small to medium. 
+However, such servers require good computational resources. For example, Facebook has used a web server with 32 GB of RAM and 500 GB of storage space. 
+But for its high-end computational needs, it partnered with Intel to build a custom 16-core processor.
+
+Application servers run the core application software and business logic. 
+The difference between web servers and application servers is somewhat fuzzy. 
+Application servers primarily provide dynamic content, whereas web servers mostly serve static content to the client, which is mostly a web browser. 
+They can require extensive computational and storage resources. Storage resources can be volatile and non-volatile. 
+Facebook has used application servers with a RAM of up to 256 GB and two types of storage—traditional rotating disks and flash—with a capacity of up to 6.5 TB
+
+With the explosive growth of Internet users, the amount of data stored by giant services has multiplied. 
+Additionally, various types of data are now being stored in different storage units. 
+For instance, YouTube uses the following datastores:
+- Blob storage for its encoded videos.
+- A temporary processing queue storage that can hold a few hundred hours of video content uploaded daily to YouTube for processing.
+- Specialized storage called Bigtable for storing a large number of thumbnails of videos.
+- Relational database management system (RDBMS) for users and videos metadata (comments, likes, user channels, and so on.
+
+Let’s understand two types of requests.
+ • CPU-bound requests: These are the type of requests where the limiting factor is the CPU.
+ • Memory-bound requests: These are the types of requests that are limited by the amount of memory a machine has.
+
+---------------------------------------------------------
 ---------------------------------------------------------
 ## 19 jan 23
 **Team leading тет-а-теты**
