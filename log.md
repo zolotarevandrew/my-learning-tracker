@@ -5,6 +5,212 @@
 |     |Learnt, thoughts, progress, ideas, links|
 
 ---------------------------------------------------------
+## 3 feb 23
+**System design - Databases partiotining**
+
+At some point, a single node-based database isn’t enough to tackle the load. 
+We might need to distribute the data over many nodes but still export all the nice properties of relational databases.
+
+Data partitioning (or sharding) enables us to use multiple nodes where each node manages some part of the whole data. 
+To handle increasing query rates and data amounts, we strive for balanced partitions and balanced read/write load
+
+We can put different tables in various database instances, which might be running on a different physical server. 
+We might break a table into multiple tables so that some columns are in one table while the rest are in the other.
+We should be careful if there are joins between multiple tables. 
+We may like to keep such tables together on one shard.
+
+Often, vertical sharding is used to increase the speed of data retrieval from a table consisting of columns with very wide text or a binary large object (blob). 
+In this case, the column with large text or a blob is split into a different table.
+
+At times, some tables in the databases become too big and affect read/write latency. 
+Horizontal sharding or partitioning is used to divide a table into multiple tables by splitting data row-wise. 
+Each partition of the original table distributed over database servers is called a shard. 
+
+
+In the key-range based sharding, each partition is assigned a continuous range of keys.
+
+Advantages
+- Using this method, the range-query-based scheme is easy to implement.
+- Range queries can be performed using the partitioning keys, and those can be kept in partitions in sorted order.
+Disadvantages
+- Range queries can’t be performed using keys other than the partitioning key.
+- If keys aren’t selected properly, some nodes may have to store more data due to an uneven distribution of the traffic.
+
+
+Hash-based sharding uses a hash-like function on an attribute, and it produces different values based on which attribute the partitioning is performed. 
+The main concept is to use a hash function on the key to get a hash value and then mod by the number of partitions. 
+Once we’ve found an appropriate hash function for keys, we may give each partition a range of hashes (rather than a range of keys). 
+Any key whose hash occurs inside that range will be kept in that partition
+
+Advantages
+- Keys are uniformly distributed across the nodes.
+Disadvantages#
+- We can’t perform range queries with this technique. Keys will be spread over all partition
+
+Consistent hashing assigns each server or item in a distributed hash table a place on an abstract circle, called a ring, irrespective of the number of servers in the table. 
+This permits servers and objects to scale without compromising the system’s overall performance.
+Advantages of consistent hashing
+- It’s easy to scale horizontally.
+- It increases the throughput and improves the latency of the application.
+Disadvantages of consistent hashing#
+- Randomly assigning nodes in the ring may cause non-uniform distribution.
+
+A fixed number of partitions is used in Elasticsearch, Riak, and many more.
+
+Dynamic partitioning
+In this approach, when the size of a partition reaches the threshold, it’s split equally into two partitions. O
+ne of the two split partitions is assigned to one node and the other one to another node. 
+In this way, the load is divided equally. 
+The number of partitions adapts to the overall data amount, which is an advantage of dynamic partitioning.
+However, there’s a downside to this approach. It’s difficult to apply dynamic rebalancing while serving the reads and writes. This approach is used in HBase and MongoDB.
+
+Following are a few approaches to work with partitioned db:
+- Allow the clients to request any node in the network. If that node doesn’t contain the requested data, it forwards that request to the node that does contain the related data.
+- The second approach contains a routing tier. All the requests are first forwarded to the routing tier, and it determines which node to connect to fulfill the request.
+- The clients already have the information related to partitioning and which partition is connected to which node. So, they can directly contact the node that contains the data they need
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 1 feb 23
+**System design - Databases replication**
+
+Additional complexities that could arise due to replication are as follows:
+- How do we keep multiple copies of data consistent with each other?
+- How do we deal with failed replica nodes?
+- Should we replicate synchronously or asynchronously?
+- How do we deal with replication lag in case of asynchronous replication?
+- How do we handle concurrent writes?
+- What consistency model needs to be exposed to the end programmers
+
+
+In *primary-secondary* replication, data is replicated across multiple nodes. 
+One node is designated as the primary. It’s responsible for processing any writes to data stored on the cluster. 
+It also sends all the writes to the secondary nodes and keeps them in sync.
+Primary-secondary replication is appropriate when our workload is read-heavy applications.
+To better scale with increasing readers, we can add more followers and distribute the read load across the available followers.
+Additionally, primary-secondary replication is inappropriate if our workload is write-heavy
+
+Primary-secondary replication methods
+- Statement-based replication
+- Write-ahead log (WAL) shipping
+- Logical (row-based) log replication
+
+Statement-based replication approach, the primary node saves all statements that it executes, like insert, delete, update, and so on, and sends them to the secondary nodes to perform.
+In the write-ahead log (WAL) shipping approach, the primary node saves the query before executing it in a log file known as a write-ahead log file. 
+It then uses these logs to copy the data onto the secondary nodes. This is used in PostgreSQL and Oracle. 
+The problem with WAL is that it only defines data at a very low level. It’s tightly coupled with the inner structure of the database engine
+
+
+*Multi-leader replication* is an alternative to single leader replication. 
+There are multiple primary nodes that process the writes and send them to all other primary and secondary nodes to replicate. 
+This type of replication is used in databases along with external tools like the Tungsten Replicator for MySQL.
+
+
+Conflict avoidance
+A simple strategy to deal with conflicts is to prevent them from happening in the first place. 
+Conflicts can be avoided if the application can verify that all writes for a given record go via the same leader
+However, the conflict may still occur if a user moves to a different location and is now near a different data center. 
+If that happens, we need to reroute the traffic. 
+In such scenarios, the conflict avoidance approach fails and results in concurrent writes
+
+
+Last-write-wins
+Using their local clock, all nodes assign a timestamp to each update. 
+When a conflict occurs, the update with the latest timestamp is selected.
+This approach can also create difficulty because the clock synchronization across nodes is challenging in distributed systems. 
+There’s clock skew that can result in data
+
+There are many topologies through which multi-leader replication is implemented, such as 
+- circular topology
+- star topology
+- all-to-all topology. 
+The most common is the all-to-all topology. 
+In star and circular topology, there’s again a similar drawback that if one of the nodes fails, it can affect the whole system. 
+That’s why all-to-all is the most used topology
+
+
+*Peer-to-peer/leaderless replication*
+In primary-secondary replication, the primary node is a bottleneck and a single point of failure. 
+Moreover, it helps to achieve read scalability but fails in providing write scalability. 
+The peer-to-peer replication model resolves these problems by not having a single primary node. 
+All the nodes have equal weightage and can accept reads and writes requests. 
+
+A helpful approach used for solving write-write inconsistency is called quorums.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 1 feb 23
+**System design - Databases**
+
+- Key-value databases use key-value methods like hash tables to store data in key-value pairs. 
+Here, the key serves as a unique or primary key, and the values can be anything ranging from simple scalar values to complex objects. 
+These databases allow easy partitioning and horizontal scaling of the data.
+
+- A document database is designed to store and retrieve documents in formats like XML, JSON, BSON, and so on. 
+These documents are composed of a hierarchical tree data structure that can include maps, collections, and scalar values. 
+Documents in this type of database may have varying structures and data.
+
+- Graph databases use the graph data structure to store data, where nodes represent entities, and edges show relationships between entities. 
+The organization of nodes based on relationships leads to interesting patterns between the nodes. 
+This database allows us to store the data once and then interpret it differently based on relationships. 
+Graph data is kept in store files for persistent storage. 
+Each of the files contains data for a specific part of the graph, such as nodes, links, properties, and so on
+
+- Columnar databases store data in columns instead of rows. 
+They enable access to all entries in the database column quickly and efficiently.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 30 jan 23
+**System design - Databases**
+
+*Relational*
+Relational databases adhere to particular schemas before storing the data. 
+The data stored in relational databases has prior structure. 
+Mostly, this model organizes data into one or more relations. 
+
+- Atomicity: A transaction is considered an atomic unit.
+- Consistency: At any given time, the database should be in a consistent state, and it should remain in a consistent state after every transaction.
+- Isolation: In the case of multiple transactions running concurrently, they shouldn’t be affected by each other.
+- Durability: The system should guarantee that completed transactions will survive permanently in the database even in system failure events
+
+Pros
+
+Flexibility
+In the context of SQL, data definition language (DDL) provides us the flexibility to modify the database, including tables, columns, renaming the tables, and other changes.
+DDL even allows us to modify schema while other queries are happening and the database server is running. Reduced redundancy.
+
+Concurrency
+Concurrency is an important factor while designing an enterprise database. 
+In such a case, the data is read and written by many users at the same time.
+
+Integration
+The process of aggregating data from multiple sources is a common practice in enterprise applications. 
+A common way to perform this aggregation is to integrate a shared database where multiple applications store their data.
+This way, all the applications can easily access each other’s data while the concurrency control measures handle the access of multiple applications.
+
+Backup and disaster recovery
+Relational databases guarantee the state of data is consistent at any tim
+
+Cons
+Impedance mismatch is the difference between the relational model and the in-memory data structures
+
+
+*NoSQL*
+
+A NoSQL database is designed for a variety of data models to access and manage data. 
+There are various types of NoSQL databases. 
+These databases are used in applications that require a large volume of semi-structured and unstructured data, low latency, and flexible data models. 
+This can be achieved by relaxing some of the data consistency restrictions of other databases.
+- Simple design: Unlike relational databases, NoSQL doesn’t require dealing with the impedance mismatch.
+- Horizontal scaling: Primarily, NoSQL is preferred due to its ability to run databases on a large cluster. This solves the problem when the number of concurrent users increases. 
+- Availability: To enhance the availability of data, node replacement can be performed without application downtime. Most of the non-relational databases’ variants support data replication to ensure high availability and disaster recovery.
+- Support for unstructured and semi-structured data: Many NoSQL databases work with data that doesn’t have schema at the time of database configuration or data writes.
+- Cost: Licenses for many RDBMSs are pretty expensive, while many NoSQL databases are open source and freely available.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 24 jan 23
 **System design - Load balancer**
 Millions of requests could arrive per second in a typical data center. 
