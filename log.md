@@ -5,6 +5,279 @@
 |     |Learnt, thoughts, progress, ideas, links|
 
 ---------------------------------------------------------
+## 12 feb 23
+**Распространение знаний**
+
+Определить текущие проблемы и боли, связанные с распространением знаний. В этом могут помочь такие инструменты:
+- Интервью с членами вашей и других команд с вопросами: "Когда вы последний раз что-то пытались выяснить о нашем проекте и не могли этого найти?", "В каких областях нашего проекта разбирается слишком мало людей?", "Чему вы хотели бы научиться у кого-то из команды?", "Расскажите, как устроена архитектура нашего продукта".
+- Изучение вопросов, которые задают в канале вашей команды или продукта в мессенджере. Если какие-то из них повторяются, это сигнал о том, что соответствующей информации нет, либо её тяжело найти.- 
+- Пообщайтесь с новичками и узнайте, с какими сложностями они столкнулись в период онбординга.
+
+Постепенно пробовать разные способы распространения знаний, которые могут помочь вам в решении ваших проблем.
+- Ведение базы знаний в Confluence, Quip, Notion или другой системе;
+- Организация командного Stack Overflow;
+- Отдельный чат в мессенджере для Q&A;
+- Регулярные внутренние технические митапы;
+- Архитектурные и code ревью;
+- Технический радар;
+- Рассылки про изменения в технологиях и продукте;
+- Краткие дайджесты в командном чате;
+- Общие демо или стендапы;
+
+**Плюсы**
+- Провести интервью, получить ответы на вопросы, составить более качественную документацию.
+- Формализовать видео из митапов, в документацию.
+- Пообщаться с новичками, пересмотреть подход к составлению документации.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 11 feb 23
+**Оптимизация тестирования**
+
+Оптимизация тестирования — это выработка такой стратегии тестирования, которая позволит минимальными средствами снижать критичные риски по продукту.
+
+Менеджер:
+- Влияет на скорость доставки фичи до боя;
+- Понимает, почему тестирование проводится так и занимает столько времени;
+
+Разработчик:
+- Понимает, что делают тестировщики и что от них ждать;
+- Влияет на тестирование — от unit-тестов до testability;
+
+Тестировщик:
+- Понимает, что тестировать и насколько подробно;
+- Чувствует меньше давления, что тестирование замедляет процесс работы команды;
+- Участвует в тестировании вместе с командой;
+
+Прежде чем оптимизировать то тестирование, которое у вас уже есть, или строить новый процесс, поймите зачем вам нужно тестирование и нужно ли на самом деле?
+Начните с того, что подумайте о рисках для вашего продукта. Опирайтесь на функциональные и нефункциональные требования. Например:
+
+- Что будет, если вы выпустите продукт с багом?
+- Насколько много ваших пользователей это затронет?
+- Насколько сложно будет пользоваться продуктом с этим багом? Будет ли это вообще возможно?
+- Что будет, если ваш продукт будет сложно поддерживать?
+- Что будет, если ваш продукт будет уязвим для взлома?
+- Что будет, если в вашем продукте будет сложно разобраться пользователям?
+- Как быстро вы поймёте, что у вас баг на бою и оцените, насколько он критичный?
+- Как быстро вы исправите баг, который нашли на бою?
+
+Чтобы снизить эти риски, используется три процесса — тестирование, проверку и мониторинг.
+- Тестирование — это процесс исследования и изучения продукта. Когда вы тестируете, вы узнаете как программа работает на самом деле, ну или не работает. 
+Тестировщики не просто проверяют ТЗ, а используют всю свою креативность, опыт и знание продукта. 
+Тестирование нельзя автоматизировать, как нельзя автоматизировать человеческое мышление.
+
+- Проверка — подтверждение существующих ожиданий. Когда вы что-то проверяете — точно знаете, что должны получить, и убеждаетесь, что 2+2 все так же равно 4. 
+Многие проверки можно эффективно автоматизировать.
+
+- Мониторинг — процесс выявления проблем, которые возникают на бою у пользователей. Включите в него как технические показатели, так и показатели работы бизнеса. 
+Важно, чтобы вы могли быстро среагировать на проблему — выкатить фикс или откатить проблемный код.
+
+Если вы знаете, что определённые проблемы будут критичны для вашего бизнеса, то нужно тщательно тестировать и проверять места, в которых они могут быть. 
+Например, важно, чтобы пользователи могли оплатить ваш продукт. Или баги могут подорвать доверие к вашему продукту, например если вы разрабатываете платёжную систему. 
+Важно помнить, что нельзя протестировать абсолютно все и на 100% знать, что все работает. Но можно снизить риски.
+Когда вы разрабатываете MVP — вам надо убедиться, что ваш продукт жизнеспособен. А значит можно ограничиться минимальными проверками.
+На этой базе составить стратегию тестирования. *Каждый человек в команде должен понимать, что мы тестируем, где и зачем.*
+
+**Плюсы**
+- Надо подумать как сделать процесс тестирования прозрачным и понятным со всех сторон (менеджеры, разработчики, тестировщики).
+- Надо ответить на вопросы про функциональные/не функциональные требования и выявить основные точки оптимизации;
+- Надо подумать как улучшить мониторинг выпущенных фич на продакшене.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 10 feb 23
+**Обратная связь**
+
+Нужна для корректировки поведения и результатов работы сотрудника. 
+Всю работу с обратной связью можно разделить на два процесса: сбор и дача сотруднику. 
+Обратная связь характеризуется двумя главными свойствами – своевременностью и полнотой. 
+Нахождение правильного баланса - главная задача.
+
+Тимлид должен обеспечить поступление обратной связи к сотруднику. 
+В самом базовом варианте всю обратную связь он пропускает через себя, в более продвинутом – обучает команду ценности обратной связи, способам её дачи и способствует развитию соответствующей культуры.
+
+Типы:
+- Периодическая. Привязана к какому-то циклу – регулярных встреч, целеполагания, календарному.
+- Постоянная. Даётся сотруднику по ходу работы, без проведения дополнительных ритуалов по её сбору и обработке. 
+- Ситуативная. Даётся в какой-то определённый момент времени, чаще с привязкой к какому-то событию.
+
+Примеры плохого поведения
+- Дача обратной связи без запроса;
+- Даётся только корректирующая обратная связь;
+- Даётся только позитивная обратная связь;
+- Отсылается сотруднику в виде отчёта письмом через несколько недель;
+
+Примеры хорошего поведения
+- Обратная связь даётся только после разрешения сотрудника, которому она предназначена;
+- Обратная связь сбалансирована, т.е. содержит и зоны роста и позитивные моменты;
+- Обратная связь адресуется сотруднику в личной беседе;
+- Обратная связь своевременна, т.е. даётся сразу после наблюдаемого поведения;
+- Обратная связь конструктивна, даны объяснения, какое поведение правильное/не правильное;
+- Запрашивать обратную связь у окружающих по своему поведению;
+
+**Плюсы**
+- Сотрудник понимает, над чем ему стоит поработать, прорабатывается на тет-а-тетах.
+- Повторяющееся поведение, нужно уметь обрабатывать не сильно давя на сотруднику, людей бывает трудно поменять.
+
+**Минусы**
+- Можно переборщить с описанием минусов, нужно быть аккуратнее и начинать с позитивных моментов.
+
+---------------------------------------------------------
+
+---------------------------------------------------------
+## 9 feb 23
+**System design - CDN**
+
+Periodic polling#
+Using the pull model, proxy servers request the origin server periodically for updated data and change the content in the cache accordingly. 
+When content changes infrequently, the polling approach consumes unnecessary bandwidth. 
+Periodic polling uses time-to-refresh (TTR) to adjust the time period for requesting updated data from the origin servers
+
+Because of the TTR, the proxy servers may uselessly request the origin servers for updated data. 
+A better approach that could be employed to reduce the frequency of refresh messages is the time-to-live (TTL) approach. 
+In this approach, each object has a TTL attribute assigned to it by the origin server. 
+The TTL defines the expiration time of the content. The proxy servers serve the same data version to the users until that content expires.
+ Upon expiration, the proxy server checks for an update with the origin server. 
+If the data is changed, it gets the updated data from the origin server and then responds to the user’s requests with the updated data. 
+Otherwise, it keeps the same data with an updated expiration time from the origin servers.
+
+The CDN proxy servers must be placed at network locations with good connectivity
+- On-premises represents a smaller data center that could be placed near major IXPs.
+- Off-premises represents placing CDN proxy servers in ISP’s networks.
+
+Minimizing latency. Some of the key design decisions that minimize latency are as follows:
+- Proxy servers usually serve content from the RAM.
+- CDN proxy servers are placed near the users to provide faster access to content.
+- A CDN can also be the provider of proxy servers located in the ISP or Internet exchange points (IXPs) to handle high traffic.
+- The request routing system ensures that users are directed to the nearest proxy servers.
+- The proxy servers have long-tail content stored in nonvolatile storage systems like SSD or HDD.
+
+Long-tail content
+= proxy servers can be implemented in layers where if one layer doesn’t have the content, the request can be entertained by the next layer of proxy servers. 
+For example, the edge proxy servers can request the parent proxy servers. 
+Placing proxy servers at specific ISPs could be the best option when most traffic comes from those ISP regions.
+
+CDN ensures availability through its cached content that serves as a backup whenever the origin servers fail. 
+ Moreover, if one or more proxy servers in the CDN stop working, other operational proxy servers step in and continue to drive the web traffic. 
+ In addition, edge proxy servers can be made available through redundancy by replicating data to as many proxy servers as needed to avoid a single point of failure and to meet the request load. 
+ Finally, we can use a load balancer to distribute the users’ requests to nearby active proxy servers.
+
+CDN ensures no single failure point by carefully implementing maintenance cycles and integrating additional hardware and software when required. 
+Apart from failures, the CDN handles massive traffic loads by equally distributing the load to the edge proxy servers. 
+We can use scrubber servers to prevent DDoS attacks and securely host content.
+Moreover, we can use the heartbeat protocol to monitor the health of servers and omit faulty servers. 
+Real-time applications also build their own specified CDNs to prevent content leakage problems and securely serve content to their end users.
+
+**Pluses**
+- Minimizing latency for dymanic/static content delivering;
+- Leveraging single point of failure, content is distributed in CDN.
+- Faster content delivering because of caching;
+
+**Minuses**
+- Sometimes it is better to use own infrastructure for CDN to ensure availability, security and total control, it also can be combined with cloud CDN.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 8 feb 23
+**System design - CDN**
+
+Since dynamic content often changes, it’s a good idea to cache it optimally.
+It’s optimal to run the scripts at proxy servers instead of the origin servers.
+To reduce the communication between the origin server and proxy servers and storage requirements at proxy servers, it’s useful to employ compression techniques as well. 
+For example, Cloudflare uses Railgun to compress dynamic content.
+
+The content provider sends the content to a large number of clients through a CDN. 
+The task of distributing data to all the CDN proxy servers simultaneously is challenging and burdens the origin server significantly.
+
+The tree structure for data distribution allows us to scale our system for increasing users by adding more server nodes to the tree. 
+It also reduces the burden on the origin server for data distribution. 
+A CDN typically has one or two tiers of proxy servers (caches).
+
+There are two important factors that are relevant to finding the nearest proxy server to the user:
+Network distance between the user and the proxy server is crucial. This is a function of the following two things:
+- The first is the length of the network path.
+- The second is the capacity (bandwidth) limits along the network path.
+
+The shortest network path with the highest capacity (bandwidth) is the nearest proxy server to the user in question. 
+This path helps the user download content more quickly.Requests load refers to the load a proxy server handles at any point in time. 
+If a set of proxy servers are overloaded, the request routing system should forward the request to a location with a lesser load. 
+This action balances out the proxy server load and, consequently, reduces the response latency.
+Let’s look at the techniques that can be used to route users to the nearest proxy server.
+
+In a typical DNS resolution, we use a DNS system to get an IP against a human-readable name. 
+However, the DNS can also return another URI (instead of an IP) to the client. Such a mechanism is called DNS redirect
+
+There are two steps in the DNS redirection approach:
+- In the first step, it maps the clients to the appropriate network location.
+- In the second step, it distributes the load over the proxy servers in that location to balance the load among the proxy servers
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 7 feb 23
+**System design - CDN**
+
+Designing Api methods
+- Retrieve (proxy server to origin server). If the proxy servers request content, the GET method retrieves the content through
+- Deliver (origin server to proxy servers). The origin servers use this API to deliver the specified content, theupdated version, to the proxy servers through the distribution system.
+- Request (clients to proxy servers). The users use this API to request the content from the proxy servers.
+- Search (proxy server to peer proxy servers). Although the content is first searched locally at the proxy server, the proxy servers can also probe requested content in the peer proxy servers in the same PoP through the /searchContent API. This could flood the query to all proxy servers in a PoP.
+- Update (proxy server to peer proxy servers). The proxy servers use the /updateContent API to update the specified content in the peer proxy servers in the PoP.
+
+Push/Pull models.
+Push CDN - Content gets sent automatically to the CDN proxy servers from the origin server in the push CDN model. 
+The content delivery to the CDN proxy servers is the content provider’s responsibility. 
+Push CDN is appropriate for static content delivery, where the origin server decides which content to deliver to users using the CDN. 
+The content is pushed to proxy servers in various locations according to the content’s popularity. 
+If the content is rapidly changing, the push model might struggle to keep up and will do redundant content pushes
+
+Pull CDN - A CDN pulls the unavailable data from origin servers when requested by a user. 
+The proxy servers keep the files for a specified amount of time and then remove them from the cache if they’re no longer requested to balance capacity and cost.
+When users request web content in the pull CDN model, the CDN itself is responsible for pulling the requested content from the origin server and serving it to the users. 
+Therefore, this type of CDN is more suited for serving dynamic content.
+
+The push CDN is mostly used for serving static content. 
+Since static content is served to a wide range of users for longer than dynamic content, the push CDN scheme maintains more replicas than the pull CDN, thus improving availability. O
+n the other hand, the pull CDN is favored for frequently changing content and a high traffic load.
+Low storage consumption is one of the main benefits of the pull CDN.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 6 feb 23
+**System design - CDN**
+
+A CDN is a group of geographically distributed proxy servers. 
+A proxy server is an intermediate server between a client and the origin server. 
+The proxy servers are placed on the network edge. As the network edge is close to the end users, the placement of proxy servers helps quickly deliver the content to the end users by reducing latency and saving bandwidth. 
+A CDN has added intelligence on top of being a simple proxy server.
+
+Functional requirements#
+- Retrieve: CDN should be able to retrieve content from the origin servers.
+- Request: Content delivery from the proxy server is made upon the user’s request.
+- Deliver: In the case of the push model, the origin servers should be able to send the content to the CDN proxy servers.
+- Search: The CDN should be able to execute a search against a user query for cached or otherwise stored content within the CDN infrastructure.
+- Update: In most cases, content comes from the origin server, but if we run script in CDN, the CDN should be able to update the content within peer CDN proxy servers in a PoP.
+- Delete: Depending upon the type of content (static or dynamic), it should be possible to delete cached entries from the CDN servers after a certain period.
+
+Non-functional requirements#
+- Performance: Minimizing latency.
+- Availability: CDNs are expected to be available at all times because of their effectiveness. Availability includes protection against attacks like DDoS.
+- Scalability: An increasing number of users will request content from CDNs.
+- Reliability and security: Our CDN design should ensure no single point of failure. Apart from failures, the designed CDN must reliably handle massive traffic loads. 
+
+Components:
+- Clients: End users use various clients, like browsers, smartphones, and other devices.
+- Routing system: The routing system directs clients to the nearest CDN facility.
+- Scrubber servers: Scrubber servers are used to separate the good traffic from malicious traffic and protect against well-known attacks, like DDoS.
+- Proxy servers: The proxy or edge proxy servers serve the content from RAM to the users. Proxy servers store hot data in RAM, though they can store cold data in SSD or hard drive as well.
+- Distribution system: The distribution system is responsible for distributing content to all the edge proxy servers to different CDN facilities.
+- Origin servers: The CDN infrastructure facilitates users with data received from the origin servers.
+- Management system: The management systems are important in CDNs from a business and managerial aspect where resource usage and statistics are constantly observed.
+
+---------------------------------------------------------
+
+---------------------------------------------------------
 ## 3 feb 23
 **System design - Databases partiotining**
 
