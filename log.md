@@ -3,7 +3,167 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+---------------------------------------------------------
+## 16 feb 23
+**Camunda DMN**
 
+After talking to chat gpt, i realized that DMN can be executed in code. What's awesome.
+But i found only one c# library, which can execute DMN (built insise camunda modeler).
+I will try to use Java camunda DMN engine, to compare speed (maybe i have to port it later..)
+
+**Pluses**
+- Decision can be visualized in a better way and language, instead of using a lot conditions in code.
+**Minuses**
+- Execution of one simple decision can took over 200ms, that's too much.
+
+https://github.com/zolotarevandrew/camunda/blob/main/CamundaTests/CamundaDmnTests/SimpleDecisionTest.cs
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 15 feb 23
+**System Design - Monitoring**
+
+In a distributed system, clients often access the service via an HTTP request. 
+We can monitor our web and application servers’ logs if a request fails to process. 
+If multiple requests fail, we can observe a spike in internal errors (error 500).
+
+There are many factors that can cause failures that can result in clients being unable to reach the server. These include the following:
+- Failure in DNS name resolution.
+- Any failure in routing along the path from the client to the service provider.
+- Any failures with third-party infrastructure, such as middleboxes and content delivery networks (CDNs)
+
+To ensure that the client’s requests reach the server, we’ll act as clients and perform reachability and health checks. 
+We’ll need various vantage points across the globe. W
+e can run a service, let’s call it prober, that periodically sends requests to the service to check availability.
+This way, we can monitor reachability to our service from many different places
+Problems
+- Incomplete coverage: We might not have good coverage across all autonomous systems. 
+There are 100,000 unique autonomous systems on the Internet as of March 2021. 
+It’s not cost-effective or even possible to put those many probes across the globe. C
+ountry or ISP-specific regulations and the need for periodic maintenance are additional hurdles to implementing such a scheme.
+- Lack of user imitation: Such probes might not represent a typical user behavior to explain how a typical user will use the service.
+
+Instead of using a prober on vantage points, we can embed the probers into the actual application instead. 
+We’ll have the following two components
+- Agent: This is a prober embedded in the client application that sends the appropriate service reports about any failures.
+- Collector: This is a report collector independent of the primary service. 
+It’s made independent to avoid the situations where client agents want to report an error to the failed service. 
+We summarize errors reports from collectors and look for spikes in the errors graph to see client-side issues
+- Data processing systems. We can place them near the client network, and over time, we can accumulate these statistics from all such localized sites. W
+e’ll use online stream processing systems to make such a system near real-time.
+ If we’re mainly looking for summary statistics, our system can tolerate the loss of some error reports. 
+ Some reports will be relative to the overall user population. 
+ We might say 1% of service users are “some.” 
+ If we don’t want to lose any reports, we’ll need to design a system with more care, which will be more expensive
+
+Solution can be to use a client-side application that the service controls, and then we can easily include such headers over HTTP.
+The client can fill in the request header if the client has already consented to that. The service can then reply with appropriate values for the policy and collection endpoints
+
+The collectors need to be in a different failure domain from the web service endpoint that we’re trying to monitor. 
+The client side can try various collectors in different failure domains until one works. 
+We can see a similar pattern in the following examples. 
+At times, we refer to such a phenomenon as being outside the blast radius of a fault.
+
+The human user who uses the client-side software should be in full control to precisely know what data is collected and sent with each request. The user should also be able to reactivate the feature any time they wish. If we use our client-side application (and not a browser application), we have a lot of flexibility in what diagnostic could be included in the report. For a browser-based client, we can avoid the following information:
+
+- In a distributed system, it’s difficult to detect and respond to errors on the client side. 
+So, it’s necessary to monitor such events to provide a good user experience.
+- We can handle errors using an independent agent that sends service reports about any failures to a collector. 
+Such collectors should be independent of the primary service in terms of infrastructure and deploy
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 14 feb 23
+**System Design - Monitoring**
+
+Monitoring system should do for us:
+- Monitor critical local processes on a server for crashes.
+- Monitor any anomalies in the use of CPU/memory/disk/network bandwidth by a process on a server.
+- Monitor overall server health, such as CPU, memory, disk, network bandwidth, average load, and so on.
+- Monitor hardware component faults on a server, such as memory failures, failing or slowing disk, and so on.
+- Monitor the server’s ability to reach out-of-server critical services, such as network file systems and so on.
+- Monitor all network switches, load balancers, and any other specialized hardware inside a data center.
+- Monitor power consumption at the server, rack, and data center levels.
+- Monitor any power events on the servers, racks, and data center.
+- Monitor routing information and DNS for external clients.
+- Monitor network links and paths’ latency inside and across the data centers.
+- Monitor network status at the peering points.
+- Monitor overall service health that might span multiple data centers—for example, a CDN and its performance
+
+The high-level components of our monitoring service are the following:
+- Storage: A time-series database stores metrics data, such as the current CPU use or the number of exceptions in an application.
+- Data collector service: This fetches the relevant data from each service and saves it in the storage.
+- Querying service: This is an API that can query on the time-series database and return the relevant information
+
+Monitoring systems are critical in distributed systems because they help in analyzing the system and alerting the stakeholders if a problem occurs.
+We can make a monitoring system scalable using a hybrid of the push and pull methods.
+Heat maps are a powerful tool for visualization and help us learn about the health of thousands of servers in a compact space
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 13 feb 23
+**System Design - Monitoring**
+
+To avoid cascading failures, monitoring can play a vital role with early warnings or steering us to the root cause of faults.
+
+Let’s consider a scenario where a user uploads a video, intro-to-system-design, to YouTube. 
+The UI service in server A takes the video information and gives the data to service 2 in server B. Service 2 makes an entry in the database and stores the video in blob storage. 
+Another service, 3, in server C manages the replication and synchronization of databases X and Y.
+In this scenario, service 3 fails due to some error, and service 2 makes an entry in the database X. 
+The database X crashes, and the request to fetch a video is routed to database Y. 
+The user wants to play the video intro-to-system-design, but it will give an error of “Video not found
+
+Having a monitoring system reduces operational costs and encourages an automated way to detect failures.
+Let’s consider an example to understand the types of errors we want to monitor. 
+At Educative, whenever a learner connects to an executable environment, a container is assigned. 
+Consider service 1 in server A, which is responsible for allocating a container whenever a learner connects. 
+Another service, 2 on server B takes this information and informs the service responsible for UI. The UI service running in server C updates the UI for the learner. 
+Let’s assume that service 2 fails because of some error, and the learner sees the error of “Cannot connect
+
+Type of errors:
+- Service-side errors: These are errors that are usually visible to monitoring services as they occur on servers. Such errors are reported as error 5xx in HTTP response codes.
+- Client-side errors: These are errors whose root cause is on the client-side. Such errors are reported as error 4xx in HTTP response codes. 
+Some client-side errors are invisible to the service when client requests fail to reach the service.
+
+A good monitoring system needs to clearly define what to measure and in what units (metrics). 
+The monitoring system also needs to define threshold values of all metrics and the ability to inform appropriate stakeholders (alerts) when values are out of acceptable ranges. 
+Knowing the state of our infrastructure and systems ensures service stability. 
+The support team can respond to issues more quickly and confidently if they have access to information on the health and performance of the deployments. 
+Monitoring systems that collect measurements, show data, and send warnings when something appears wrong are helpful for the support
+
+- In the reactive approach, corrective action is taken after the failure occurs. In this approach, even if DevOps takes quick action to find the cause of the error and promptly handle the failures, it causes downtime. As a result, there will be system downtime in the reactive approach, which is generally undesirable for continuously running applications.
+- In a proactive approach, proactive actions are taken before failure occurs. Therefore, it prevents downtimes and associated losses. 
+The proactive approach works on predicting system failures to take corrective action to avoid the failure. This approach offers better reliability by preventing downtime.
+
+In modern services, completely avoiding problems is not possible. 
+Something is always failing inside huge data centers and network deployments. 
+he goal is to find the impending problems early on and design systems in such a way that service faults are invisible to the end users
+
+Metrics objectively define what we should measure and what units will be appropriate. 
+Metric values provide an insight into the system at any point in time For example, 
+a web server’s ability to handle a certain amount of traffic per second or its ability to join a pool of web servers are examples of high-level data correlated with a component’s specific purpose or activity. 
+Another example can be measuring network performance in terms of throughput (megabits per second) and latency (round-trip time). 
+We need to collect values of metrics with minimal performance penalty. We may use user-perceived latency or the amount of computational resources to measure this penalty.
+
+The metrics should be logically centralized for global monitoring and alerting purposes. Fetching metrics is crucial to the monitoring system. Metrics can either be pushed or pulled into a monitoring system, depending on the preference of the user
+Time-series databases help maintain durability, which is an important factor. 
+Without a historical view of events in a monitoring system, it isn’t very useful. 
+Samples having a value of time stamp are stored in chronological sequence. 
+So, a whole metric’s timeline can be shown in the form of a time series.
+
+Alerting is the part of a monitoring system that responds to changes in metric values and takes action. 
+There are two components to an alert definition: a metrics-based condition or threshold, and an action to take when the values fall outside of the permitted range
+
+**Pluses**
+- Monitoring should enabled for Server and client sides to improve system observability.
+- Metrics should identified for each unique system, including standard metrics.
+- Alerting should be the one of main parts of system monitoring.
+- Metrics should be persisted in time series databases.
+
+
+---------------------------------------------------------
 ---------------------------------------------------------
 ## 12 feb 23
 **Распространение знаний**
