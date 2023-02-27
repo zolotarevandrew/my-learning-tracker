@@ -3,6 +3,224 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+
+---------------------------------------------------------
+## 23 feb 23
+**DMN engine passing dynamic variales**
+
+Tried to build dmn with dynamic variables, to select next step, still thinking about best solution.
+Previous was:
+- Stupid decision diagrams like bpmns;
+- Decision which routes to concrete decision;
+
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaDmnApiTests
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 22 feb 23
+**DMN engine passing dynamic variales**
+
+Tried to pass multiple dynamic variables, one worked normally, but with four it stopped working.
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaDmnApiTests
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 21 feb 23
+**DMN engine api test**
+
+Tried to use dmn engine inside api in release mode, because in tests it was like 500 ms to execute.
+
+So what i found was
+- Load dmn context into static variable on singleton scope reduces about 300ms;
+- Release mode reduces about 50-100ms;
+- Engine has inside caching mechanism, so it is better to hot execute some base decisions to be cached;
+
+https://github.com/zolotarevandrew/camunda/tree/main/CamundaTests/CamundaDmnApiTests
+
+---------------------------------------------------------
+## 21 feb 23
+**System Design - Distributed cache**
+
+functional requirements:
+- Insert data: The user of a distributed cache system must be able to insert an entry to the cache.
+- Retrieve data: The user should be able to retrieve data corresponding to a specific key
+
+non-functional requirements:
+- High performance: The primary reason for the cache is to enable fast retrieval of data. Therefore, both the insert and retrieve operations must be fast.
+- Scalability: The cache system should scale horizontally with no bottlenecks on an increasing number of requests.
+- High availability: The unavailability of the cache will put an extra burden on the database servers, which can also go down at peak load intervals. We also require our system to survive occasional failures of components and network, as well as power outages.-
+- Consistency: Data stored on the cache servers should be consistent. For example, different cache clients retrieving the same data from different cache servers (primary or secondary) should be up to date.
+- Affordability: Ideally, the caching system should be designed from commodity hardware instead of an expensive supporting component within the design of a system
+
+
+Then our data is large, we may require sharding and therefore use shard servers for cache partitions. 
+Should these shard servers be specialized or commodity hardware? 
+Specialized hardware will have good performance and storage capacity, but it will cost more.
+ We can build a large cache from commodity servers. 
+ In general, the number of shard servers will depend on the cache’s size and access frequency.
+
+We can consider storing our data on the secondary storage of these servers for persistence while we still serve data from RAM. 
+Secondary storage may be used in cases where a reboot happens, and cache rebuilding takes a long time. 
+Persistence, however, may not be a requirement in a cache system if there’s a dedicated persistence layer, such as a database
+
+The writing strategy over the cache and database has consistency implications. 
+In general, there’s no optimal choice, but depending on our application, the preference of writing policy is significantly important
+
+By design, the cache provides low-latency reads and writes. 
+To achieve this, data is often served from RAM memory. 
+Usually, we can’t put all the data in the cache due to the limited size of the cache as compared to the full dataset. 
+So, we need to carefully decide what stays in the cache and how to make room for new entries
+
+Cache client: This library resides in the service application servers. 
+It holds all the information regarding cache servers. The cache client will choose one of the cache servers using a hash and search algorithm for each incoming insert and retrieve request. 
+All the cache clients should have a consistent view of all the cache servers. 
+Also, the resolution technique to move data to and from the cache servers should be the same. 
+Otherwise, different clients will request different servers for the same data.
+
+Cache servers: These servers maintain the cache of the data. 
+Each cache server is accessible by all the cache clients. 
+Each server is connected to the database to store or retrieve data. C
+ache clients use TCP or UDP protocol to perform data transfer to or from the cache servers. 
+However, if any cache server is down, requests to those servers are resolved as a missed cache by the cache clients
+
+- Solution 1: It’s possible to have a configuration file in each of the service hosts where the cache clients reside. 
+The configuration file will contain the updated health and metadata required for the cache clients to utilize the cache servers efficiently. 
+Each copy of the configuration service can be updated through a push service by any DevOps tool. 
+The main problem with this strategy is that the configuration file will have to be manually updated and deployed through some DevOps tools.
+
+- Solution 2: We can store the configuration file in a centralized location that the cache clients can use to get updated information about cache servers. 
+This solves the deployment issue, but we still need to manually update the configuration file and monitor the health of each server.
+
+- Solution 3: An automatic way of handling the issue is to use a configuration service that continuously monitors the health of the cache servers. 
+In addition to that, the cache clients will get notified when a new cache server is added to the cluster. 
+When we use this strategy, no human intervention or monitoring will be required in case of failures or the addition of new nodes. 
+Finally, the cache clients obtain the list of cache servers from the configuration service.
+
+
+The second problem relates to cache unavailability if the cache servers fail. 
+A simple solution is the addition of replica nodes. 
+We can start by adding one primary and two backup nodes in a cache shard. 
+With replicas, there’s always a possibility of inconsistency. 
+If our replicas are in close proximity, writing over replicas is performed synchronously to avoid inconsistencies between shard replicas. 
+It’s crucial to divide cache data among shards so that neither the problem of unavailability arises nor any hardware is wasted
+
+
+Each cache client should use three mechanisms to store and evict entries from the cache servers:
+- Hash map: The cache server uses a hash map to store or locate different entries inside the RAM of cache servers. 
+The illustration below shows that the map contains pointers to each cache value.
+- Doubly linked list: If we have to evict data from the cache, we require a linked list so that we can order entries according to their frequency of access. 
+The illustration below depicts how entries are connected using a doubly linked list.
+- Eviction policy: The eviction policy depends on the application requirements. 
+Here, we assume the least recently used (LRU) eviction policy.
+
+
+Let’s summarize the proposed detailed design in a few points:
+- The client’s requests reach the service hosts through the load balancers where the cache clients reside.
+- Each cache client uses consistent hashing to identify the cache server. Next, the cache client forwards the request to the cache server maintaining a specific shard.
+- Each cache server has primary and replica servers. Internally, every server uses the same mechanisms to store and evict cache entries.
+- Configuration service ensures that all the clients see an updated and consistent view of the cache servers.
+- Monitoring services can be additionally used to log and report different metrics of the caching service.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 20 feb 23
+**System Design - Distributed cache**
+
+A cache is a nonpersistent storage area used to keep repeatedly read and written data, which provides the end user with lower latency. 
+Therefore, a cache must serve data from a storage component that is fast, has enough storage, and is affordable in terms of dollar cost as we scale the caching service. 
+
+
+A distributed cache is a caching system where multiple cache servers coordinate to store frequently accessed data. 
+Distributed caches are needed in environments where a single cache server isn’t enough to store all the data. 
+At the same time, it’s scalable and guarantees a higher degree of availability.
+
+Caches are generally small, frequently accessed, short-term storage with fast read time. Caches use the locality of reference principle
+
+When the size of data required in the cache increases, storing the entire data in one system is impractical. This is because of the following three reasons:
+- It can be a potential single point of failure (SPOF).
+- A system is designed in layers, and each layer should have its caching mechanism to ensure the decoupling of sensitive data from different layers.
+- Caching at different locations helps reduce the serving latency at that layer.
+
+
+Often, cache stores a copy (or part) of data, which is persistently stored in a data store. When we store data to the data store, some important questions arise:
+- Where do we store the data first? Database or cache?
+- What will be the implication of each strategy for consistency models
+
+
+*Write-through cache*: The write-through mechanism writes on the cache as well as on the database. 
+Writing on both storages can happen concurrently or one after the other. 
+This increases the write latency but ensures strong consistency between the database and the cache
+
+*Write-back cache*: In the write-back cache mechanism, the data is first written to the cache and asynchronously written to the database. 
+Although the cache has updated data, inconsistency is inevitable in scenarios where a client reads stale data from the database.
+However, systems using this strategy will have small writing latency.
+
+
+*Write-around cache*: This strategy involves writing data to the database only. 
+Later, when a read is triggered for the data, it’s written to cache after a cache miss. 
+The database will have updated data, but such a strategy isn’t favorable for reading recently updated data
+
+
+One of the main reasons caches perform fast is that they’re small. Small caches mean limited storage capacity. 
+Therefore, we need an eviction mechanism to remove less frequently accessed data from the cache
+
+Several well-known strategies are used to evict data from the cache. The most well-known strategies include the following:
+- Least recently used (LRU)
+- Most recently used (MRU)
+- Least frequently used (LFU)
+- Most frequently used (MFU)
+Other strategies like first in, first out (FIFO) also exist. The choice of each of these algorithms depends on the system the cache is being developed for
+
+
+The situation demands a question: How do we identify stale entries?
+Resolution of the problem requires storing metadata corresponding to each cache entry. 
+Specifically, maintaining a time-to-live (TTL) value to deal with outdated cache items
+
+
+We can use two different approaches to deal with outdated items using TTL:
+- Active expiration: This method actively checks the TTL of cache entries through a daemon process or thread.
+- Passive expiration: This method checks the TTL of a cache entry at the time of access.
+Each expired item is removed from the cache upon discovery
+
+- Which data should we store in which cache servers?
+- What data structure should we use to store the data
+
+It’s possible to use hashing in two different scenarios:
+- Identify the cache server in a distributed cache to store and retrieve data.
+- Locate cache entries inside each cache server.
+
+For the first scenario, we can use different hashing algorithms. 
+However, consistent hashing or its flavors usually perform well in distributed systems because simple hashing won’t be ideal in case of crashes or scaling
+
+
+We’ll use a doubly linked list. The main reason is its widespread usage and simplicity. 
+Furthermore, adding and removing data from the doubly linked list in our case will be a constant time operation. 
+This is because we either evict a specific entry from the tail of the linked list or relocate an entry to the head of the doubly linked list. 
+Therefore, no iterations are required.
+
+
+Note: Bloom filters are an interesting choice for quickly finding if a cache entry doesn’t exist in the cache servers. 
+We can use bloom filters to determine that a cache entry is definitely not present in the cache server, but the possibility of its presence is probabilistic. 
+Bloom filters are quite useful in large caching or database systems.
+
+
+To avoid SPOF and high load on a single cache instance, we introduce sharding. 
+Sharding involves splitting up cache data among multiple cache servers. It can be performed in the following two ways
+
+Dedicated cache servers
+In the dedicated cache servers method, we separate the application and web servers from the cache servers.
+The advantages of using dedicated cache servers are the following:
+- There’s flexibility in terms of hardware choices for each functionality.
+- It’s possible to scale web/application servers and cache servers separately.
+
+The co-located cache embeds cache and service functionality within the same host.
+The main advantage of this strategy is the reduction in CAPEX and OPEX of extra hardware. 
+Furthermore, with the scaling of one service, automatic scaling of the other service is obtained. 
+However, the failure of one machine will result in the loss of both services simultaneously
+
+---------------------------------------------------------
 ---------------------------------------------------------
 ## 19 feb 23
 **Управление приоритетами**
@@ -48,7 +266,6 @@
 **Плюсы**
 - Попробую использовать RICE подход.
 
-#Консультации
 ---------------------------------------------------------
 ---------------------------------------------------------
 ## 17 feb 23
