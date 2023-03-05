@@ -3,7 +3,371 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+---------------------------------------------------------
+## 4 mar 23
+**Тимлид - стратегическое видение**
+Стратегии в рамках компании можно условно разделить на четыре уровня:
+- Стратегия компании. В эту категорию включаются глобальные решения о курсе компании, о её положении на рынке. 
+Обычно такие решения принимаются владельцами и топ-менеджерами компании.
 
+- Стратегия продукта. Если у компании имеется несколько продуктов, то каждый продукт может иметь собственную стратегию развития. 
+К примеру, решение о переходе на новый технологический стек может быть продиктовано вероятными грядущими изменениями в бизнес-модели продукта.
+
+- Стратегия команды. Например, понимание того, как может измениться модель вашего взаимодействия с клиентами под воздействием внутренних и внешних факторов, 
+может помочь принять решение о необходимости смены методологии разработки.
+
+- Индивидуальная стратегия. У каждого человека есть и своя личная стратегия развития и роста. 
+Вы можете влиять на стратегии членов своей команды. Например, если вы ожидаете, что в скором времени в ваш продукт нужно будет внедрять машинное обучение, 
+вы можете включить соответствующий пункт в план индивидуального развития одного из аналитиков.
+
+Задача тимлида - формировать стратегическое видение на своём уровне ответственности таким образом, 
+чтобы его курс совпадал с направлением более высокоуровневых стратегий. 
+Не стоит ожидать, что формирование стратегии приведёт к быстрому, заметному результату, в краткосрочной перспективе ваши стратегические решения могут даже привести к временному снижению эффективности.
+
+Стратегия должна отвечать на несколько ключевых вопросов:
+- В чем цель и смысл существования нашей компании (продукта, команды)?
+- Какие способы достижения цели мы будем использовать?
+- Какие компетенции и ресурсы необходимы, чтобы использовать эти способы?
+- Какие инструменты мы будем использовать для мониторинга стратегии и оценки её результатов?
+
+Примеры плохого поведения
+- Описание стратегии носит хаотичный характер, является простым набором всех входных факторов и непонятно вашей команде или другим менеджерам;
+- Стратегия непрозрачна и недоступна для ознакомления и оценки другим членам команды;
+- Стратегия слишком размыта или нереалистична, не учитывает ограничения по имеющимся ресурсам;
+- Стратегии разных уровней (компании, продуктов, команд, людей) разрабатываются отдельно и никак не связаны друг с другом;
+- Стратегия формируется в ультимативном порядке и исходит от одного человека исключительно на основе его видения будущего;
+- Стратегия отсутствует в принципе, решения принимаются на основе их сиюминутной выгоды;
+- Ожидается, что формирование стратегии приведёт к какому-то быстрому заметному результату;
+- Стратегия формируется на слишком долгий срок и успевает устареть;
+
+Примеры хорошего поведения
+- Текущие, тактические решения сверяются с долгосрочной стратегией;
+- При этом стратегия регулярно проходит ревизию исходя из текущей ситуации, итеративно изменяется и адаптируется;
+- Стратегия соответствует конечным целям компании, не разрабатывается в вакууме, без понимания её назначения;
+- Степень следования стратегии измеряется с помощью понятных, прозрачных метрик;
+- Перед разработкой стратегии производится сбор всей имеющейся информации - о команде, продукте, конкурентах, трендах и внешних факторах. По необходимости производятся консультации экспертов;
+- Стратегия не насаждается сверху директивно, её основные положения объясняются и защищаются;
+- Хорошая стратегия сфокусирована, не распыляется между большим количеством действий, интересов и альтернатив
+
+https://tlroadmap.io/self-skills/thinking/strategic-vision.html
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 3 mar 23
+**Тимлид - принятие решений**
+
+Принятие решений — процесс по решению проблемы или улучшению ситуации, завершающийся выбором оптимального варианта.
+Процесс принятия решений может быть интуитивным и завершиться мгновенно, а также может быть рациональным и требовать много внимания, времени и других ресурсов.
+
+Для принятия решений необходимы ресурсы, чтобы предпринимать шаги к решению, 
+поэтому тимлид должен принимать решения в рамках соразмерных задач и проблем. 
+
+Если проблемы выходят за рамки его компетенции, нужно делегировать принятие решения тем, кто обладает соразмерными проблеме ресурсами, например, руководству. 
+В то же время, принятие решений в рамках соответствующих компетенций необходимо делегировать и специалистам команды.
+
+Примеры плохого поведения
+- Рассматривает слишком мало вариантов при принятии решения. Не рассматривает комбинацию вариантов: ограничивается выбором одного варианта, когда можно осуществить сразу оба.
+- И наоборот, распыляет и перегружает внимание избыточными вариантами.
+- Действует шаблонно, поэтому не может принять нестандартное решение в нестандартной ситуации.
+- Переоценивает первое импульсивное впечатление о проблеме и не принимает в расчёт новые аргументы, которые открылись в ходе решения. 
+Чрезмерно уверен в устоявшихся взглядах и не учитывает, что такие убеждения могут оказаться ошибочными.
+- Продолжает по инерции действовать в рамках ошибочного решения, которое принял ранее, даже когда осознал его нецелесообразность.
+- Не учитывает влияние своего эмоционального состояния, давления или стресса в момент принятия важного решения.
+- Откладывает решение, даже когда негативные обстоятельств уже усугубляются с течением времени.
+- И наоборот, принимает поспешные решения, когда ещё не созрел и испытывает нехватку ресурсов для решения.
+- Фокусируется на второстепенном, решает не ту задачу.
+- Выбирает путь наименьшего сопротивления.
+
+Примеры хорошего поведения
+- Использует лучшие практики при принятии решения — это путь, который уже кто-то прошёл.
+- Ищет решения на разных уровнях, расширяет круг рассматриваемых вариантов и заимствует идеи решений, начиная от соседней команды, до решений из совершенно другой индустрии.
+- Рассматривает одновременно несколько возможных решений, чем вводит здоровую конкуренцию вариантов решения и тем предотвращает риск эмоциональной привязанности к единственному варианту 
+и невозможности вовремя его отбросить при несостоятельности.
+- Если проблема простая и не требуется учитывать множества факторов, то принимает решение быстро и интуитивно, этим затрачивает целесообразное количество времени и ресурсов.
+
+Практика
+
+Вести post-mortem проблем и принятых решений, анализировать их эффективность постфактум и так улучшать результаты будущих решений.
+Если есть время и ресурсы и необходимо учитывать большой объем критериев, принимает выверенное аналитическое решение по следующим этапам:
+- Выявляет проблему.
+- Осмысливает проблему и формулирует задачи.
+- Определяет цели.
+- Собирает информацию, определяет множество альтернатив.
+- Оценивает эти альтернативы по критериям.
+- Определяет шкалу критериев принятия решения.
+- Переходит от субъективных оценок к числовым.
+- Устанавливает пороги отсечения — по каким критериям будут отметаться неподходящие варианты.
+- Оценивает результат и решает, есть ли необходимость пересмотра оценок, шкал и порогов отсечения.
+- Выбирает процедуры обобщения некоторых оценок.
+- Переходит к реализации выбранного варианта.
+
+В сложных и составных задачах на этом последнем этапе использует итеративный метод: окончательно оценивает выбор и решение и если что-то не так — возвращается назад к первому этапу.
+
+https://tlroadmap.io/self-skills/thinking/decision-making.html
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 2 mar 23
+**System Design - Distributed queue**
+
+Back-end service - This is the core part of the architecture where major activities take place.
+When the frontend receives a message, it refers to the metadata service to determine the host where the message needs to be sent. 
+The message is then forwarded to the host and is replicated on the relevant hosts to overcome a possible availability issue. 
+The message replication in a cluster on different hosts can be performed using one of the following two models:
+
+- Primary-secondary model. Each node is considered a primary host for a collection of queues. 
+The responsibility of a primary host is to receive requests for a particular queue and be fully responsible for data replication. 
+The request is received by the frontend, which in turn communicates with the metadata service to determine the primary host for the request.
+
+For example, suppose we have two queues with the identities 101 and 102 residing on four different hosts A, B, C, and D. 
+In this example, instance B is the primary host of queue 101 and the secondary hosts where the queue 101 is replicated are A and C. 
+As the frontend receives message requests, it identifies the primary server from the internal cluster manager through the metadata service. 
+The message is retrieved from the primary instance, which is also responsible for deleting the original message upon usage and all of its replicas.
+
+The internal cluster manager is a component that’s responsible for mapping between the primary host, secondary hosts, and queues. 
+Moreover, it also helps in the primary host selection. Therefore, it needs to be reliable, scalable, and performant
+
+- A cluster of independent hosts. We have several clusters of multiple independent hosts that are distributed across data centers. 
+As the frontend receives a message, it determines the corresponding cluster via the metadata service from the external cluster manager. 
+The message is then forwarded to a random host in the cluster, which replicates the message in other hosts where the queue is stored.
+The same process is applied to receive message requests from the consumer. Similar to the first approach, the randomly selected host is responsible for message delivery and cleanup upon a successful processing of the message.
+Furthermore, another component called an external cluster manager is introduced, which is accountable for maintaining the mapping between queues and clusters. 
+The external cluster manager is also responsible for queue management and cluster assignment to a particular queue.
+
+
+Functional requirements
+- Queue creation and deletion: When a request for a queue is received at the frontend, the queue is created with all the necessary details provided by the client after undergoing some essential checks. 
+The corresponding cluster manager assigns servers to the newly created queue and updates the information in the metadata stores and caches through a metadata service.
+Similarly, the queue is deleted when the client doesn’t need it anymore. The responsible cluster manager deallocates the space occupied by the queue and, consequently, deletes the data from all the metadata stores and caches.
+
+- Send and receive messages: Producers can deliver messages to specific queues once they are created. 
+At the backend, receiving messages are sorted based on time stamps to preserve their order and are placed in the queue. Similarly, a consumer can retrieve messages from a specified queue.
+
+- Message deletion: Primarily, two options are used to delete a message from a queue.
+The first option is to not delete a message after it’s consumed. 
+However, in this case, the consumer is responsible for keeping track of what’s consumed. 
+For this, we need to maintain the order of messages in the queue and keep track of a message within a queue. 
+A job can then delete the message when the expiration conditions are met. Apache Kafka mostly uses this idea where multiple processes can consume a message.
+The second approach also doesn’t delete a message after it’s consumed. However, it’s made invisible for some time via an attribute—for example, visibility_timeout. 
+This way, the other consumers are unable to get messages that have already been consumed. 
+The message is then deleted by the consumer via an API call.
+
+In both cases, the message being retrieved by the consumer is only deleted by the consumer. 
+The reason behind this is to provide high durability if a consumer can’t process a message due to some failure. 
+In such a case, in the absence of a delete call, the consumer can retrieve the message again when it comes back.
+Moreover, this approach also provides at-least-once delivery semantic. For example, when a worker fails to process the message, another worker can retrieve the message after it becomes visible in the queue.
+
+Non-functional requirements
+- Durability: To achieve durability, the queues’ metadata is replicated on different nodes. 
+Similarly, when a message is received, it’s replicated in the queues that reside on different nodes. 
+Therefore, if a node fails, other nodes can be used to deliver or retrieve messages.
+
+- Scalability: Our design components, such as front-end servers, metadata servers, caches, back-end clusters, and more are horizontally scalable.
+ We can add to or remove their capacity to match our needs. The scalability can be divided into two dimensions:
+Increase in the number of messages: When the number of messages touches a specific limit—say, 80%—the specified queue is expanded. 
+Similarly, the queue is shrunk when the number of messages drops below a certain threshold.
+Increase in the number of queues: With an increasing number of queues, the demand for more servers also increases, in which case the cluster manager is responsible for adding extra servers. 
+We commission nodes so that there is performance isolation between different queues. An increased load on one queue shouldn’t impact other queues.
+
+- Availability: Our data components, metadata and actual messages, are properly replicated inside or outside the data center, and the load balancer routes traffic around failed nodes. 
+Together, these mechanisms make sure that our system remains available for service under faults.
+
+- Performance: For better performance we use caches, data replication, and partitioning, which reduces the data reads and writes time. 
+Moreover, the best effort ordering strategy for ordering messages is there to use to increase the throughput and lower the latency when it’s necessary. 
+In the case of strict ordering, we also suggest time-window based sorting to potentially reduce the latency.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 1 mar 23
+**System Design - Distributed queue**
+
+High level design
+- Queue data is replicated using either a primary-secondary or quorum-like system inside a cluster. 
+Our service can use data partitioning if the queue gets too long to fit on a server. 
+We can use a consistent hashing-like scheme for this purpose, or we may use a key-value store where the key might be the sequence numbers of the messages. 
+In that case, each shard is appropriately replicated (refer to the Partition lesson for more details on this).
+- We also assume that our system can auto-expand and auto-shrink the resources as per the need to optimally utilize resources.
+
+Load balancer
+- The load balancer layer receives requests from producers and consumers, which are forwarded to one of the front-end servers. 
+This layer consists of numerous load balancers. Therefore, requests are accepted with minimal latency and offer high availability.
+
+Front-end service - (it is better to call it Application Service)
+The front-end service comprises stateless machines distributed across data centers. The frontend provides the following services:
+- Request validation: This ensures the validity of a request and checks if it contains all the necessary information.
+- Authentication and authorization: This service checks if the requester is a valid user and if these services are authorized for use to a requester.
+- Caching: In the front-end cache, metadata information is stored related to the frequently used queues. 
+Along with this, user-related data is also cached here to reduce request time to authentication and authorization services.
+- Request dispatching: The frondend is also responsible for calling two other services, the backend and the metadata store. 
+Differentiating calls to both of these services is one of the responsibilities of the frontend.
+- Request deduplication: The frontend also tracks information related to all the requests, therefore, it also prevents identical requests from being put in a queue. 
+Deciding what to do about duplicates might be as easy as searching a hash key in a store. If something is found in the store, this implies a duplicate and the message can be rejected.
+- Usage data collection: This refers to the collection of real-time data that can be used for audit purposes.
+
+Metadata service
+- This component is responsible for storing, retrieving, and updating the metadata of queues in the metadata store and cache.
+Whenever a queue is created or deleted, the metadata store and cache are updated accordingly. 
+The metadata service acts as a middleware between the front-end servers and the data layer. 
+Since the metadata of the queues is kept in the cache, the cache is checked first by the front-end servers for any relevant information related to the receipt of the request. 
+If a cache miss occurs, the information is retrieved from the metadata store and the cache is updated accordingly.
+
+If the metadata that needs to be stored is small and can reside on a single machine, then it’s replicated on each cluster server. 
+Subsequently, the request can be served from any random server. 
+In this approach, a load balancer can also be introduced between the front-end servers and metadata services
+
+If the metadata that needs to be stored is too large, then one of the following modes can be followed:
+- The first strategy is to use the sharding approach to divide data into different shards. 
+Sharding can be performed based on some partition key or hashing techniques, as was discussed in the lesson on database partitioning. 
+Each shard is stored on a different host in the cluster. 
+Moreover, each shard is also replicated on different hosts to enhance availability. 
+In this cluster-organization approach, the front-end server has a mapping table between shards and the hosts. 
+Therefore, the front-end server is responsible for redirecting requests to the host where the data is stored
+
+- The second approach is similar to the first one. However, the mapping table in this approach is stored on each host instead of just on the front-end servers. 
+Because of this, any random host can receive a request and forward it to the host where the data resides. This technique is suitable for read-intensive applications.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 28 feb 23
+**System Design - Distributed queue**
+A messaging queue is used to receive messages from producers. 
+
+These messages are consumed by the consumers at their own pace. Some operations are critical in that they require strict ordering of the execution of the tasks, driven by the messages in the queue. 
+For example, while chatting over a messenger application with a friend, the messages should be delivered in order; otherwise, such communication can be confusing, to say the least. 
+Similarly, emails received by a user from different users may not require strict ordering. 
+
+Therefore, in some cases, the strict order of incoming messages in the queue is essential, while many use cases can tolerate some reordering.
+
+Let’s discuss the following two categories of messages ordering in a queue:
+- Best-effort ordering
+- Strict ordering
+
+With the best-effort ordering approach, the system puts the messages in a specified queue in the same order that they’re received.
+For example, the producer sends four messages, A, B, C, and D, in the same order as illustrated. 
+Due to network congestion or some other issue, message B is received after message D. 
+Hence, the order of messages is A, C, D, and B at the receiving end. 
+Therefore, in this approach, the messages will be put in the queue in the same order they were received instead of the order in which they were produced on the client side.
+
+The strict ordering technique preserves the ordering of messages more rigorously. 
+Through this approach, messages are placed in a queue in the order that they’re produced.
+Before putting messages in a queue in the correct sequence, it’s crucial to have a mechanism to identify the order in which the messages were produced on the client side. 
+Often, a unique identifier or time-stamp is used to mark a message when it’s produced.
+
+One of the following three approaches can be used for ordering incoming messages:
+- Monotonically increasing numbers: One way to order incoming messages is to assign monotonically increasing numbers to messages on the server side.
+ When the first message arrives, the system assigns it a number, such as 1. It then assigns the number 2 to the second message, and so on.
+
+- Causality-based sorting at the server side: Keeping in view the drawbacks of using monotonically increasing numbers, another approach that can be used for time-stamping and ordering of incoming messages 
+is causality-based sorting. In this approach, messages are sorted based on the time stamp that was produced at the client side and are put in a queue accordingly.
+
+- Using time stamps based on synchronized clocks: To tackle the potential issues that arise with both of the approaches described above, we can use another appropriate method to assign time stamps to messages 
+that’s based on synchronized clocks. 
+In this approach, the time stamp (ID) provided to each message through a synchronized clock is unique and in the correct sequence of production of messages. 
+We can tag a unique process identifier with the time stamp to make the overall message identifier unique and tackle the situation when two concurrent sessions ask for a time stamp at the exact same time. 
+Moreover, with this approach, the server can easily identify delayed messages based on the time stamp and wait for the delayed messages.
+
+Once messages are received at the server side, we need to sort them based on their time stamps. 
+Therefore, we use an appropriate online sorting algorithm for this purpose.
+
+Primarily, a queue is designed for first-in, first-out (FIFO) operations; First-in, first-out operations suggest that the first message that enters a queue is always handed out first. 
+However, it isn’t easy to maintain this strict order in distributed systems. 
+Since message A was produced before message B, it’s still uncertain that message A will be consumed before message B. 
+
+Using monotonically increasing message identifiers or causality-bearing identifiers provide high throughput while putting messages in a queue. 
+Though the need for the online sorting to provide a strict order takes some time before messages are ready for extraction. 
+To minimize latency caused by the online sorting, we use a time-window approach.
+
+Similarly, for strict ordering at the receiving end, we need to serialize all the requests to give out messages one by one. 
+If that’s not required, we have better throughput and lower latency at the receiving end.
+
+Due to the reasons mentioned above, many distributed messaging queue solutions either don’t guarantee a strict order or have limitations around throughput. 
+
+*concurrency*
+Concurrent queue access needs proper management. Concurrency can take place at the following stages:
+- When multiple messages arrive at the same time.
+- When multiple consumers request concurrently for a message.
+
+The first solution is to use the locking mechanism. When a process or thread requests a message, it should acquire a lock for placing or consuming messages from the queue. 
+However, as was discussed earlier, this approach has several drawbacks. It’s neither scalable nor performant.
+
+Another solution is to serialize the requests using the system’s buffer at both ends of the queue 
+so that incoming messages are placed in an order and consumer processes also receive messages in their arrival sequence. 
+This is a more viable solution because it can help us avoid the occurrence of race conditions.
+
+Applications might use multiple queues with dedicated producers and consumers to keep the ordering cost per queue under check, although this comes at the cost of more complicated application logic.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 27 feb 23
+**System Design - Distributed queue**
+
+A messaging queue is an intermediate component between the interacting entities known as producers and consumers. 
+
+The producer produces messages and places them in the queue, while the consumer retrieves the messages from the queue and processes them. 
+There might be multiple producers and consumers interacting with the queue at the same time.
+A messaging queue has several advantages and use cases.
+
+- Improved performance: A messaging queue enables asynchronous communication between the two interacting entities, producers and consumers, and eliminates their relative speed difference. 
+A producer puts messages in the queue without waiting for the consumers. 
+Similarly, a consumer processes the messages when they become available.
+ Moreover, queues are often used to separate out slower operations from the critical path and, therefore, help reduce client-perceived latency. 
+ For example, instead of waiting for a specific task that’s taking a long time to complete, the producer process sends a message, which is kept in a queue if there are multiple requests, 
+ for the required task and continues its operations. The consumer can notify us about the fate of the processing, whether a success or failure, by using another queue.
+ 
+- Better reliability: The separation of interacting entities via a messaging queue makes the system more fault tolerant. 
+For example, a producer or consumer can fail independently without affecting the others and restart later. 
+Moreover, replicating the messaging queue on multiple servers ensures the system’s availability if one or more servers are down.
+
+- Granular scalability: Asynchronous communication makes the system more scalable. 
+For example, many processes can communicate via a messaging queue. 
+In addition, when the number of requests increases, we distribute the workload across several consumers. 
+So, an application is in full control to tweak the number of producer or consumer processes according to its current need.
+
+- Easy decoupling: A messaging queue decouples dependencies among different entities in a system. 
+The interacting entities communicate via messages and are kept unaware of each other’s internal working mechanisms.
+
+- Rate limiting: Messaging queues also help absorb any load spikes and prevent services from becoming overloaded, acting as a rudimentary form of rate limiting when there is a need to avoid dropping any incoming request.
+
+- Priority queue: Multiple queues can be used to implement different priorities—for example, one queue for each priority—and give more service time to a higher priority queue.
+
+Examples
+- Sending many emails: Emails are used for numerous purposes, such as sharing information, account verification, resetting passwords, marketing campaigns, and more. 
+All of these emails written for different purposes don’t need immediate processing and, therefore, they don’t disturb the system’s core functionality. 
+A messaging queue can help coordinate a large number of emails between different senders and receivers in such cases.
+- Data post-processing: Many multimedia applications need to process content for different viewer needs, such as for consumption on a mobile phone and a smart television. 
+Oftentimes, applications upload the content into a store and use a messaging queue for post-processing of content offline. 
+Doing this substantially reduces client-perceived latency and enables the service to schedule the offline work at some appropriate time—probably late at night when the compute capacity is less busy.
+- Recommender systems: Some platforms use recommender systems to provide preferred content or information to a user. 
+The recommender system takes the user’s historical data, processes it, and predicts relevant content or information. 
+Since this is a time-consuming task, a messaging queue can be incorporated between the recommender system and requesting processes to increase and quicken performance.
+
+Functional requirements
+- Queue creation: The client should be able to create a queue and set some parameters—for example, queue name, queue size, and maximum message size.
+- Send message: Producer entities should be able to send messages to a queue that’s intended for them.
+- Receive message: Consumer entities should be able to receive messages from their respective queues.
+- Delete message: The consumer processes should be able to delete a message from the queue after a successful processing of the message.
+- Queue deletion: Clients should be able to delete a specific queue.
+
+Non-functional requirements
+- Durability: The data received by the system should be durable and shouldn’t be lost. 
+Producers and consumers can fail independently, and a queue with data durability is critical to make the whole system work, because other entities are relying on the queue.
+- Scalability: The system needs to be scalable and capable of handling the increased load, queues, producers, consumers, and the number of messages. 
+Similarly, when the load reduces, the system should be able to shrink the resources accordingly.
+- Availability: The system should be highly available for receiving and sending messages. 
+It should continue operating uninterrupted, even after the failure of one or more of its components.
+- Performance: The system should provide high throughput and low latency.
+
+A single-server messaging queue has the following drawbacks:
+- High latency: As in the case of a single-server messaging queue, a producer or consumer acquires a lock to access the queue. Therefore, this mechanism becomes a bottleneck when many processes try to access the queue. This increases the latency of the service.
+- Low availability: Due to the lack of replication of the messaging queue, the producer and consumer process might be unable to access the queue in events of failure. This reduces the system’s availability and reliability.
+- Lack of durability: Due to the absence of replication, the data in the queue might be lost in the event of a system failure.
+- Scalability: A single-server messaging queue can handle a limited number of messages, producers, and consumers. Therefore, it is not scalable.
+
+To extend the design of a single-server messaging queue to a distributed messaging queue, we need to make extensive efforts to eliminate the drawbacks outlined above.
+
+---------------------------------------------------------
 ---------------------------------------------------------
 ## 23 feb 23
 **DMN engine passing dynamic variales**
@@ -122,6 +486,36 @@ Let’s summarize the proposed detailed design in a few points:
 - Each cache server has primary and replica servers. Internally, every server uses the same mechanisms to store and evict cache entries.
 - Configuration service ensures that all the clients see an updated and consistent view of the cache servers.
 - Monitoring services can be additionally used to log and report different metrics of the caching service.
+
+Design choices we made that will contribute to overall good performance:
+
+We used consistent hashing. Finding a key under this algorithm requires a time complexity of O(log(N)), where N represents the number of cache shards.
+Inside a cache server, keys are located using hash tables that require constant time on average.
+The LRU eviction approach uses a constant time to access and update cache entries in a doubly linked list.
+The communication between cache clients and servers is done through TCP and UDP protocols, which is also very fast.
+Since we added more replicas, these can reduce the performance penalties that we have to face if there’s a high request load on a single machine.
+An important feature of the design is adding, retrieving, and serving data from the RAM. Therefore, the latency to perform these operations is quite low.
+
+We can create shards based on requirements and changing server loads. 
+While we add new cache servers to the cluster, we also have to do a limited number of rehash computations, thanks to consistent hashing.
+
+We have improved the availability through redundant cache servers. 
+Redundancy adds a layer of reliability and fault tolerance to our design. 
+We also used the leader-follower algorithm to conveniently manage a cluster shard. 
+However, we haven’t achieved high availability because we have two shard replicas, and at the moment, we assume that the replicas are within a data center
+
+It’s possible to write data to cache servers in a synchronous or asynchronous mode. 
+In the case of caching, the asynchronous mode is favored for improved performance. 
+Consequently, our caching system suffers from inconsistencies. Alternatively, strong consistency comes from synchronous writing, but this increases the overall latency, and the performance takes a hit
+
+Generally, for concurrent access to shared data, some locking mechanisms like Semaphore, Monitors, Mutex locks, and others are good choices. 
+But as the number of users (readers in case of cache hit or writers in case of a cache miss) grows, locking the entire data structure isn’t a suitable solution. 
+In that case, we can consider the following options:
+- Limited locking: In this strategy, only specific sections of the entire data structure will be locked. While some threads or processes can read from the data structure simultaneously, some threads may temporarily block access to specific sections of the data structure.
+- Offline eviction: Offline eviction may be a possibility where instead of making actual changes to the data structure, only the required changes will be recorded while performing different operations 
+until it’s necessary to commit the changes. 
+This solution is desirable and easy if the cache hit rate is high because a change to the data structure will likely be required when a cache miss occurs.
+- Lock-free implementation: Multiple solutions have been proposed which suggest that simultaneous reading and writing over doubly linked list is feasible to support large number of concurrent reading and writing.
 
 ---------------------------------------------------------
 ---------------------------------------------------------
