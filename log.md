@@ -3,6 +3,293 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+
+---------------------------------------------------------
+## 17 mar 23
+**Тимлид - рефлексия**
+
+Рефлексия – мыслительный процесс, направленный на анализ своих эмоций, мыслей, поведения. По сути является личной ретроспективой.
+
+Представляет из себя разбор ситуаций, собственных действий и их последствий, мыслей и чувств. Цели такого анализа:
+- Возможность продумать оптимальную модель поведения в подобных ситуациях. Сделать выводы из совершенных ошибок.
+- Нахождение решения не только для текущего кейса, но и для всего класса подобных случаев.
+- Появление лучших жизненных установок. Превращение в лучшую версию себя.
+- Отпускание неприятных воспоминаний за счёт детального разбора ситуации
+
+Примеры плохого поведения
+- Негативные кейсы не разбираются.
+- Выводы не делаются, поведение в аналогичных ситуациях не меняется.
+- Рефлексия проводится не регулярно.
+
+Примеры хорошего поведения
+- Лид выходит из негативных ситуаций с минимальными потерями.
+- Ошибки совершаются, но не становятся системными.
+- Разбираются не только негативные исходы, но и положительные кейсы. Понятно, что помогло получить ожидаемый результат
+
+Проведение рефлексии:
+- Определите предмет рефлексии. Это может быть некоторый промежуток времени или конкретный кейс.
+- Проводите её письменно. Это помогает сфокусироваться, выстроить причинно-следственную цепочку, через некоторое время вернуться к этим записям и пересмотреть их.
+- Выделите определённый временной слот, когда вы будете заниматься рефлексией. Это поможет сделать это действие привычкой.
+- Подготовьте список вопросов, которые помогут вашим рассуждениям. Например, такие:
+Что получилось хорошо? Что стало причиной?
+Как я мог поступить лучше? Как можно было достичь лучшего результата?
+Что я думаю про конкретные кейсы, что чувствую?
+Периодически возвращайтесь и перечитывайте ваши размышления. Если видите изъян в логике, смело исправляйте.
+Всегда старайтесь привести рефлексию к каким-то конкретным результатам. 
+Если речь идёт про решение узких прикладных задач, то результатом может быть какой-то action plan. 
+Если речь про что-то более абстрактное – то результатом может быть появление нового принципа или правила, которым вы будете руководствоваться в аналогичных ситуациях.
+
+Попробуйте писать в физическом блокноте, даже если привыкли все делать в электронном виде. Сам темп написания текста от руки заставляет хорошо обдумывать написанное.
+---------------------------------------------------------
+---------------------------------------------------------
+## 14 mar 23
+**System design - rate limiter**
+
+The decision-maker takes decisions based on the throttling algorithms. 
+The throttling can be hard, soft, or elastic. 
+Based on soft or elastic throttling, requests are allowed more than the defined limit. 
+These requests are either served or kept in the queue and served later, upon the availability of resources. 
+Similarly, if hard throttling is used, requests are rejected, and a response error is sent back to the client
+
+There is a possibility of a race condition in a situation of high concurrency request patterns. 
+It happens when the “get-then-set” approach is followed.
+Another method that could be used is the “set-then-get” approach, wherein a value is incremented in a very performant fashion, avoiding the locking approach.
+
+To avoid numerous computations in the client’s critical path, we should divide the work into offline and online parts.
+Initially, when a client’s request is received, the system will just check the respective count. 
+If it is less than the maximum limit, the system will allow the client’s request. 
+In the second phase, the system updates the respective count and cache offline. 
+For a few requests, this won’t have any effect on the performance, but for millions of requests, this approach increases performance significantly.
+
+Result:
+- Availability: If a rate limiter fails, multiple rate limiters will be available to handle the incoming requests. So, a single point of failure is eliminated;
+- Low latency: Our system retrieves and updates the data of each incoming request from the cache instead of the database. First, the incoming requests are forwarded if they do not exceed the rate limit, and then the cache and database are updated;
+- Scalability: The number of rate limiters can be increased or decreased based on the number of incoming requests within the defined limit;
+---------------------------------------------------------
+---------------------------------------------------------
+## 13 mar 23
+**System design - rate limiter**
+
+Scenarios where rate limiters can be used to make the service more reliable.
+- Preventing resource starvation: Some denial of service incidents are caused by errors in software or configurations in the system, which causes resource starvation. 
+Such attacks are referred to as friendly-fire denial of service. 
+One of the common use cases of rate limiters is to avoid resource starvation caused by such denial of service attacks, whether intentional or unintentional.
+- Managing policies and quotas: There is also a need for rate limiters to provide a fair and reasonable use of resources’ capacity when they are shared among many users. 
+The policy refers to applying limits on the time duration or quantity allocated (quota).
+- Controlling data flow: Rate limiters could also be used in systems where there is a need to process a large amount of data. 
+Rate limiters control the flow of data to distribute the work evenly among different machines, avoiding the burden on a single machine.
+- Avoiding excess costs: Rate limiting can also be used to control the cost of operations. 
+For example, organizations can use rate limiting to prevent experiments from running out of control and avoid large bills. 
+Some cloud service providers also use this concept by providing freemium services to certain limits, which can be increased on request by charging from users
+
+
+Functional requirements
+- To limit the number of requests a client can send to an API within a time window;
+- To make the limit of requests per window configurable;
+- To make sure that the client gets a message (error or notification) whenever the defined threshold is crossed within a single server or combination of servers;
+
+Non-functional requirements
+- Availability: Essentially, the rate limiter protects our system. Therefore, it should be highly available;
+- Low latency: Because all API requests pass through the rate limiter, it should work with a minimum latency without affecting the user experience;
+- Scalability: Our design should be highly scalable. It should be able to rate limit an increasing number of clients’ requests over time;
+
+Rate limiter can perform three types of throttling.
+- Hard throttling: This type of throttling puts a hard limit on the number of API requests. So, whenever a request exceeds the limit, it is discarded.
+- Soft throttling: Under soft throttling, the number of requests can exceed the predefined limit by a certain percentage. 
+For example, if our system has a predefined limit of 500 messages per minute with a 5% exceed in the limit, we can let the client send 525 requests per minute.
+- Elastic or dynamic throttling: In this throttling, the number of requests can cross the predefined limit if the system has excess resources available. 
+However, there is no specific percentage defined for the upper limit. For example, if our system allows 500 requests per minute, it can let the user send more than 500 requests when free resources are available
+
+There are three different ways to place the rate limiter.
+- On the client side: It is easy to place the rate limiter on the client side. However, this strategy is not safe because it can easily be tampered with by malicious activity. Moreover, the configuration on the client side is also difficult to apply in this approach.
+- On the server side: As shown in the following figure, the rate limiter is placed on the server-side. In this approach, a server receives a request that is passed through the rate limiter that resides on the server.
+- As middleware: In this strategy, the rate limiter acts as middleware, throttling requests to API servers as shown in the following figure.
+
+One rate limiter might not be enough to handle enormous traffic to support millions of users. 
+Therefore, a better option is to use multiple rate limiters as a cluster of independent nodes. 
+Since there will be numerous rate limiters with their corresponding counters (or their rate limit), there are two ways to use databases to store, retrieve, and update the counters along with the user information
+
+Components:
+- Rule database: This is the database, consisting of rules defined by the service owner. 
+Each rule specifies the number of requests allowed for a particular client per unit of time.
+- Rules retriever: This is a background process that periodically checks for any modifications to the rules in the database. 
+The rule cache is updated if there are any modifications made to the existing rules.
+- Throttle rules cache: The cache consists of rules retrieved from the rule database. 
+The cache serves a rate-limiter request faster than persistent storage. 
+As a result, it increases the performance of the system. So, when the rate limiter receives a request against an ID (key), it checks the ID against the rules in the cache
+- Decision-maker: This component is responsible for making decisions against the rules in the cache. 
+This component works based on one of the rate-limiting algorithms
+- Client identifier builder: This component generates a unique ID for a request received from a client. 
+This could be a remote IP address, login ID, or a combination of several other attributes, due to which a sequencer can’t be used here. 
+This ID is considered as a key to store the user data in the key-value database. So, this key is passed to the decision-maker for further service decisions.
+
+When a request is received, the client identifier builder identifies the request and forwards it to the decision-maker. 
+The decision-maker determines the services required by request, then checks the cache against the number of requests allowed, as well as the rules provided by the service owner. 
+If the request does not exceed the count limit, it is forwarded to the request processor, which is responsible for serving the request.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 9 mar 23
+**Тимлид управление тех долгом**
+
+Технический долг – это, например, плохо спроектированная архитектура или запутанный код.
+
+Примеры плохого поведения
+- Программист делает ошибки при разработке проекта, которые не отлавливаются на code review или статическим анализом;
+- Когда ситуация вынуждает осознанно писать код быстро и некачественно, к нему в будущем не возвращаются для рефакторинга;
+- Объем технического долга не известен руководству;
+- В команде не выделяется время на периодическое исправление технического долга;
+- Разработчики игнорируют мелкие дефекты качества и не пытаются их исправить на месте по правилу бойскаута;
+
+Примеры хорошего поведения
+- В каждом спринте выделяется определённый процент времени на решение технического долга;
+- Весь крупный технический долг инвентаризирован;
+- Неумышленный технический долг отлавливается ручными и автоматизированными проверками качества;
+
+Стоит посмотреть на SonarQube.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 8 mar 23
+**System design - pub sub**
+
+The broker server is the core component of our pub-sub system. 
+It will handle write and read requests. 
+A broker will have multiple topics where each topic can have multiple partitions associated with it. 
+We use partitions to store messages in the local storage for persistence. 
+Consequently, this improves availability. 
+Partitions contain messages encapsulated in segments. 
+Segments help identify the start and end of a message using an offset address. 
+Using segments, consumers consume the message of their choice from a partition by reading from a specific offset address.
+
+Topic is a persistent sequence of messages stored in the local storage of the broker. 
+Once the data has been added to the topic, it cannot be modified. 
+Reading and writing a message from or to a topic is an I/O task for computers, and scaling such tasks is challenging. 
+This is the reason we split the topics into multiple partitions.
+
+We’ll allocate the partitions to various brokers in the system. 
+This just means that different partitions of the same topic will be in different brokers. 
+We’ll follow strict ordering in partitions by adding newer content at the end of existing messages.
+
+We have various brokers in our system. Each broker has different topics. The topic is divided into multiple partitions.
+
+Message will be stored in a segment. 
+We’ll identify each segment using an offset. 
+Since these are immutable records, the readers are independent and they can read messages anywhere from this file using the necessary API functions.
+
+We’ll have multiple brokers in our cluster. The cluster manager will perform the following tasks:
+- Broker and topics registry: This stores the list of topics for each broker.
+- Manage replication: The cluster manager manages replication by using the leader-follower approach. 
+One of the brokers is the leader. 
+If it fails, the manager decides who the next leader is. 
+In case the follower fails, it adds a new broker and makes sure to turn it into an updated follower. 
+It updates the metadata accordingly. 
+We’ll keep three replicas of each partition on different brokers
+
+The consumer manager will manage the consumers. It has the following responsibilities:
+- Verify the consumer: The manager will fetch the data from the database and verify if the consumer is allowed to read a certain message. 
+For example, if the consumer has subscribed to Topic A (but not to Topic B), then it should not be allowed to read from Topic B. 
+The consumer manager verifies the consumer’s request.
+
+- Retention time management: The manager will also verify if the consumer is allowed to read the specific message or not. 
+If, according to its retention time, the message should be inaccessible to the consumer, then it will not allow the consumer to read the message.
+- Message receiving options management: There are two methods for consumers to get data. 
+The first is that our system pushes the data to its consumers. 
+This method may result in overloading the consumers with continuous messages. 
+Another approach is for consumers to request the system to read data from a specific topic. 
+The drawback is that a few consumers might want to know about a message as soon as it is published, but we do not support this function. 
+Therefore, we’ll support both techniques. Each consumer will inform the broker that it wants the data to be pushed automatically or it needs the data to read itself. 
+We can avoid overloading the consumer and also provide liberty to the consumer. We’ll save this information in the relational database along with other consumer details.
+- Allow multiple reads: The consumer manager stores the offset information of each consumer. 
+We’ll use a key-value to store offset information against each consumer. 
+It allows fast fetching and increases the availability of the consumers. 
+If Consumer 1 has read from offset 0 and has sent the acknowledgment, we’ll store it. 
+So, when the consumer wants to read again, we can provide the next offset to the reader for reading the message
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 7 mar 23
+**System design - pub sub**
+
+Components:
+- Topic queue: Each topic will be a distributed messaging queue so we can store the messages sent to us from the producer.
+ A producer will write their messages to that queue.
+- Database: We’ll use a relational database that will store the subscription details. 
+For example, we need to store which consumer has subscribed to which topic so we can provide the consumers with their desired messages. 
+We’ll use a relational database since our consumer-related data is structured and we want to ensure our data integrity.
+- Message director: This service will read the message from the topic queue, fetch the consumers from the database, and send the message to the consumer queue.
+- Consumer queue: The message from the topic queue will be copied to the consumer’s queue so the consumer can read the message. For each consumer, we’ll define a separate distributed queue.
+- Subscriber: When the consumer requests a subscription to a topic, this service will add an entry into the database.
+
+Using the distributed messaging queues makes our design simple. 
+However, the huge number of queues needed is a significant concern. 
+If we have millions of subscribers for thousands of topics, defining and maintaining millions of queues is expensive. 
+Moreover, we’ll copy the same message for a topic in all subscriber queues, which is unnecessary duplication and takes up space.
+
+In messaging queues, the message disappears after the reader consumes it. 
+So, what if we add a counter for each message? 
+The counter value decrements as a subscriber consumes the message. 
+It does not delete the message until the counter becomes zero. Now, we don’t need to keep a separate queue for each reader
+
+At a high level, the pub-sub system will have the following components:
+- Broker: This server will handle the messages. It will store the messages sent from the producer and allow the consumers to read them.
+- Cluster manager: We’ll have numerous broker servers to cater to our scalability needs. We need a cluster manager to supervise the broker’s health. It will notify us if a broker fails.
+- Storage: We’ll use a relational database to store consumer details, such as subscription information and retention period.
+- Consumer manager: This is responsible for managing the consumers. For example, it will verify if the consumer is authorized to read a message from a certain topic or not.
+
+Acknowledgment: An acknowledgment is used to notify the producer that the received message has been stored successfully. 
+The system will wait for an acknowledgment from the consumer if it has successfully consumed the message.
+
+Retention time: The consumers can specify the retention period time of their messages. 
+The default will be seven days, but it is configurable. Some applications like banking applications require the data to be stored for a few weeks as a business requirement, 
+while an analytical application might not need the data after consumption.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 6 mar 23
+**System design - pub sub**
+
+Publish-subscribe messaging, often known as pub-sub messaging, is an asynchronous service-to-service communication method that’s popular in serverless and microservices architectures. 
+Messages can be sent asynchronously to different subsystems of a system using the pub-sub system. 
+All the services subscribed to the pub-sub model receive the message that’s pushed into the system.
+
+A few use cases of pub-sub are listed below:
+- Improved performance: The pub-sub system enables push-based distribution, alleviating the need for message recipients to check for new information and changes regularly. 
+It encourages faster response times and lowers the delivery latency.
+- Handling ingestion: The pub-sub helps in handling log ingestion. 
+The user-interaction data can help us figure out useful analyses about the behavior of users.
+ We can ingest a large amount of data to the pub-sub system, so much so that it can deliver the data to any analytical system to understand the behavior patterns of users. 
+ Moreover, we can also log the details of the event that’s happening while completing a request from the user. 
+ Large services like Meta use a pub-sub system called Scribe to know exactly who needs what data, and remove or archive processed or unwanted data. 
+ Doing this is necessary to manage an enormous amount of data.
+- Real-time monitoring: Raw or processed messages of an application or system can be provided to multiple applications to monitor a system in real time.
+- Replicating data: The pub-sub system can be used to distribute changes. 
+For example, in a leader-follower protocol, the leader sends the changes to its followers via a pub-sub system. 
+It allows followers to update their data asynchronously. 
+The distributed caches can also refresh themselves by receiving the modifications asynchronously. 
+Along the same lines, applications like WhatsApp that allow multiple views of the same conversation—for example, on a mobile phone and a computer’s browser—can elegantly work using a pub-sub, 
+where multiple views can act either as a publisher or a subscriber.
+
+
+The pub-sub system and queues are similar because they deliver information that’s produced by the producer to the consumer. 
+The difference is that only one consumer consumes a message in the queue, while there can be multiple consumers of the same message in a pub-sub system.
+
+Functional requirements
+- Create a topic: The producer should be able to create a topic.
+- Write messages: Producers should be able to write messages to the topic.
+- Subscription: Consumers should be able to subscribe to the topic to receive messages.
+- Read messages: The consumer should be able to read messages from the topic.
+- Specify retention time: The consumers should be able to specify the retention time after which the message should be deleted from the system.
+- Delete messages: A message should be deleted from the topic or system after a certain retention period as defined by the user of the system.
+
+Non-functional requirements
+- Scalable: The system should scale with an increasing number of topics and increasing writing (by producers) and reading (by consumers) load.
+- Available: The system should be highly available, so that producers can add their data and consumers can read data from it anytime.
+- Durability: The system should be durable. Messages accepted from producers must not be lost and should be delivered to the intended subscribers.
+- Fault tolerance: Our system should be able to operate in the event of failures.
+- Concurrent: The system should handle concurrency issues where reading and writing are performed simultaneously.
+
+---------------------------------------------------------
 ---------------------------------------------------------
 ## 4 mar 23
 **Тимлид - стратегическое видение**
