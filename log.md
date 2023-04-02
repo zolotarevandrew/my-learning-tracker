@@ -5,6 +5,276 @@
 |     |Learnt, thoughts, progress, ideas, links|
 
 ---------------------------------------------------------
+## 29 mar 23
+**System design distributed search**
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 28 mar 23
+**System design distributed search**
+
+The crawler collects content from the intended resource. 
+For example, if we build a search for a YouTube application, the crawler will crawl through all of the videos on YouTube and extract textual content for each video. 
+The content could be the title of the video, its description, the channel name, or maybe even the video’s annotation to enable an intelligent search based 
+not only on the title and description but also on the content of that video. 
+The crawler formats the extracted content for each video in a JSON document and stores these JSON documents in a distributed storage
+
+The indexer fetches the documents from a distributed storage and indexes these documents using MapReduce, which runs on a distributed cluster of commodity machines. 
+The indexer uses a distributed data processing system like MapReduce for parallel and distributed index construction. The constructed index table is stored in the distributed storage
+
+The distributed storage is used to store the documents and the index
+
+The user enters the search string that contains multiple words in the search bar
+
+The searcher parses the search string, searches for the mappings from the index that are stored in the distributed storage, and returns the most matched results to the user. 
+The searcher intelligently maps the incorrectly spelled words in the search string to the closest vocabulary words.
+ It also looks for the documents that include all the words and ranks them.
+
+The two most common techniques used for data partitioning in distributed indexing are these below:
+- Document partitioning: In document partitioning, all the documents collected by the web crawler are partitioned into subsets of documents. Each node then performs indexing on a subset of documents that are assigned to it.
+- Term partitioning: The dictionary of all terms is partitioned into subsets, with each subset residing at a single node. For example, a subset of documents is processed and indexed by a node containing the term “search
+
+In term partitioning, a search query is sent to the nodes that correspond to the query terms. 
+This provides more concurrency because a stream of search queries with different query terms will be served by different nodes. 
+However, term partitioning turns out to be a difficult task in practice. 
+Multiword queries necessitate sending long mapping lists between groups of nodes for merging, which can be more expensive than the benefits from the increased concurrency
+
+In document partitioning, each query is distributed across all nodes, and the results from these nodes are merged before being shown to the user. 
+This method of partitioning necessitates less inter-node communication.
+
+- We have a document set already collected by the crawler.
+- The cluster manager splits the input document set into N  number of partitions. The size of each partition is decided by the cluster manager given the size of the data, the computation, memory limits, 
+and the number of nodes in the cluster. All the nodes may not be available for various reasons.
+ The cluster manager monitors the health of each node through periodic heartbeats.
+- After making partitions, the cluster manager runs indexing algorithms for all the partitions simultaneously on the nodes in a cluster. 
+Each indexing process produces a tiny inverted index, which is stored on the node’s local storage. 
+In this way, we produce tiny inverted indices rather than one large inverted index
+
+- In the search phase, when a user query comes in, we run parallel searches on each tiny inverted index stored on the nodes’ local storage generating N queries.
+- The search result from each inverted tiny index is a mapping list against the queried term (we assume a single word/term user query). The merger aggregates these mapping lists.
+- After aggregating the mapping lists, the merger sorts the list of documents from the aggregated mapping list based on the frequency of the term in each document.
+- The sorted list of documents is returned to the user as a search result. The documents are shown in sorted (ascending) order to the user.
+
+Generally, a replication factor of three is enough. A replication factor of three means three nodes host the same partition and produce the index. 
+One of the three nodes becomes the primary node, while the other two are replicas. 
+Each of these nodes produces indexes in the same order to converge on the same state.
+
+Rather than recomputing the index on each replica, we compute the inverted index on the primary node only. 
+Next, we communicate the inverted index (binary blob/file) to the replicas. 
+The key benefit of this approach is that it avoids using the duplicated amount of CPU and memory for indexing on replicas.
+
+The MapReduce framework is implemented with the help of a cluster manager and a set of worker nodes categorized as Mappers and Reducers. As indicated by its name, MapReduce is composed of two phases:
+- The Map phase
+- The Reduction phase
+Furthermore, the input to MapReduce is a number of partitions, or set of documents, whereas its output is an aggregated inverted index.
+
+Cluster manager - The manager initiates the process by assigning a set of partitions to Mappers. Once the Mappers are done, the cluster manager assigns the output of Mappers to Reducers.
+Mappers -  This component extracts and filters terms from the partitions assigned to it by the cluster manager. These machines output inverted indexes in parallel, which serve as input to the Reducers.
+Reducers - The reducer combines mappings for various terms to generate a summarized index.
+
+The cluster manager ensures that all worker nodes are efficiently utilized in the cluster. The MapReduce is built to work under partial failures. If one node fails, it reschedules the work on another node.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 27 mar 23
+**System design distributed search**
+
+A search system is a system that takes some text input, a search query, from the user and returns the relevant content in a few seconds or less. There are three main components of a search system, namely:
+- A crawler, which fetches content and creates documents.
+- An indexer, which builds a searchable index.
+- A searcher, which responds to search queries by running the search query on the index created by the indexer
+
+Functional requirements:
+- Search: Users should get relevant content based on their search queries
+
+Non functional requirements of a distributed search system:
+- Availability: The system should be highly available to the users;
+- Scalability: The system should have the ability to scale with the increasing amount of data. In other words, it should be able to index a large amount of data;
+- Fast search on big data: The user should get the results quickly, no matter how much content they are searching;
+- Reduced cost: The overall cost of building a search system should be less;
+
+Indexing is the organization and manipulation of data that’s done to facilitate fast and accurate information retrieval.
+The simplest way to build a searchable index is to assign a unique ID to each document and store it in a database table, as shown in the following table. 
+The first column in the table is the ID of the text and the second column contains the text from each document
+
+The response time to a search query depends on a few factors:
+- The data organization strategy in the database.
+- The size of the data.
+- The processing speed and the RAM of the machine that’s used to build the index and process the search query.
+
+An inverted index is a HashMap-like data structure that employs a document-term matrix. 
+Instead of storing the complete document as it is, it splits the documents into individual words. 
+After this, the document-term matrix identifies unique words and discards frequently occurring words like “to,” “they,” “the,” “is,” and so on. 
+Frequently occurring words like those are called terms. 
+The document-term matrix maintains a term-level index through this identification of unique words and deletion of unnecessary terms.
+
+For each term, the index computes the following information:
+- The list of documents in which the term appeared.
+- The frequency with which the term appears in each document.
+- The position of the term in each document
+
+Inverted index is one of the most popular index mechanisms used in document retrieval. 
+It enables efficient implementation of boolean, extended boolean, proximity, relevance, and many other types of search algorithms
+
+Here are some of the factors that we should keep in mind while designing an index:
+- Size of the index: How much computer memory, and RAM, is required to keep the index. We keep the index in the RAM to support the low latency of the search.
+- Search speed: How quickly we can find a word from an inverted index.
+- Maintenance of the index: How efficiently the index can be updated if we add or remove a document.
+- Fault tolerance: How critical it is for the service to remain reliable. Coping with index corruption, supporting whether invalid data can be treated in isolation, dealing with defective hardware, partitioning, and replication are all issues to consider here.
+- Resilience: How resilient the system is against someone trying to game the system and guard against search engine optimization (SEO) schemes, since we return only a handful of relevant results against a search
+
+These are the problems that come with the architecture of a centralized search system:
+- SPOF (single point of failure)
+- Server overload
+- Large size of the index
+
+SPOF: A centralized system is a single point of failure. If it’s dead, no search operation can be performed.
+Server overload: If numerous users perform queries and the queries are complicated, it stresses the server (node).
+
+Large size of the index: The size of the inverted index increases with the number of documents, placing resource demands on a single server. The bigger the computer system, the higher the cost and complexity of managing
+---------------------------------------------------------
+---------------------------------------------------------
+## 22 mar 23
+**System design blob storage**
+Partitioning based on the blob IDs causes certain problems. 
+For example, the blobs under a specific container or account may reside in different partitions that add overhead while reading or listing the blobs linked to a particular account or a particular container.
+
+Finding specific blobs in a sea of blobs becomes more difficult and time-consuming with an increase in the number of blobs that are uploaded to the storage. 
+The blob index solves the problem of blob management and querying.
+
+To populate the blob index, we define key-value tag attributes on the blobs while uploading the blobs. 
+We use multiple tags, like container name, blob name, upload date and time, and some other categories like the image or video blob, and so on
+
+Listing is about returning a list of blobs to the user, depending on the user’s entered prefix. 
+A prefix is a character or string that returns the blobs whose name begins with that particular character or string.
+
+For pagination, we need a continuation token as a starting point for the part of the list that’s returned next. 
+A continuation token is a string token that’s included in the response of a query if the total number of queried results exceeds the maximum number of results that we can return at once. 
+As a result, it serves as a pointer, allowing the re-query to pick up where we left off.
+
+Therefore, we have a service called a garbage collector that cleans up metadata inconsistencies later. 
+The deletion of a blob causes the chunks associated with that blob to be freed. 
+However, there could be an appreciable time delay between the time a blob is deleted by a user and the time of the corresponding increase in free space in the blob store. 
+We can bear this appreciable time delay because, in return, we have a real-time fast response benefit for the user’s delete blob request
+
+The caching of the blob store is usually done using CDN. 
+The Azure blob store service cache the publicly accessible blob in Azure Content Delivery Network until that blob’s TTL (time-to-live) elapses. 
+The origin server defines the TTL, and CDN determines it from the Cache-Control header in the HTTP response from the origin server
+
+The replication part of our design makes the system available. 
+For reading the data, we keep four replicas for each blob. 
+Having replicas, we can distribute the request load. 
+If one node fails, the other replica node can serve the request
+
+The replication and monitoring services ensure the durability of the data. 
+The data, once uploaded, is synchronously replicated within a storage cluster. 
+If data loss occurs at one node, we can recover the data from the other nodes. 
+The monitoring service monitors the storage disks
+
+The partitioning and splitting of blobs into small-sized chunks helps us scale for billions of blob requests. 
+Blobs are partitioned into separate ranges and served by different partition servers. 
+The partition mappings specify which partition server will serve which particular blob range requests. 
+Partitioning also provides automatic load balancing between partition servers to fulfill the blobs’ traffic needs
+
+We save chunks of a blob on different data nodes that distribute the requests for a blob to multiple machines. 
+Parallel fetching of chunks from multiple data nodes helps us achieve high throughput.
+
+We achieve reliability through our monitoring techniques. 
+For example, the heartbeat protocol keeps the master node updated on the status of data nodes. 
+This enables the master node to request data from reliable nodes only. 
+Furthermore, it takes necessary precautions to ensure reliable service. 
+For example, the failure of a node triggers the master node to request an additional replica node
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 21 mar 23
+**System design blob storage**
+
+The client generates the upload blob request. 
+If the client’s request successfully passes through the rate limiter, the load balancer forwards the client’s request to one of the front-end servers.
+The front-end server then requests the master node for the data nodes it should contact to store the blob
+
+The master node assigns the blob a unique ID using a unique ID generator system. 
+It then splits the large-size blob into smaller, fixed-size chunks and assigns each chunk a data node where that chunk is eventually stored. 
+The master node determines the amount of storage space that’s available on the data nodes using a free-space management system.
+
+After determining the mapping of chunks to data nodes, the front-end servers write the chunks to the assigned data nodes.
+
+We replicate each chunk for redundancy purposes. 
+All choices regarding chunk replication are made at the master node. 
+Hence, the master node also allocates the storage and data nodes for storing replicas.
+The master node stores the blob metadata in the metadata storage.
+
+After writing the blob, a fully qualified path of the blob is returned to the client. 
+The path consists of the user ID, container ID where the user has added the blob, the blob ID, and the access level of the blob
+
+There are three layers of abstractions:
+- User account: Users uniquely get identified on this layer through their account_ID. Blobs uploaded by users are maintained in their containers.
+- Container: Each user has a set of containers that are all uniquely identified by a container_ID. These containers contain blobs.
+- Blob: This layer contains information about blobs that are uniquely identified by their blob_ID. This layer maintains information about the metadata of blobs that’s vital for achieving the availability and reliability of the system.
+
+When a user uploads a blob, it’s split into small-sized chunks in order to be able to support the storage of large files that can’t fit in one contiguous location, i
+n one data node, or in one block of a disk associated with that data node. 
+The chunks for a single blob are then stored on different data nodes that have enough storage space available to store these chunks.
+There are billions of blobs that are kept in storage. 
+The master node has to store all the information about the blob’s chunks and where they are stored, so that it can retrieve the chunks on reads. 
+The master node assigns an ID to each chunk.
+
+We maintain three replicas for each block. 
+When writing a blob, the master node identifies the data and the replica nodes using its free space management system. 
+Besides handling data node failure, the replica nodes are also used to serve read/write requests, so that the primary node is not overloaded.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 20 mar 23
+**System design blob storage**
+
+Blob store is a storage solution for unstructured data.
+ We can store photos, audio, videos, binary executable codes, or other multimedia items in a blob store. 
+ Every type of data is stored as a blob. 
+ It follows a flat data organization pattern where there are no hierarchies, that is, directories, sub-directories, and so on.
+ 
+
+Functional requirements
+Here are the functional requirements of the design of a blob store:
+- Create a container: The users should be able to create containers in order to group blobs;
+- Put data: The blob store should allow users to upload blobs to the created containers;
+- Get data: The system should generate a URL for the uploaded blob, so that the user can access that blob later through this URL;
+- Delete data: The users should be able to delete a blob. If the user wants to keep the data for a specified period of time (retention time), our system should support this functionality;
+- List blobs: The user should be able to get a list of blobs inside a specific container;
+- Delete a container: The users should be able to delete a container and all the blobs inside it;
+- List containers: The system should allow the users to list all the containers under a specific account;
+
+Non-functional requirements of a blob store system:
+- Availability: Our system should be highly available.
+- Durability: The data, once uploaded, shouldn’t be lost unless users explicitly delete that data.
+- Scalability: The system should be capable of handling billions of blobs.
+- Throughput: For transferring gigabytes of data, we should ensure a high data throughput.
+- Reliability: Since failures are a norm in distributed systems, our design should detect and recover from failures promptly.
+- Consistency: The system should be strongly consistent. Different users should see the same view of
+
+Since the blob store is a read-intensive store, most of the bandwidth is required for outgoing traffic. 
+Considering the aforementioned assumptions, we calculate the bandwidth required for outgoing traffic using the following formula:
+
+Here is a list of components that we use in the blob store design:
+- Client: This is a user or program that performs any of the API functions that are specified.
+- Rate limiter: A rate limiter limits the number of requests based on the user’s subscription or limits the number of requests from the same IP address at the same time.
+- Load balancer: A load balancer distributes incoming network traffic among a group of servers. 
+- Front-end servers: Front-end servers forward the users’ requests for adding or deleting data to the appropriate storage servers.
+- Data nodes: Data nodes hold the actual blob data. Blobs are split into small, fixed-size pieces called chunks. A data node can accommodate all of the chunks of a blob or at least some of them.
+- Master node: A master node is the core component that manages all data nodes. It stores information about storage paths and the access privileges of blobs. 
+
+- Metadata storage: Metadata storage is a distributed database that’s used by the master node to store all the metadata. 
+Metadata consists of account metadata, container metadata, and blob metadata.
+Account metadata contains the account information for each user and the containers held by each account.
+Container metadata consists of the list of the blobs in each container.
+Blob metadata consists of where each blob is stored. The blob metadata is discussed in detail in the next lesson.
+
+- Monitoring service: A monitoring service monitors the data nodes and the master node. It alerts the administrator in case of disk failures that require human intervention.
+- Administrator: An administrator is responsible for handling notifications from the monitoring services and conducting routine checkups of the overall service to ensure reliability
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 17 mar 23
 **Тимлид - рефлексия**
 
