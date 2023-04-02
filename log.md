@@ -5,11 +5,6 @@
 |     |Learnt, thoughts, progress, ideas, links|
 
 ---------------------------------------------------------
-## 29 mar 23
-**System design distributed search**
-
----------------------------------------------------------
----------------------------------------------------------
 ## 28 mar 23
 **System design distributed search**
 
