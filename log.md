@@ -3,6 +3,198 @@
 |Date |                                        |
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
+---------------------------------------------------------
+## 12 apr 23
+**System design distributed task scheduler**
+
+- Distributed queue: It consists of a queue and a queue manager. 
+The queue manager adds, updates, or deletes tasks in the queue. It keeps track of the types of queues we use. 
+It is also responsible for keeping the task in the queue until it executes successfully. 
+In case a task execution fails, that task is made visible in the queue again. 
+The queue manager knows which queue to run during the peak time and which queue to run during the off-peak time.
+
+- Queue manager: The queue manager deletes a task from the queue if it executes successfully. 
+It also makes the task visible if its previous execution failed. 
+It retries for the allowed number of attempts for a task in case of a failed execution
+
+- Resource manager: The resource manager knows which of the resources are free. 
+It pulls the tasks from the distributed queue and assigns them resources. 
+The resource manager keeps track of the execution of each task and sends back their statuses to the queue manager. 
+If a task goes beyond its promised or required resource use, that task will be terminated, and the status is sent back to the task submitter, which will notify the client about the termination of the task through an error message.
+
+- Monitoring service: It is responsible for checking the health of the resource manager and the resources. 
+If some resource fails, it alerts the administrators to repair the resource or add new resources if required. 
+If resources are not being used, it alerts the administrators to remove them or power them off.
+
+We have the following three categories for our tasks:
+- Tasks that can’t be delayed.
+- Tasks that can be delayed.
+- Tasks that need to be executed periodically (for example, every 5 minutes, or every hour, or every day).
+
+Some tasks take very long to execute and occupy the resource blocking other tasks. 
+The execution cap is an important parameter to consider while scheduling tasks
+
+To prioritize the tasks, the task scheduler maintains a delay tolerance parameter for each task and executes the task close to its delay tolerance
+
+There could be a time when resources are close to the overload threshold (for example, above 80% utilization). This is called peak time
+
+The first component in our design was a rate limiter that is appropriately replicated and ensures availability. 
+Task submission is done by several nodes. 
+If a node that submits a task fails, the other nodes take its place.
+
+We store the tasks in a persistent distributed database and push the tasks into the queue near their execution time.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 11 apr 23
+**System design distributed task scheduler**
+
+The big components of our system are:
+- Clients: They initiate the task execution.
+- Resources: The task is executed on these components.
+ - Scheduler: A scheduler performs processes between clients and resources and decides which task should get resources first
+
+it is necessary to put the incoming tasks into a queue. It is because of the following reasons:
+- We might not have sufficient resources available right now.
+- There is task dependency, and some tasks need to wait for others.
+- We need to decouple the clients from the task execution so that they can hand off work to our system. Our system then queues it for execution.
+
+When a task comes for scheduling, it should contain the following information with it:
+- Resource requirements: The requirements include how many CPU cores it needs, how much RAM is required to execute this task, how much disk space is required,
+ what should the disk access rate be (input/output rate per second, or IOPS), 
+ and how many TCP ports the task needs for the execution, and so on. But, it is difficult for the clients to quantify these requirements
+- Dependency: Broadly, tasks can be of two types: dependent and independent.
+Dependent tasks require executing one or more additional tasks for their complete execution. These tasks must run in a sequence.
+Independent tasks don’t depend on the execution of any other task. Independent tasks can run in parallel. We should know whether a task is dependent or independent.
+
+Base Components:
+- Clients: The clients of the cloud providers are individuals or organizations from small to large businesses who want to execute their tasks;
+- Rate limiter: The resources available for a client depend on the cost they pay;
+- Task submitter: The task submitter admits the task if it successfully passes through the rate limiter;
+- Unique ID generator: It assigns unique IDs to the newly admitted tasks;
+- Database: All of the tasks taken by the task submitter are stored in a distributed database;
+- Relational database (RDB): A relational database stores task IDs, user IDs, required resources, execution caps, the total number of attempts made by the client, delay tolerance;
+- Graph database (GDB): This is a non-relational database that uses the graph data structure to store data. 
+We use it to build and store a directed acyclic graph (DAG) of dependent tasks, topologically sorted by the task submitter, so that we can schedule tasks according to that DAG. 
+
+Batching and prioritization: 
+After we store the tasks in the RDB, the tasks are grouped into batches. 
+Prioritization is based on the attributes of the tasks, such as delay tolerance or the tasks with short execution cap, and so on. The top priority tasks are pushed into the distributed queue, where 
+limits the number of elements we can push into the queue. 
+The value depends on many factors, such as currently available resources, the client or task priority, and subscription level.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 10 apr 23
+**System design distributed task scheduler**
+
+A task is a piece of computational work that requires resources (CPU time, memory, storage, network bandwidth, and so on) for some specified time.
+A system that mediates between tasks and resources by intelligently allocating resources to tasks so that task-level and system-level goals are met is called a task scheduler.
+
+Single-OS-based node: It has many processes or tasks that contend for the node’s limited computational resources. 
+So, we could use a local OS task scheduler that efficiently allocates resources to the tasks. 
+It uses multi-feedback queues to pick some tasks and runs them on some processor
+
+Cloud computing services: Where there are many distributed resources and various tasks from multiple tenants, there is a strong need for a task scheduler to utilize cloud computing resources 
+efficiently and meet tenants’ demands. 
+A local OS task scheduler isn’t sufficient for this purpose because the tasks are in the billions.
+
+Large distributed systems: In this system, many tasks run in the background against a single request by a user. 
+
+The process of deciding and assigning resources to the tasks in a timely manner is called task scheduling
+
+- Tasks will come from many different sources, tenants, and sub-systems.
+- Many resources will be dispersed in a data center (or maybe across many data centers)
+
+The functional requirements:
+- Submit tasks: The system should allow the users to submit their tasks for execution;
+- Allocate resources: The system should be able to allocate the required resources to each task;
+- Remove tasks: The system should allow the users to cancel the submitted tasks;
+- Monitor task execution: The task execution should be adequately monitored and rescheduled if the task fails to execute;
+- Efficient resource utilization: The resources (CPU and memory) must be used efficiently in terms of time, cost, and fairness. Efficiency means that we do not waste resources.;
+- Release resources: After successfully executing a task, the system should take back the resources assigned to the task.
+- Show task status: The system should show the users the current status of the task
+
+The non-functional requirements:
+- Availability: The system should be highly available to schedule and execute tasks.
+- Durability: The tasks received by the system should be durable and should not be lost.
+- Scalability: The system should be able to schedule and execute an ever-increasing number of tasks per day.
+- Bounded waiting time: This is how long a task needs to wait before starting execution.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 4 apr 23
+**System design distributed logs**
+
+In a distributed system, clients across the globe generate events by requesting services from different serving nodes.
+The nodes generate logs while handling each of the requests. 
+These logs are accumulated on the respective nodes.
+In addition to the building blocks, let’s list the major components of our system:
+- Log accumulator: An agent that collects logs from each node and dumps them into storage.
+- Storage: The logs need to be stored somewhere after accumulation. We’ll choose blob storage to save our logs.
+- Log indexer: The growing number of log files affects the searching ability. The log indexer will use the distributed search to search efficiently.
+- Visualizer: The visualizer is used to provide a unified view of all the logs.
+
+Each service will push its data to the log accumulator service. It is responsible for these actions:
+- Receiving the logs.
+- Storing the logs locally.
+- Pushing the logs to a pub-sub system
+
+We use the pub-sub system to cater to our scalability issue. 
+Now, each server has its log accumulator (or multiple accumulators) push the data to pub-sub. 
+The pub-sub system is capable of managing a huge amount of logs.
+
+To fulfill another requirement of low latency, we don’t want the logging to affect the performance of other processes, so we send the logs asynchronously via a low-priority thread. 
+By doing this, our system does not interfere with the performance of others and ensures availability
+
+The data does not reside in pub-sub forever and gets deleted after a few days before being stored in archival storage
+- Filterer: It identifies the application and stores the logs in the blob storage reserved for that application since we do not want to mix logs of two different applications.
+- Error aggregator: It is critical to identify an error as quickly as possible.
+- Alert aggregator: Alerts are also crucial. So, it is important to be aware of them early.
+- Expiration Checker: Verifying the logs that have to be deleted. Verifying the logs to store in cold storage.
+---------------------------------------------------------
+---------------------------------------------------------
+## 3 apr 23
+**System design distributed logs**
+A log file records details of events occurring in a software application.
+
+Logging allows us to understand our code, locate unforeseen errors, fix the identified errors, and visualize the application’s performance.
+
+Log analysis helps us with the following scenarios:
+- To troubleshoot applications, nodes, or network issues;
+- To adhere to internal security policies, external regulations, and compliance;
+- To recognize and respond to data breaches and other security problems;
+- To comprehend users’ actions for input to a recommender system;
+
+
+Instead of logging all the information, we can use a sampler service that only logs a smaller set of messages from a larger chunk. 
+This way, we can decide on the most important messages to be logged
+
+Applications have the liberty to choose the structure of their log data. 
+For example, an application is free to write to log as binary or text data, but it is often helpful to enforce some structure on the logs. 
+The first benefit of structured logs is better interoperability between log writers and readers. 
+Second, the structure can make the job of a log processing system easier.
+
+We should be careful while logging.
+ The logging information should only contain the relevant information and not breach security concerns.
+ For secure data, we should log encrypted data. 
+ We should consider the following few points while logging
+
+- Avoid logging personally identifiable information (PII), such as names, addresses, emails, and so on.
+- Avoid logging sensitive information like credit card numbers, passwords, and so on.
+- Avoid excessive information. Logging all information is unnecessary. 
+- The logging mechanism should be secure and not vulnerable because logs contain the application’s flow, and an insecure logging mechanism is vulnerable to hackers.
+
+The functional requirements:
+- Writing logs: The services of the distributed system must be able to write into the logging system;
+- Searchable logs: It should be effortless for a system to find logs;
+- Storing logging: The logs should reside in distributed storage for easy access;
+- Centralized logging visualizer: The system should provide a unified view of globally separated services;
+
+The non-functional requirements:
+- Low latency: Logging is an I/O-intensive operation that is often much slower than CPU operations;
+- Scalability: We want our logging system to be scalable;
+- Availability: The logging system should be highly available to log the data
 
 ---------------------------------------------------------
 ## 28 mar 23
@@ -126,7 +318,8 @@ These are the problems that come with the architecture of a centralized search s
 SPOF: A centralized system is a single point of failure. If it’s dead, no search operation can be performed.
 Server overload: If numerous users perform queries and the queries are complicated, it stresses the server (node).
 
-Large size of the index: The size of the inverted index increases with the number of documents, placing resource demands on a single server. The bigger the computer system, the higher the cost and complexity of managing
+Large size of the index - The size of the inverted index increases with the number of documents, placing resource demands on a single server. The bigger the computer system, the higher the cost and complexity of managing
+
 ---------------------------------------------------------
 ---------------------------------------------------------
 ## 22 mar 23
