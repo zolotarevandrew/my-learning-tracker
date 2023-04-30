@@ -4,6 +4,453 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 27 apr 23
+**System design Youtube**
+
+When talking about providing effective service to end users, the following three steps are important:
+- Encode: The raw videos uploaded to YouTube have significant storage requirements. 
+It’s possible to use various encoding schemes to reduce the size of these raw video files. 
+Apart from compression, the choice of encoding scheme will also depend on the types of end devices used to stream the video content.
+ Since multiple devices could be used to stream the same video, we may have to encode the same video using different encoding schemes resulting in one raw video 
+ file being converted into multiple files each encoded differently. 
+ This strategy will result in a good user-perceived experience because of two reasons: users will save bandwidth because the video file will be encoded and compressed to some limit, 
+ and the encoded video file will be appropriate for the client for a smooth playback experience.
+ 
+- Deploy: For low latency, content must be intelligently deployed so that it is closer to a large number of end users. 
+Not only will this reduce latency, but it will also put less burden on the networks as well as YouTube’s core servers.
+
+- Deliver: Delivering to the client requires knowledge about the client or device used for playing the video. 
+This knowledge will help in adapting to the client and network conditions. T
+herefore, we’ll enable ourselves to serve content efficiently.
+
+Until now, we’ve considered encoding one video with different encoding schemes. 
+However, if we encode videos on a per-shot basis, we’ll divide the video into smaller time frames and encode them individually. 
+We can divide videos into shorter time frames and refer to them as segments. 
+Each segment will be encoded using multiple encoding schemes to generate different files called chunks. 
+The choice of encoding scheme for a segment will be based on the detail within the segment to get optimized quality with lesser storage requirements. 
+Eventually, each shot will be encoded into multiple chunk sizes depending on the segment’s content and encoding scheme used. 
+As we divide the raw video into segments, we’ll see its advantages during the deployment and delivery phase.
+
+For any video with dynamic colors and high depth, we’ll encode it differently from a video with fewer colors. 
+This means that a not-so-dynamic segment will be encoded such that it’s compressed more to save additional storage space. 
+Eventually, we’ll have to transfer smaller file sizes and save bandwidth during the deployment and streaming phases.
+
+Using the strategy above, we’ll have to encode individual shots of a video in various formats. 
+However, the alternative to this would be storing an entire video (using no segmenting) after encoding it in various formats. 
+If we encode on a per-shot basis, we would be able to optimally reduce the size of the entire video by doing the encoding on a granular level. 
+We can also encode audio in various formats to optimally allow streaming for various clients like TVs, mobile phones, and desktop machines. 
+Specifically, for services like Netflix, audio encoding is more useful because audios are offered in various languages.
+
+We have to bring the content closer to the user. This has three main advantages:
+- Users will be able to stream videos quickly.
+- There will be a reduced burden on the origin servers.
+- Internet service providers (ISPs) will have spare bandwidth.
+
+So, instead of streaming from our data centers directly, we can deploy chunks of popular videos in CDNs and point of presence (PoPs) of ISPs. 
+In places where there is no collaboration possible with the ISPs, our content can be placed in internet exchange point (IXPs). 
+We can put content in IXPs that will not only be closer to users, but can also be helpful in filling the cache of ISP PoPs.
+
+YouTube recommends videos to users based on their profile, taking into account factors such as their interests, 
+view and search history, subscribed channels, related topics to already viewed content, and activities on content such as comments and likes.
+
+An approximation of the recommendation engine of YouTube is provided below. YouTube filters videos in two phases:
+
+Candidate generation: During this phase, millions of YouTube videos are filtered down to hundreds based on the user’s history and current context.
+Ranking: The ranking phase rates videos based on their features and according to the user’s interests and history. 
+Hundreds of videos are filtered and ranked down to a few dozen videos during this phase.
+
+How the end user gets the content on their device. 
+Since we have the chunks of videos already deployed near users, we redirect users to the nearest available chunks. 
+As shown below, whenever a user requests content that YouTube has recognized as popular, YouTube redirects the user to the nearest CDN.
+
+However, in the case of non-popular content, the user is served from colocation sites or YouTube’s data center where the content is stored initially. 
+We have already learned how YouTube can reduce latency times by having distributed caches at different design layers.
+
+While the content is being served, the bandwidth of the user is also being monitored at all times. 
+Since the video is divided into chunks of different qualities, each of the same time frame, the chunks are provided to clients based on changing network conditions.
+As shown below, when the bandwidth is high, a higher quality chunk is sent to the client and vice versa.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 26 apr 23
+**System design Youtube**
+
+Since YouTube is one of the most visited websites, 
+a large number of users will be using the search feature.
+
+Each new video uploaded to YouTube will be processed for data extraction. 
+We can use a JSON file to store extracted data, which includes the following:
+- Title of the video
+- Channel name.
+- Description of the video.
+- The content of the video, possibly extracted from the transcripts.
+- Video length.
+- Categories.
+
+Each of the JSON files can be referred to as a document. 
+Next, keywords will be extracted from the documents and stored in a key-value store. 
+The key in the key-value store will hold all the keywords searched by the users, 
+while the value in the key-value store will contain the occurrence of each key, its frequency, and the location of the occurrence in the different documents. 
+When a user searches for a keyword, the videos with the most relevant keywords will be returned.
+
+Low latency/Smooth streaming can be achieved through these strategies:
+- Geographically distributed cache servers at the ISP level to keep the most viewed content.
+- Choosing appropriate storage systems for different types of data. For example, we’ll can use Bigtable for thumbnails, blob storage for videos, and so on.
+- Using caching at various layers via a distributed cache management system.
+- Utilizing content delivery networks (CDNs) that make heavy use of caching and mostly serve videos out of memory. A CDN deploys its services in close vicinity to the end users for low-latency services.
+- Scalability: We’ve taken various steps to ensure scalability in our design as depicted in the table below. 
+The horizontal scalability of web and application servers will not be a problem as the users grow. 
+However, MySQL storage cannot scale beyond a certain point.
+
+- Availablity: The system can be made available through redundancy by replicating data to as many servers as possible to avoid a single point of failure. 
+Replicating data across data centers will ensure high availability, even if an entire data center fails because of power or network issues. 
+Furthermore, local load balancers can exclude any dead servers, and global load balancers can steer traffic to a different region if the need arises.
+- Reliability: YouTube’s system can be made reliable by using data partitioning and fault-tolerance techniques.
+ Through data partitioning, the non-availability of one type of data will not affect others. 
+ We can use redundant hardware and software components for fault tolerance. 
+ Furthermore, we can use the heartbeat protocol to monitor the health of servers and omit servers that are faulty and erroneous. 
+ We can use a variant of consistent hashing to add or remove servers seamlessly and reduce the burden on specific servers in case of non-uniform load.
+ 
+ 
+*Consistency*
+Our solution prefers high availability and low latency. 
+However, strong consistency can take a hit because of high availability (see the CAP theorem). 
+Nonetheless, for a system like YouTube, we can afford to let go of strong consistency. 
+This is because we don’t need to show a consistent feed to all the users. 
+For example, different users subscribed to the same channel may not see a newly uploaded video at the same time. 
+It’s important to mention that we’ll maintain strong consistency of user data. 
+This is another reason why we’ve decoupled user data from video metadata.
+
+*Distributed cache*
+We prefer a distributed cache over a centralized cache in our YouTube design. 
+This is because the factors of scalability, availability, and fault-tolerance, which are needed to run YouTube,
+ require a cache that is not a single point of failure. This is why we use a distributed cache. 
+
+*Bigtable versus MySQL*
+Another interesting aspect of our design is the use of different storage technologies for different data sets.
+The primary reason for the choice is performance and flexibility. 
+The number of users in YouTube may not scale as much as the number of videos and thumbnails do. 
+Moreover, we require storing the user and metadata in structured form for convenient searching. 
+Therefore, MySQL is a suitable choice for such cases.
+However, the number of videos uploaded and the thumbnails for each video would be very large in number. Scalability needs would force us to use a custom or NoSQL type of design for that storage. One could use alternatives to GFS and Bigtable, such as HDFS and Cassandra.
+
+
+*Duplicate videos*
+The current YouTube design doesn’t handle duplicate videos that have been uploaded by a user or spammers. 
+Duplicated videos take extra space, which leads to a trade-off. As a result, we either waste storage space or face an additional complexity to the upload process for handling duplicate videos.
+Let’s perform some calculations to resolve this problem. 
+Assume that 50 out of 500 hours of videos uploaded to YouTube are duplicates. 
+Considering that one minute of video requires 6 MB of storage space, the duplicated content will take up the following storage space:
+- (50 x 60) minutes x 6 MB/min = 18 GB
+If we avoid video duplication, we can save up to 9.5 petabytes of storage space in a year.
+
+Storage space being wasted, and other computational costs are not the only issues with duplicate videos. 
+
+*Future scaling*
+So far, we’ve focused on the design and analysis of the proposed design for YouTube. 
+In reality, the design of YouTube is quite complex and requires advanced systems.
+
+Any infrastructure mentioned above requires some modifications and adaptation to the application-level logic. 
+For example, if we continue to increase our data in MySQL servers, it can become a choke point. 
+To effectively use a sharded database, we might have to make changes to our database client to achieve a good level of performance and maintain the ACID (atomicity, consistency, isolation, durability)
+properties. However, even if we continue to change to the database client as we scale, its complexity may reach a point where it is no longer manageable.
+Also note that we haven’t incorporated a disaster recovery mechanism into our design yet.
+To resolve the problems above, YouTube has developed a solution called Vitess.
+
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 25 apr 23
+**System design Youtube**
+
+The workflow for the abstract design:
+- The user uploads a video to the server.
+- The server stores the metadata and the accompanying user data to the database and, at the same time, hands over the video to the encoder for encoding.
+- The encoder, along with the transcoder, compresses the video and transforms it into multiple resolutions (like 2160p, 1440p, 1080p, and so on). 
+The videos are stored on blob storage (similar to GFS or S3).
+- Some popular videos may be forwarded to the CDN, which acts as a cache.
+- The CDN, because of its vicinity to the user, lets the user stream the video with low latency. 
+However, CDN is not the only infrastructure for serving videos to the end user.
+
+APIs for each of the following features:
+- Upload videos
+- Stream videos
+-  Search videos
+- View thumbnails
+- Like or dislike videos
+-  Comment on videos
+
+- Component integration: We’ll cover some interconnections between the servers and storage components to better understand how the system will work.
+- Thumbnails: It’s important for users to see some parts of the video through thumbnails. 
+Therefore, we’ll add thumbnail generation and storage to the detailed design.
+- Database structure: Our estimation showed that we require massive storage space. 
+We also require storing varying types of data, such as videos, video metadata, and thumbnails, each of which demands specialized data storage for performance reasons. 
+Understanding the database details will enable us to design a system with the least possible lag
+
+- Load balancers: To divide a large number of user requests among the web servers, we require load balancers.
+- Web servers: Web servers take in user requests and respond to them. These can be considered the interface to our API servers that entertain user requests.
+- Application server: The application and business logic resides in application servers. They prepare the data needed by the web servers to handle the end users’ queries.
+- User and metadata storage: Since we have a large number of users and videos, the storage required to hold the metadata of videos and the content related to users must be stored in different storage clusters. This is because a large amount of not-so-related data should be decoupled for scalability purposes.
+- Bigtable: For each video, we’ll require multiple thumbnails. 
+Bigtable is a good choice for storing thumbnails because of its high throughput and scalability for storing key-value data. 
+Bigtable is optimal for storing a large number of data items each below 10 MB. 
+Therefore, it is the ideal choice for YouTube’s thumbnails.
+- Upload storage: The upload storage is temporary storage that can store user-uploaded videos.
+- Encoders: Each uploaded video requires compression and transcoding into various formats. 
+Thumbnail generation service is also obtained from the encoders.
+- CDN and colocation sites: CDNs and colocation sites store popular and moderately popular content that is closer to the user for easy access. 
+Colocation centers are used where it’s not possible to invest in a data center facility due to business reasons.
+
+
+1) The user can upload a video by connecting to the web servers. 
+The web server can run Apache or Lighttpd. 
+Lighttpd is preferable because it can serve static pages and videos due to its fast speed.
+
+2) Requests from the web servers are passed onto application servers that can contact various data stores to read or write user, videos, or videos’ metadata. 
+There are separate web and application servers because we want to decouple clients’ services from the application and business logic. 
+Different programming languages can be used on this layer to perform different tasks efficiently. 
+For example, the C programming language can be used for encryption. 
+Moreover, this gives us an additional layer of caching, where the most requested objects are stored on the application server while the most 
+frequently requested pages will be stored on the web servers
+
+3) Multiple storage units are used. Let’s go through each of these:
+- Upload storage is used to store user-uploaded videos before they are temporarily encoded.
+- User account data is stored in a separate database, whereas videos metadata is stored separately. 
+The idea is to separate the more frequently and less frequently accessed storage clusters from each other for optimal access time. 
+We can use MySQL if there are a limited number of concurrent reads and writes. 
+However, as the number of users—and therefore the number of concurrent reads and writes—grows, we can move towards NoSQL types of data management systems.
+
+- Since Bigtable is based on Google File System (GFS), it is designed to store a large number of small files with low retrieval latency.
+It is a reasonable choice for storing thumbnails.
+
+4) The encoders generate thumbnails and also store additional metadata related to videos in the metadata database. I
+t will also provide popular and moderately popular content to CDNs and colocation servers, respectively.
+5) The user can finally stream videos from any available site.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 24 apr 23
+**System design Youtube**
+
+We require that our system is able to perform the following functions:
+- Stream videos
+- Upload videos
+- Search videos according to titles
+-  Like and dislike videos
+- Add comments to videos
+-  View thumbnails
+
+It’s important that our system also meets the following requirements:
+- High availability: The system should be highly available. High availability requires a good percentage of uptime. 
+Generally, an uptime of 99% and above is considered good.
+- Scalability: As the number of users grows, these issues should not become bottlenecks: storage for uploading content, 
+the bandwidth required for simultaneous viewing, and the number of concurrent user requests should not overwhelm our application/web server.
+- Good performance: A smooth streaming experience leads to better performance overall.
+- Reliability: Content uploaded to the system should not be lost or damaged.
+
+We don’t require strong consistency for YouTube’s design. 
+Consider an example where a creator uploads a video. Not all users subscribed to the creator’s channel should immediately get the notification for uploaded content
+
+To summarize, the functional requirements are the features and functionalities that the user will get, 
+whereas the non-functional requirements are the expectations in terms of performance from the system
+
+Estimation requires the identification of important resources that we’ll need in the system.
+Hundreds of minutes of video content get uploaded to YouTube every minute. 
+Also, a large number of users will be streaming content at the same time, which means that the following resources will be required:
+- Storage resources will be needed to store uploaded and processed content.
+- A large number of requests can be handled by doing concurrent processing. This means web/application servers should be in place to serve these users.
+- Both upload and download bandwidth will be required to serve millions of users
+Storage - 180 gb storage per Minute;
+
+A lot of data transfer will be performed for streaming and uploading videos to YouTube.
+This is why we need to calculate our bandwidth estimation too.
+ Assume the upload:view ratio is 1:300—that is, for each uploaded video, we have 300 video views per second. 
+ We’ll also have to keep in mind that when a video is uploaded, it is not in compressed format, while viewed videos can be of different qualities. 
+Bandwidth - 200 gb ps;
+
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 19 apr 23
+**System design how to**
+
+Requirements: 
+During this step, we gather all the requirements of the design problem and define its scope. 
+Requirements include understanding what the service is, how it works, and what its main features are. 
+Our goal in this step is to gather the functional and non-functional requirements of a service we are about to design
+
+Estimation: 
+As the name suggests, this step estimates the resources required to provide the service to a defined number of users. 
+By resources, we mean the hardware or infrastructural resources. Some sample estimation questions are the following
+- How many servers will we require to provide smooth services to 500 million daily active users (DAU)?
+- How much storage do we need if we have to store 125 million tweets per day, and 20% of tweets contain media?
+
+Storage schema (optional): 
+This step involves articulating our data model—that is, 
+we define which tables we need and what type of fields are part of each table. 
+However, this is an optional step, and we may not exercise this effort in every design problem
+
+High-level design: 
+This step involves identifying the main components and building blocks we’ll use to design our desired system. 
+We do this by getting inspiration from our functional and non-functional requirements
+
+API design: 
+The goal in this phase is to build interfaces for our service. 
+Using these interfaces, users can call various services within our system. 
+These interfaces are in the form of API calls and are generally a translation of our functional requirements
+
+Detailed design: 
+The detailed design starts by recognizing the limitations of the high-level design. 
+We’ll capitalize on these limitations to evolve our design. 
+During this step, we’ll finalize our design by mentioning all the components and building blocks that we’ll use.
+
+Evaluation: 
+This step will measure the effectiveness of our solution. 
+In other words, we justify how our design fulfills the functional and non-functional requirements.
+
+Distinctive component/feature: 
+This step is to identify a unique aspect for each design problem and discuss it. 
+For example, the Uber design problem has payment service and fraud detection as its unique feature. 
+In contrast, Google Docs has concurrency control, which is required when different users want to edit the same section of a document simultaneously.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 18 apr 23
+**System design sharded counters**
+
+Location-based counters represent their current count when the system reaches the set threshold in a specified time and the hashtag becomes a trend for some users.
+ For example, Twitter sets 10,000 as a threshold. 
+ When location-based hashtag counts reach 10,000, Twitter shows these hashtags in the trends timeline of the users of the respective country where the hashtag is being used. 
+ The specified hashtag may be displayed worldwide if counts increase in all countries timeline. 
+ 
+ The Top K tweets include accounts the user is following, tweets the user has liked, and retweets of accounts the user follows. 
+ Tweets get priority in Top K problems based on follower count and time. 
+ Twitter also shows promoted tweets and some tweets of accounts the user doesn’t follow in the user’s home timeline, depending on the tweet’s popularity and location.
+
+An important concern is where we should place shared counters. 
+Should they reside on the same nodes as application servers, in separate nodes in the data center, 
+in nodes of CDN at the edge of a network near the end users? The exact answer to this question depends on our specific use case. 
+For Twitter, we can compute counts by placing sharded counters near the user, which can also help to handle heavy hitter and Top K problems efficiently.
+
+Reads can store counter values in appropriate data stores and rely on the respective data stores for read scalability. 
+The Cassandra store can be used to maintain views, likes, comments, and many more counts of the users in the specified region. 
+These counts represent the last computed sum of all shards of a particular counter
+
+When users generate a timeline, read requests are forwarded to the nearest servers, and then the persisted values in the store can be used to respond. 
+This storage also helps to show the region-wise Top K trends. 
+The list of local Top K trends is sent to the application server, 
+and then the application server sorts all the lists to make a list of global Top K trends. 
+Eventually, the application server sends all counters’ details to the cache
+
+We also need storage for the sharded counters, which store all information about them with their metadata. 
+The Redis or Memcache servers can play a vital role here. 
+For example, each tweet’s unique ID can become the key, and the value of this key can be a counter ID, or a list of counters’ IDs (like counter, reply counter, and so on). 
+Furthermore, each counter ID has its own key-value store where the counter (for example, a likes counter) ID is a key and the value is a list of assigned shards.
+
+We also need storage for the sharded counters, which store all information about them with their metadata. 
+The Redis or Memcache servers can play a vital role here. 
+For example, each tweet’s unique ID can become the key, and the value of this key can be a counter ID, 
+or a list of counters’ IDs (like counter, reply counter, and so on). 
+Furthermore, each counter ID has its own key-value store where the counter (for example, a likes counter) ID is a key and the value is a list of assigned shards.
+
+The job of identifying the relevant counter and mapping all write requests to the appropriate counter in sharded counters can be done in parallel. 
+We map the all-write request to the appropriate counter, and then each counter chooses a shard randomly based on some metrics to do increments and decrements. 
+In contrast, we reduce periodically to aggregate the value of all shards of the particular counter. 
+Then, these counter values can be stored in the Cassandra store.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 17 apr 23
+**System design sharded counters**
+
+The decision about the number of shards depends on many factors that collectively try to predict the write load on a specific counter in the short term. 
+For tweets, these factors include follower count. 
+The tweet of a user with millions of followers gets more shards than a user with few followers on Twitter because there is a possibility that their tweets will get many, often millions, of likes. 
+Sometimes, a celebrity tweet includes one or more hashtags. 
+The system also creates the sharded counter for this hashtag because it has a high chance of being marked as a trend.
+
+
+We need to monitor the write load for all the shards to appropriately route requests to specific shards, possibly using load balancers. 
+Such a feedback mechanism can also help us decide when to close down some of the shards for a counter and when to add additional shards. 
+This process does not only provide good performance for the end user but also utilizes our resources at near-optimal levels.
+
+As we mentioned earlier, millions of users interact with our example celebrity’s tweet, which eventually sends a burst of write requests to the system. 
+The system assigns each write request to the available shards of the specified counter of the particular tweet. 
+How does the system select these shards operating on different computational units (nodes) to assign the write requests? 
+
+When the user sends the read request, the system will aggregate the value of all shards of the specified counter to return the total count of the feature (such as like or reply). 
+Accumulating values from all the shards on each read request will result in low read throughput and high read latency.
+
+The decision of when the system will sum all shards values is also very critical. 
+If there is high write traffic along with reads, it might be virtually impossible to get a real current value because by the time we report a read value to the client, it will have already changed. 
+So, periodically reading all the shards of a counter and caching it should serve most of the use cases. 
+By reducing the accumulation period, we can increase the accuracy of read values.
+
+we can use sharded counters to solve a real-world problem known as the Top K problem. 
+We’ll continue to use the real-time application Twitter as an example, where calculating trends is one of the Top K problems for Twitter. Here,
+Many users use various hashtags in their tweets. 
+It is a huge challenge to manage millions of hashtags’ counts to show them in individual users’ trends timelines based on their locality
+
+The sharded counter is the key to the above problem. 
+the system creates the counters for each hashtag and decides the shard count according to the user’s followers who used the hashtag in the tweet. 
+When users on Twitter use the same hashtag again in their tweet, the count maintains the same counter created initially on the first use of that hashtag
+
+- Region-wise hashtag count indicates the number of tweets with the same hashtag used within a specific geographical region. 
+For example, thousands of tweets with the same tags from New York City suggest that users in the New York area may see this hashtag in their trends timeline.
+- A time window indicates the amount of time during which tweets with specific tags are posted.
+
+The global hashtag counter represents the total of all location-based counters.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 16 apr 23
+**System design sharded counters**
+
+Here, it might be easy to count the likes for this single image, 
+but what will we do when thousands of such images or videos are uploaded simultaneously by many celebrities, each with millions of followers. 
+This problem is known as the heavy hitters problem.
+
+As the number of concurrent writes increases for some counter (which might be a variable residing in a node’s memory), 
+the lock contention increases non-linearly. 
+After some point, we might spend most of the time acquiring the lock so that we could safely update the counter.
+
+What will happen when a single tweet on Twitter gets a million likes, and the application server receives a write request against each like to increment the relevant counter? 
+These millions of requests are eventually serialized in a queue for data consistency
+
+A single counter for each tweet posted by a celebrity is not enough to handle millions of users. 
+The solution to this problem is a sharded counter, also known as a distributed counter, where each counter has a specified number of shards as needed. 
+These shards run on different computational units in parallel. 
+We can improve performance and reduce contention by balancing the millions of write requests across shards.
+
+Let’s assume that a famous YouTube channel with millions of subscribers uploads a new video. 
+The server receives a burst of write requests for video views from worldwide users.
+ First, a new counter initiates for a newly uploaded video. 
+ The server forwards the request to the corresponding counter, and our system chooses the shard randomly and updates the shard value, which is initially zero. 
+ In contrast, when the server receives read requests, it adds the values of all the shards of a counter to get the current total
+ 
+
+When a user posts a tweet on Twitter, the \createCounter API is called. 
+The system creates multiple counters for each newly created post by the user. 
+The following is the list of main counters created against each new tweet:
+- Tweet like counter
+- Tweet reply counter
+- Tweet retweet counter
+- Tweet view counter in case a tweet contains video
+
+Now, the question is how does the system decide the number of shards in each counter? 
+The number of shards is critical for good performance. 
+If the shard count is small for a specific write workload, we face high write contention, which results in slow writes. 
+On the other hand, if the shard count is too high for a particular write profile, we encounter a higher overhead on the read operation. 
+The reason for slower reads is because of the collection of values from different shards that might reside on different nodes inside geographically distributed data centers. 
+The reading cost of a counter value rises linearly with the number of shards because the values of all shards of a respective counter are added. 
+The writes scale linearly as we add new shards due to increasing requests. 
+Therefore, there is a trade-off between making writes quick versus read performance. 
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 12 apr 23
 **System design distributed task scheduler**
 
