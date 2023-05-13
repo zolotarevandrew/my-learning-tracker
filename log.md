@@ -4,6 +4,575 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 13 may 23
+**Team lead - прозрачность**
+Связь с командой и окружающим миром – руководством, соседними отделами, всей компанией. 
+Это не значит, что члены команды не должны самостоятельно общаться с кем-то из перечисленных, 
+это значит, что на плечах тимлида лежит обязанность любым способом обеспечить нужную прозрачность. 
+Все направление по обеспечению прозрачности можно разбить на три большие части:
+- Отчётность перед руководством
+- Обеспечение видимости достижений членов команды
+- Информирование команды об изменениях и новостях
+
+Предоставление отчётности может принимать очень разный вид: 
+формальные письменные репорты, регулярные демо команды, быстрый статус-чек на one-on-one встречах, дэшборды в Jira. 
+Самый простой способ определиться с форматом – обсудить его со своим руководителем, выделить волнующие его вопросы и определить удобную для всех периодичность.
+
+Форматов обеспечения видимости достижений команды тоже может быть много – открытые демо, 
+регулярные письма со списком достижений на всю компанию, статьи в Интранете. 
+Главное – охватить максимальное количество релевантной аудитории и предоставить информацию в понятном для всех виде.
+
+Информирование команды об изменениях и новостях проще всего проводить на регулярных встречах со всей командой – тимлид рассказывает о новостях и изменениях и даёт время задать волнующие вопросы.
+Дисциплинируешь себя регулярно смотреть на результаты команды со стороны заинтересованного лица.
+
+Обеспечение видимости достижений:
+- Повышение ценности каждого члена команды внутри компании
+- Получение сотрудниками признания их достижений
+- Хорошие результаты – хороший тимли
+
+Информирование команды:
+- Облегчает циркуляцию информации в компании
+- Проще проводить организационные изменения
+- Повышает лояльность сотрудников к компании
+
+- Снижает вероятность повторения технических или управленческих ошибок, пройденных другими командами. Кто-то извне может сообщать важную информацию
+- Разбирать критические ситуации легче при высокой степени прозрачности и доверия. Понимать их причины и пути предотвращения
+
+Все составляющие обеспечения прозрачности могут быть легко делегированы на ответственного участника команды. 
+Хорошим вариантом может быть подключить к этому своего заместителя.
+
+- Организовывать демонстрации (Show and Tell) внутри команды.
+- Делать регулярные рассылки заинтересованным лицам с информацией о проделанной работе и планами.
+- Демонстрировать прозрачность в своей работе, объяснять её плюсы. Не все люди понимают что такое прозрачность, не все осознают её преимущества, не все умеют быть прозрачными.
+- Проводить регулярные встречи с командой, на которых рассказывать о последних новостя
+
+Прозрачность наружу
+- Определите всех потенциальных стейкхолдеров вашей команды. В этом может помочь техника stakeholder mapping (https://www.smartsheet.com/what-stakeholder-analysis-and-mapping-and-how-do-you-do-it-effectively)  (https://www.smartsheet.com/what-stakeholder-analysis-and-mapping-and-how-do-you-do-it-effectively). Убедитесь, что в этом списке есть и ваш непосредственный руководитель.
+- Проведите опрос внутри технического отдела или всей компании о том, кому интересно следить за вашими новостями. Сразу приготовьтесь к тому, что в реальности заинтересована в этом будет лишь малая доля ответивших "да".
+- Пройдитесь по всем стейкхолдерам и проговорите, с какой частотой и в каком формате они хотят получать информацию о работе вашей команды и её результатах.
+- С учётом требований всех стейкхолдеров определитесь с форматом информирования их и других заинтересованных групп внутри компании. Это, например, могут быть демо, письменные отчёты, краткие дайджесты в Slack. Постарайтесь сделать так, чтобы выбранные вами форматы не задевали команду и не съедали её время.
+- Для каждого формата определитесь с тем, как будете контролировать его эффективность – это могут быть количество просмотров ваших отчётов, качественная оценка удовлетворённости заказчиков.
+
+Прозрачность внутрь
+- Назначьте с командой регулярные встречи или встройтесь в текущую рутину.
+-  Подготовьте небольшой рассказ о том, что происходило в компании последнее время – это могут быть новости из соседних отделов, стратегические планы, интересные слухи.
+- Соберите с команды запросы того, о чем ещё им хотелось бы узнать, и договоритесь насчёт периодичности
+
+**Плюсы**
+- Собрать запросы с команды и внедрить регулярные встречи и рассылки для улучшения прозрачности.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 13 may 23
+**Team lead - зрелость команды**
+Субъективная оценка отношения команды к повседневным задачам, способам их выполнения, особенностям командной динамики. Есть несколько моделей: Херси – Бланшара (https://psy.wikireading.ru/98751)  (https://psy.wikireading.ru/98751), пяти пороков Ленсиони (https://blog.mann-ivanov-ferber.ru/2016/07/07/5-porokov-komandy-i-sposoby-ix-ustraneniya/)  (https://blog.mann-ivanov-ferber.ru/2016/07/07/5-porokov-komandy-i-sposoby-ix-ustraneniya/). Эта оценка опирается:
+- Как команда хочет получать задачи: инструкция vs конечная цель
+- Какие есть отношения и ожидания друг от друга в команде
+
+Команда большее, чем совокупность её членов, а значит необходимо работать и оценивать не только сотрудников в отдельности, но и команду в целом.
+Целенаправленная работа над зрелостью команды позволит:
+- Увеличить продуктивность команды
+- Получать результат лучше, чем было запланировано
+- Работа в команде, которая любит своё дело – дополнительный фактор мотивации сотрудников
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 12 may 23
+**System design - google maps**
+Improvements
+
+
+WebSocket is a communication protocol that allows users and servers to have a two-way, interactive communication session. 
+This helps in the real-time transfer of data between user and server.
+
+The load balancer balances the connection load between different servers since there is a limit on the number of WebSocket connections per server. 
+It connects some devices to server 1, some to server 2, and so on.
+
+A pub-sub system collects the location data streams (device, time, location) from all servers. 
+The location data from pub-sub is read by a data analytics engine like Apache Spark.
+ The data analytics engine uses data science techniques—such as machine learning, clustering, and so on—to measure and predict traffic on the roads, 
+ identify gatherings, hotspots, events, find out new roads, and so on. 
+ These analytics help our system improve ETAs
+
+The data analytics engine publishes the analytics data to a new pub-sub topic
+
+The map update service listens to the updates from the pub-sub topic for the analytics. 
+It updates the segment graphs if there is a new road identified or if there is a change in the weight (average speed (traffic, road condition)) on the edges of the graph. 
+Depending on the location, we know which segment the update belongs to. We find the routing server on which that segment is placed from the key-value store and update the graph on that server.
+
+The graph preprocessing service recalculates the new paths on the updated segment graph. We’ve seen how the paths are updated continuously in the background based on the live data.
+
+With a large road network graph hosted on a single server, we ran into these issues:
+- We couldn’t process user queries, since it was impossible to load such a large graph into the memory, making the system unavailable to the users.
+- It wasn’t possible to make a persistent two-way connection (for navigation) between the server and millions of users per second.
+- It was also a single point of failure.
+
+We solved the above problems by dividing the world into small segments. 
+Each small segment consists of a graph that can be easily loaded into a server’s memory. 
+With segments, we completed these objectives:
+- We hosted each segment on a separate server, mitigating the issue of loading a large, global graph.
+- The load balancer divides the request load across different segment servers depending on the user’s area of search. 
+It mitigates the issue of putting the burden on a single server, which was affecting the system’s availability.
+-  We didn’t discuss replication, but we can replicate each segment, which will help deal with a segment server as a single point of failure and distribute the request load for a segment to replicas
+
+Lazy loading reduces initial load time by reducing the amount of content to load, saves bandwidth by delivering content to users when needed, and preserves server and client resources by rendering only some of the content
+
+We scaled our system for large road networks. Scalability can be seen in two ways:
+- The ability of the system to handle an increasing amount of user requests.
+- The ability of the system to work with more data (segments).
+We divided the world into small segments. 
+Each segment is hosted on a different server in the distributed system. 
+The user requests for different routes are served from the different segment servers. 
+In this way, we can serve millions of user requests
+
+We’re running the user requests on small subgraphs. 
+Processing a small subgraph of hundreds of vertices is far faster than a graph of millions of vertices. 
+We can cache the processed small subgraph in the main memory and quickly respond to user requests. 
+This is how our system responds to the user in less time.
+
+The key-value store helps different services to get the required information quickly.
+- The graph processing service checks for the relevant segments in which the source and the destination latitude/longitude lie by querying the key-value store for the segmentID values.
+- For load-balancing user requests among different segment servers, the key-value store is queried for the serverID against the segment on which the graph processing should run for a specific request
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 11 may 23
+**System design - google maps**
+
+Each segment has a unique name and boundary coordinates. 
+We can easily identify which location (latitude, longitude) lies in which segment. 
+Given the source and the destination, we can find the segments in which they lie. For each segment, there are some boundary edges, which we call exit points. 
+
+Let’s summarize how we met the challenge of scalability. 
+We divided our problem so that instead of working on a large road network as a whole, we worked on parts (segments) of it. 
+The queries for a specific part of the road network are processed on that part only, and for the queries that require processing more than one part of the network, 
+we connect those parts, as we have shown above.
+
+For computing the ETA with reasonable accuracy, we collect the live location data ((userID, timestamp,(latitude, longitude))) from the navigation service through a pub-sub system. 
+With location data streams, we can calculate and predict traffic patterns on different roads. Some of the things that we can calculate are:
+- Traffic (high/medium/low) on different routes or roads.
+- The average speed of a vehicle on different roads.
+- The time intervals during which a similar traffic pattern repeats itself on a route or road. For example, highway X will have high traffic between 8 to 10 AM.
+
+We store the following information for each segment:
+Key-value store:
+- The segment’s ID.
+- The serverID on which the segment is hosted.
+- In reality, each segment is a polygon, so we store boundary coordinates (latitude/longitude), possibly as a list.
+- A list of segment IDs of the neighbors segments
+
+We store the information to determine whether, at a particular hour of the day, the roads are congested. This later helps us decide whether or not to update the graph (weights) based on the live data.
+- edgeID identifies the edge.
+- hourRange tells us which hour of the day it is when there are typical road conditions (non-rush hour) on the road.
+- rush is a Boolean value that depicts whether there is congestion or not on a specific road at a specific time.
+
+Each segment has its latitude/longitude boundary coordinates and the graph of its road network.
+The segment adder processes the request to add the segment along with the segment information. 
+The segment adder assigns a unique ID to each segment using a unique ID generator system.
+After assigning the ID to the segment, the segment adder forwards the segment information to the server allocator.
+The server allocator assigns a server to the segment, hosts that segment graph on that server, and returns the serverID to the segment adder.
+After the segment is assigned to the server, the segment adder stores the segment to server mapping in the key-value store. 
+It helps in finding the appropriate servers to process user requests. It also stores each segment’s boundary latitude/longitude coordinates in a separate key-value object.
+
+The user provides the source and the destination so that our service can find the path between them.
+The latitude and longitude of the source and the destination are determined through a distributed search.
+The latitude/longitude for the source and the destination are passed to the graph processing service that finds the segments in which the source and the destination latitude/longitude lie.
+After finding the segment IDs, the graph processing service finds the servers that are hosting these segments from the key-value store.
+The graph processing service connects to the relevant servers to find the shortest path between the source and the destination. 
+If the source and the destination belong to the same segment, the graph processing service returns the shortest path by running the query only on a single segment. 
+Otherwise, it will connect the segments from different servers, as we have seen in the previous lesson.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 10 may 23
+**System design - google maps**
+
+In a maps system, the user has to enter their starting point and their destination to create a path between the two. For the starting source point, the user uses the current location service.
+The location finder determines the current location by maintaining a persistent connection with the user. The user will provide an updated location using GPS, Wi-Fi, and cellular technology. This will be the user’s source point.
+For the destination point, the user types an address in text format. It’s a good idea to make use of our Typeahead service here to provide useful suggestions and avoid spelling mistakes.
+After entering the source and the destination points, the user requests the optimal path.
+The user’s path request is forwarded to the route-finder service.
+The route finder forwards the requests to an area search service with the source and the destination points.
+The area search service uses the distributed search to find the latitude/longitude for the source and the destination. It then calculates the area on the map spanning the two (source’s and destination’s) latitude/longitude points.
+After finding the area, the area search service asks the graph processing service to process part of the graph, depending on the area to find the optimal path.
+The graph processing service fetches the edges and nodes within that specified area from the database, finds the shortest path, and returns it to the route-finder service that visualizes the optimal path with the distance and time necessary to comeplete the route. It also displays the steps the user should follow for navigation.
+Now that the user can visualize the shortest path on the map, they also want to get directions towards the destination. The direction request is handled by the navigator.
+The navigator tracks that the user is following the correct path, which it has from the route-finder service. It updates the user’s location on the map while the user is moving, and shows where to turn with the distance. If a user deviates from the path, it generates an event that is fed to Kafka.
+Upon receiving the event from the navigator, Kafka updates the subscribed topic of the area search service, which in turn recalculates the optimal path and suggests it to the user. The navigator also provides a stream of live location data to the graph, building it through the pub-sub system. Later, this data can be used to improve route suggestions provided to the users.
+
+Scalability is about the ability to efficiently process a huge road network graph. 
+We have a graph with billions of vertices and edges, and the key challenges are inefficient loading, updating, and performing computations. 
+For example, we have to traverse the whole graph to find the shortest path. 
+This results in increased query time for the user. So, what could be the solution to this problem.
+
+The idea is to break down a large graph into smaller subgraphs, or partitions. 
+The subgraphs can be processed and queried in parallel. As a result, the graph construction and query processing time will be greatly decreased. 
+So, we divide the globe into small parts called segments. Each segment corresponds to a subgraph.
+
+A segment is a small area on which we can work easily. 
+Finding paths within these segments works because the segment’s road network graph is small and can be loaded easily in the main memory, updated, and traversed. 
+A city, for example, can be divided into hundreds of segments.
+
+Each segment has four coordinates that help determine which segment the user is in. 
+Each coordinate consists of two values, the latitude and longitude.
+
+Let’s talk about finding paths between two locations within a segment.
+ We have a graph representing the road network in that segment. 
+ Each intersection/junction acts as a vertex and each road acts as an edge. The graph is weighted, and there 
+ could be multiple weights on each edge—such as distance, time, and traffic—to find the optimal path. 
+ For a given source and destination, there can be multiple paths. 
+ We can use any of the graph algorithms on that segment’s graph to find the shortest paths. 
+ The most common shortest path algorithm is the Dijkstra’s algorithm.
+
+After running the shortest path algorithm on the segment’s graph, we store the algorithm’s output in a distributed storage to avoid recalculation and cache the most requested routes. 
+The algorithm’s output is the shortest distance in meters or miles between every two vertices in the graph, 
+the time it takes to travel via the shortest path, and the list of vertices along every shortest path. 
+All of the above processing (running the shortest path algorithm on the segment graph) is done offline (not on a user’s critical path).
+
+What if we have to find the path between two points that lie on the edges? 
+What we do is find the vertices of the edge on which the points lie, calculate the distance of the point from the identified vertices, 
+and choose the vertices that make the shorter total distance between the source and the destination. 
+The distance from the source (and destination) to the nearest vertices is approximated using latitude/longitude values.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 9 may 23
+**System design - google maps**
+
+We’ll use the following components in our design:
+
+- Location finder: The location finder is a service used to find the user’s current location and show it on the map since we can’t possibly personally remember the latitude and longitude for every place in the world.
+- Route finder: For the people who are new to a place, it’s difficult to travel because they don’t know the correct routes. 
+
+The route finder is a service used to find the paths between two locations, or points.
+- Navigator: Suggesting a route through the route finder is not enough. 
+A user may deviate from the optimal path. In that case, a navigator service is used. 
+This service keeps track of users’ journeys and sends updated directions and notifications to the users as soon as they deviate from the suggested route.
+
+- GPS/Wi-Fi/Cellular technology: These are the technologies that we used to find the user’s ground position.
+
+- Distributed search: For converting place names to latitude/longitude values, we need a conversion system behind the source and destination fields. 
+A distributed search maintains an index consisting of places names and their mapping to latitude and longitude.
+ User’s entered keywords are searched using this service to find a location on the map.
+ 
+- Area search service: The area search service coordinates between the distributed search and graph processing service to obtain the shortest path against a user query.
+ The area search service will request the distributed search to obtain the locations of the source and destination on the map. 
+ Then, it will use the graph processing service to find the optimal path from the source to the destination.
+ 
+- Graph processing service: There can be multiple paths from one place to another. 
+The graph processing service runs the shortest path algorithm on a shorter graph based on the area spanning the source and destination points and helps us determine which path to follow.
+
+- Database: As discussed in the previous lesson, we have the road data from various sources stored in the form of a graph. 
+We’ll map this data to a database to develop the road network graph. We’re using a graph database like DataStax Graph to store the graph for our design.
+
+- Pub-sub system: Users might deviate from the first suggested path. In that case, they’ll need information on a new path to their destination. 
+Pub-sub is a system that listens to various events from a service and triggers another service accordingly. 
+For example, when a user deviates from the suggested path, it pings the area search service to find a new route from the user’s current location to their destination point. 
+It also collects the streams of location data for different users from the navigator. 
+This data can be processed later to find traffic patterns on different roads at different times. 
+We’ll use Kafka as a pub-sub system in our design.
+
+- Third-party road data: How can we build a map system if we don’t have the road networks data? 
+We need to collect the road data from third-party resources and preprocess the collected data to bring it into a single format that can be utilized to build the graph.
+
+- Graph building: We’ll use a service that builds the graph from the given data, either collected from the third-party resources or from the users.
+- User: This refers to a person or a program that uses the services of the map system.
+- Load balancer: This is a system that is used to distribute user requests among different servers and services.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 8 may 23
+**System design - google maps**
+
+Let’s introduce the problem by assuming that we want to travel from one place to another. Here are the possible things that we might want to know:
+- What are the best possible paths that take us to our destination, depending on the vehicle type we’re using?
+- How long in miles is each path?
+- How much time does each path take to get us to our destination?
+ 
+The functional requirements of our system are as follows.
+- Identify the current location: Users should be able to approximate their current location (latitude and longitude in decimal values) on the world map.
+- Recommend the fastest route: Given the source and destination (place names in text), the system should recommend the optimal route by distance and time, depending on the type of transportation.
+- Give directions: Once the user has chosen the route, the system should list directions in text format, where each item in the list guides the user to turn or continue in a specific direction to reach the destination.
+
+The non-functional requirements of our system are as follows.
+- Availability: The system should be highly available.
+- Scalability: It should be scalable because both individuals and other enterprise applications like Uber and Lyft use Google Maps to find appropriate routes.
+- Less response time: It shouldn’t take more than two or three seconds to calculate the ETA and the route, given the source and the destination points.
+- Accuracy: The ETA we predict should not deviate too much from the actual travel time
+
+Scalability: Serving millions of queries for different routes in a second, given a graph with billions of nodes and edges spanning over 194 countries, 
+requires robust scalability measures. 
+A simple approach, given the latitude and longitude of the source and destination, would be to apply an algorithm like Dijkstra to find the shortest path between the source and the destination. 
+However, this approach wouldn’t scale well for billions of users sending millions of queries per second. 
+This is because running any path-finding algorithm on a graph with billions of nodes running a million times per second is inefficient in terms of time and cost, 
+ultimately leading to a bad user experience. Therefore, our solution needs to find alternative techniques to scale well.
+
+ETA computation: In an ideal situation with empty roads, it’s straightforward to compute ETA using the distance and the speed of the vehicle we want to ride on. 
+However, we cannot ignore factors like the amount of traffic on the roads and road conditions, which affect the ETA directly. 
+For example, a road under construction, collisions, and rush hours all might slow down traffic. 
+Quantifying the factors above to design our system is not trivial. 
+Therefore, we’ll, categorize the factors above in terms of traffic load to complete our design
+
+To estimate the number of servers, we need to know how many daily active users are using Google Maps and how many requests per second a single Google Maps server can handle. 
+We assume the following numbers:
+- Daily active users who use Google Maps: 32 million (about 1 billion monthly users).
+- Number of requests a single server can handle per second: 8,000.
+4000 servers
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 6 may 23
+**Team lead - знание пользователей**
+
+Product Owner является защитником интересов тех, кто использует его продукт. Если упростить, то эта ветка заключается в следующем:
+- Определение целевой аудитории продукта и её сегментирование
+- Сбор, анализ и решение болей пользователей
+
+
+Плюсы
+- Команда регулярно общается с пользователями своего продукта.
+- Команда в курсе пользовательских исследований и инсайтов.
+- При разработке фичи всегда учитывается, для какого сегмента пользователей она разрабатывается.
+- Регулярно проводятся маркетинговые исследования для обновления информации о целевой аудитории.
+
+1) Максимально широко определите, кто является вашей целевой аудиторией. Вариант "все люди", конечно, возможен, но лучше все-таки быть более конкретным.
+2) Вместе с командой определите значимые критерии сегментации – те, разделение по которым влияет на боли, запросы и потребности пользователей. 
+Например, для текстового редактора нет смысла сегментировать пользователей на основе их пола, но есть смысл на основе географии или целей использования.
+3) Опишите ваши гипотезы о сегментах, их целях и объёмах. Максимально дешёвым способом провалидируйте их на существующих данных, с помощью пользовательских интервью или маркетинговых исследований.
+4) Приоритизируйте ваши сегменты с использованием взвешенной оценки. Можно учитывать такие параметры, как размер сегмента, лёгкость выхода на его представителей, потенциальная прибыль.
+5) Опишите полученные сегменты и используйте их в дальнейшем для планирования стратегии
+6) Проведите брейншторм с командой способы выйти на релевантных для вас пользователей. Это может быть размещение объявления на Авито, сообщение в релевантном сообществе, профильное оффлайн-мероприятие.
+7) Соберите контакты пользователей с использованием выбранных каналов.
+8) Договоритесь о постоянном проведении пользовательских интервью, на которых вы сможете валидировать ваши гипотезы о проблемах, собирать обратную связь по фичам.
+9) Позовите пользователей на демо команды – это даст отличную возможность сократить цикл получения обратной связи
+10) Постройте канал сбора болей пользователей. Стоит посмотреть на социальные сети, данные от службы поддержки, отзывы в магазинах приложений.
+11) Регулярно разбирайте этот канал и релевантные боли переводите в отдельный бэклог. В качестве критерия приоритизации можно использовать количество обращений.
+12) Сохраняйте контакты тех, кого касалась боль, чтобы сообщить им о релевантном запуске
+
+**Плюсы**
+- Пообщаться с продуктологм над построением каналом сбора болей пользователей, подумать можно ли как-то найти пользователей и напрямую с ними общаться.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 5 may 23
+**Team lead - знание продукта**
+
+Хороший менеджер должен, с одной стороны, знать свой продукт лучше любого из его пользователей, 
+а с другой – быть способным поставить себя на место новичка и посмотреть на продукт его глазами. 
+Это знание заключается в понимании следующих вещей:
+- Сценарии использования продукта пользователями
+- Миссия и видение продукта
+- Пирамида продуктовых метрик
+- Представление о value streams
+
+Плюсы
+- Регулярно используете свой продукт
+- Строите и содержите актуальными customer journey maps и продуктовую документацию
+- Проводите пользовательские интервью и UX сессии, на которых изучаете, как пользователи взаимодействуют с вашим продуктом
+- Постоянно изучаете продуктовую аналитику
+- Всегда можете объяснить, почему какая-то фича в вашем продукте сделана иначе, чем у конкурентов, и почему ваш вариант лучше
+
+Поговорите с командой продакт-менеджеров или представителей бизнеса, и спросите их про видение будущего продукта и про то, какую ценность он на текущий момент представляет.
+Найдите существующую документацию и изучите её. Даже если она устарела, вы можете найти полезные инсайты.
+Получите доступ к системе аналитики и изучите то, что там доступно. 
+Посмотрите на типичные сценарии использования продукта, показатели отказов для различных сценариев, retention и показатели длины сессии
+
+Самое главное правило – перестроить свою рабочую рутину таким образом, чтобы вы регулярно использовали свой продукт как его обычный пользователь. 
+Если вы делаете площадку объявлений – вы должны регулярно покупать и продавать на ней свои товары. 
+Если сервис стриминга музыки – использовать его как основной. 
+Вы должны, с одной стороны, постоянно чувствовать на себе все существующие боли и проблемы, а с другой – оставаться главным фанатом своего продукта.
+
+
+Регулярно рассказывайте команде о своём опыте работы с продуктом. 
+Это можно делать на стендапах, либо в виде дайджестов. 
+Интересная практика – вести полноценный дневник, в котором вы фиксируете весь ваш опыт работы с продуктом, а потом показываете его остальной команде.
+
+**Плюсы**
+- Пообщаться с продуктологом попросить рассказать описанные моменты, устаканить в голове (расписать где в документации по продукту);
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 4 may 23
+**System design Quora**
+Quora uses a technique called long polling, where if a client requests for an update, the server may not respond for as long as 60 seconds if there are no updates. 
+However, if there is an update, the server will reply immediately and allow the client to make new requests.
+
+Lastly, Memcached can employ multiget() to obtain multiple keys from the cache shards to reduce the retrieval latency of multiple keys
+
+Scalability: 
+Our system is highly scalable for several reasons. 
+The updated design uses powerful and homogeneous service hosts. 
+Quora uses powerful machines because service hosts use an in-memory cache, some level of queueing, maintain manager, worker, and routing library. 
+The horizontal scaling of these service hosts is convenient because they are homogeneous.
+On the database end, our design shards the MySQL databases vertically, which avoids issues in scalability because of overloaded MySQL servers. 
+To reduce complex join queries, tables anticipating join operations are placed in the same shard or partition
+
+Consistency: 
+Due to the variety of functionalities offered by Quora, different consistency schemes may be selected for different types of data. 
+For example, certain critical data like questions and answers should be stored synchronously. 
+In this case, performance can take a hit because users don’t expect instantaneous responses to their questions. 
+It means that a user may get a reply in five minutes, one hour, one day, or no response at all, depending on the user’s question and the availability of would-be respondents
+
+Availability: 
+Some of the main ideas to improve availability include isolation between different components, keeping redundant instances, using CDN, using configuration services like ZooKeeper, 
+and load balancers to hide failures from users
+
+Performance: 
+This design has a strong performance because we have employed the right technology for the right feature. 
+For example, we have used several datastores for different reasons. 
+On top of that, we used different distributed caches depending upon the use case and access frequency. 
+Also, we employed Kafka to queue similar tasks and assign them to cron jobs that otherwise take a long time if executed via API
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 3 may 23
+**System design Quora**
+
+API:
+- Post a question
+- Post an answer
+- Upvote or downvote a question or answer
+- Comment on an answer
+- Search
+
+The proposed design serves all the functional requirements. 
+However, it has a number of serious drawbacks that emerge as we scale. 
+This means that we are unable to fulfill the non-functional requirements.
+
+- Limitations of web and application servers: 
+To entertain the user’s request, payloads are transferred between web and application servers, which increases latency because of network I/O between these two types of servers. 
+Even if we achieve parallel computation by separating the web from application servers (that is, the manager and worker processes), the added latency due to an additional 
+network link erodes a user’s experience. Apart from data transfer, control communication between the router library with manager and worker processes also imposes additional performance penalties
+
+- In-memory queue failure: The internal architecture of application servers log tasks and forward them to the in-memory queues, which serve them to the workers. 
+These in-memory queues of different priorities can be subject to failures. 
+For instance, if a queue gets lost, all the tasks in that queue are lost as well, and manual engineering is required to recover those tasks. 
+This greatly reduces the performance of the system. On the other hand, replicating these queues requires increasing RAM size. 
+Also, with the number of features (functional requirements) that our system offers, many tasks can get assembled, which results in insufficient memory. 
+At the same time, it is not desirable to choke application servers with not-so-urgent tasks. 
+For example, application servers should not be burdened with tasks like storing view counts for answers, adding statistics to the database for later analysis, and so on.
+
+- Latency of HBase: Even though HBase allows high real-time throughput, its P99 latency is not among the best. 
+A number of Quora features require the ML engine that has a latency of its own. 
+Due to the addition of the higher latency of HBase, the overall performance of the system degrades over time
+
+Service hosts
+- We combine the web and application servers within a single powerful machine that can handle all the processes at once. This technique eliminates the network I/O and the latency introduced due to the network hops required between the manager, worker, and routing library processes. The illustration below provides an abstract view of the updated web server architecture:
+
+Tables in the MySQL server are converted to separate shards that we refer to as partitions. 
+A partition has a single primary server and multiple replica servers.
+The goal is to improve performance and reduce the load due to an increasing number of queries on a single database table. To achieve that, we do vertical sharding in two ways
+
+- We split tables of a single database into multiple partitions. The concept is depicted in Partitions 2 and 3, which embed Tables 4 and 3, respectively.
+- We combine multiple tables into a single partition, where join operations are anticipated. The concept is depicted in Partition 1, which embeds Tables 1 and 2
+require two types of mappings or metadata to complete our scaling process:
+  Which partitions contain which tables and columns?
+  Which hosts are primary and replicas of a particular partition?
+Both of these mappings are maintained by a service like ZooKeeper
+
+The new design embeds MyRocks as the key-value store instead of HBase. We use the MyRocks version of RocksDB for two main reasons:
+- MyRocks has a lower p99 latency instead of HBase. Quora claims to have reduced P99 latency from 80 ms to 4 ms using MyRocks.
+- There are operational tools that can transfer data between MyRocks and MySQL
+
+Our updated design reduces the request load on service hosts by separating not-so-urgent tasks from the regular API calls. 
+For this purpose, we use Kafka, which can disseminate jobs among various queues for tasks such as the view counter
+
+It is desirable to use a faster programming language like C++ to develop the feature extraction service. 
+For online recommendation services through a ML engine, feature extraction service should be quick, to enable the ML engine to accomplish accurate recommendations. 
+Not only that, but reducing the latency burden on the ML engine allows it to provide a larger set of services. 
+We can employ the Thrift service to support interoperability between programming languages within different components
+---------------------------------------------------------
+---------------------------------------------------------
+## 2 may 23
+**System design Quora**
+The initial design of Quora will be composed of the following building blocks and components:
+- Web and application servers: 
+A typical Quora page is generated by various services. 
+The web and application servers maintain various processes to generate a webpage. 
+The web servers have manager processes and the application servers have worker processes for handling various requests. 
+The manager processes distribute work among the worker processes using a router library. 
+The router library is enqueued with tasks by the manager processes and dequeued by worker processes. 
+Each application server maintains several in-memory queues to handle different user requests. 
+The following illustration provides an abstract view of web and application servers
+
+- Data stores: Different types of data require storage in different data stores. 
+We can use critical data like questions, answers, comments, and upvotes/downvotes in a relational database like MySQL because it offers a higher degree of consistency. 
+NoSQL databases like HBase can be used to store the number of views of a page, scores used to rank answers, and the extracted features from data to be used for recommendations later on. 
+Because recomputing features is an expensive operation, HBase can be a good option to store and retrieve data at high bandwidth. 
+We require high read/write throughput because big data processing systems use high parallelism to efficiently get the required statistics. 
+Also, blob storage is required to store videos and images posted in questions and answers.
+- Distributed cache: For performance improvement, two distributed cache systems are used: Memcached and Redis. 
+Memcached is primarily used to store frequently accessed critical data that is otherwise stored in MySQL. 
+On the other hand, Redis is mainly used to store an online view counter of answers because it allows in-store increments.
+Therefore, two cache systems are employed according to their use case. Apart from these two, CDNs serve frequently accessed videos and images.
+- Compute servers: A set of compute servers are required to facilitate features like recommendations and ranking based on a set of attributes. 
+These features can be computed in online or offline mode. 
+The compute servers use machine learning (ML) technology to provide effective recommendations. 
+Naturally, these compute servers have a substantially high amount of RAM and processing power
+
+
+Posting question, answers, comments: 
+The web servers receive user requests through the load balancer and direct them to the application servers. 
+Meanwhile, the web servers generate part of the web page and let the worker process in the application servers do the rest of the page generation. 
+The questions and answers data is stored in a MySQL database, whereas any videos and images are stored in the blob storage.
+ A similar approach is used to post comments and upvote or downvote answers. 
+ Task prioritization is performed by employing different queues for different tasks. 
+ We perform prioritization because certain tasks require immediate attention—for example, fetching data from the database 
+ for a user request—while others are not so urgent—for example, sending a weekly email digest. 
+ The worker processes will perform tasks by fetching from these queues.
+
+- Answer ranking system: Answers to questions can be sorted based on date. 
+Although it is convenient to develop a ranking system on the basis of date (using time stamps), users prefer to see the most appropriate answer at the top. 
+Therefore, Quora uses ML to rank answers. Different features are extracted over time and stored in the HBase for each type of question. 
+These features are forwarded to the ML engine to rank the most useful answer at the top. 
+We cannot use the number of upvotes as the only metric for ranking answers because a good number of answers can be jokes—and such answers also get a lot of upvotes. 
+It is good to implement the ranking system offline because good answers get upvotes and views over time. Also, the offline mode poses a lesser burden on the infrastructure. 
+Implementing the ranking system offline and the need for special ML hardware makes it suitable to use some public cloud elastic services.
+
+- Recommendation system: The recommendation system is responsible for several features. 
+For example, we might need to develop a user feed, find related questions and ads, recommend questions to potential respondents, 
+and even highlight duplicate content and content in violation of the service’s terms of use. Unlike the answer ranking system, 
+the recommendation system must provide both online and offline services. This system receives requests from the application server and forwards selected features to the ML engine.
+
+- Search feature: Over time, as questions and answers are fed to the Quora system, it is possible to build an index in the HBase.
+ User search queries are matched against the index, and related content is suggested to the user. Frequently accessed indexes can be served from cache for low latency. 
+ The index can be constructed from questions, answers, topics labels, and usernames. 
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 1 may 23
+**System design Quora**
+Quora is a social question-and-answer service that allows users to ask questions to other users. 
+Quora was created because of the issue that asking questions from search engines results in fast answers but shallow information. 
+Instead, we can ask the general public, which feels more conversational and can result in deeper understanding, even if it’s slower. 
+Quora enables anyone to ask questions, and anyone can reply. 
+Furthermore, there are domain experts that have in-depth knowledge of a specific topic who occasionally share their expertise by answering questions.
+
+User should be able to perform the following functionalities:
+- Questions and answers: Users can ask questions and give answers. Questions and answers can include images and videos.
+- Upvote/downvote and comment: It is possible for users to upvote, downvote, and comment on answers.
+- Search: Users should have a search feature to find questions already asked on the platform by other users.
+- Recommendation system: A user can view their feed, which includes topics they’re interested in.
+- Ranking answers: We enhance user experience by ranking answers according to their usefulness.
+
+- Scalability: The system should scale well as the number of features and users grow with time. 
+- Consistency: The design should ensure that different users’ views of the same content should be consistent.
+- Availability: The system should have high availability. This applies to cases where servers receive a large number of concurrent requests.
+- Performance: The system should provide a smooth experience to the user without a noticeable delay
+
+Assumptions: It is important to base our estimation on some underlying assumptions. We, therefore, assume the following:
+- There are a total of 1 billion users, out of which 300 million are daily active users.
+- Assume 15% of questions have an image, and 5% of questions have a video embedded in them. A question cannot have both at the same time.
+- We’ll assume an image is estimated to be 250 KBs, and a video is considered 5 MBs.
+
+Let’s estimate our requests per second (RPS) for our design. 
+If there are an average of 300 million daily active users and each user can generate 20 requests per day, then the total number of requests in a day will be
+69500 rps
+37500 servers
+Storage 85tb per day
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 27 apr 23
 **System design Youtube**
 
