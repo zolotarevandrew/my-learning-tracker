@@ -475,12 +475,8 @@ The new design embeds MyRocks as the key-value store instead of HBase. We use th
 - There are operational tools that can transfer data between MyRocks and MySQL
 
 Our updated design reduces the request load on service hosts by separating not-so-urgent tasks from the regular API calls. 
-For this purpose, we use Kafka, which can disseminate jobs among various queues for tasks such as the view counter
+For this purpose, we use Kafka, which can disseminate jobs among various queues for tasks such as the view counter.
 
-It is desirable to use a faster programming language like C++ to develop the feature extraction service. 
-For online recommendation services through a ML engine, feature extraction service should be quick, to enable the ML engine to accomplish accurate recommendations. 
-Not only that, but reducing the latency burden on the ML engine allows it to provide a larger set of services. 
-We can employ the Thrift service to support interoperability between programming languages within different components
 ---------------------------------------------------------
 ---------------------------------------------------------
 ## 2 may 23
