@@ -4,6 +4,321 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 24 may 23
+**System design - uber**
+
+The key components used in the payment service are as follows:
+- API: The Uber API is used to access the payment service.
+- Order store: This stores all the orders. Orders collect payments and contain information regarding money flow between different riders and drivers.
+- Account store: This stores all the accounts of riders and drivers.
+- Risk engine: The risk engine analyzes different risks involved in collecting payment from a particular rider. It checks the history of the rider—for example, the rating of the rider, if the rider has sufficient funds in their rider account, any pending dues, if the rider cancels the rides frequently, and so on.
+- Payment profile service: This provides information on the payment mechanisms, such as credit and debit cards.
+- User profile service: This provides information regarding users’ payments.
+- Payment authorization service: This offers payment authentication services.
+- PSP gateways: This connects with payment service providers
+ 
+The following steps show the workflow of the payment service:
+- When a rider requests a ride, the Uber application uses the Uber API to request the risk engine to check the risks involved.
+- The risk engine obtains user information from the user profile service and evaluates the risk involved.
+- If the risks are high, the rider’s request isn’t entertained.
+- If the risks are low, the risk engine creates an authorization token and sends it to the payment profile service (for record-keeping), which fetches that token and sends it to the payment authorization service.
+- The payment authorization service sends that request to the PSP gateway, which contacts the service provider for authorization.
+- The PSP gateway sends the authorization token back to the payment authorization service, which sends the token back to the Uber application that the trip request is approved.
+- After the trip is completed, the Uber application uses the API to send the payment request to the PSP gateway with authorization data.
+ - The PSP gateway contacts the service provider and sends the status back to the Uber application through the API.
+
+Availability
+- Our system is highly available. 
+We used WebSocket servers. I
+f a user gets disconnected, the session is recreated via a load balancer with a different server. 
+We’ve used multiple replicas of our databases with a primary-secondary replication model. 
+We have the Cassandra database, which provides highly available services and no single point of failure. 
+We used a CDN, cache, and load balancers, which increase the availability of our system.
+
+Scalability
+- Our system is highly scalable. 
+We used many independent services so that we can scale these services horizontally, independent of each other as per our needs. 
+We used QuadTrees for searching by dividing the map into smaller segments, which shortens our search space. 
+We used a CDN, which increases the capacity to handle more users. We also used a NoSQL database, Cassandra, which is horizontally scalable. 
+Additionally, we used load balancers, which improve speed by distributing read workload among different servers.
+Reliability
+- Our system is highly reliable. 
+The trip can continue even if the rider’s or driver’s connection is broken. 
+This is achieved by using their phones as local storage. 
+The use of multiple WebSocket servers ensures smooth, nearly real-time operations. 
+If any of the servers fail, the user is able to reconnect with another server. 
+We also used redundant copies of the servers and databases to ensure that there’s no single point of failure. 
+Our services are decoupled and isolated, which eventually increases the reliability. 
+Load balancers help move the requests away from any failed servers to healthy ones.
+Consistency
+- We used storage like MySQL to keep our data consistent globally. 
+Moreover, our system does synchronous replication to achieve strong consistency. 
+Because of a limited number of data writers and viewers for a trip (rider, driver, some internal services), the usage of traditional databases doesn’t become a bottleneck. 
+Also, data sharding is easier in this scenario.
+Fraud detection
+- Our system is able to detect any fraudulent activity related to payment. 
+We used the RADAR system to detect any suspicious activity. 
+RADAR recognizes the beginning of a fraud attempt and creates a rule to prevent
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 23 may 23
+**System design - uber**
+Location manager -The riders and drivers are connected to the location manager service. 
+This service shows the nearby drivers to the riders when they open the application. 
+This service also receives location updates from the drivers every four seconds. 
+The location of drivers is then communicated to the QuadTree map service to determine which segment the driver belongs to on a map. 
+The location manager saves the last location of all drivers in a database and saves the route followed by the drivers on a trip.
+
+The QuadTree map service updates the location of the drivers. 
+The main problem is how we deal with finding nearby drivers efficiently.
+We’ll modify the solution discussed in the Yelp chapter according to our requirements. 
+We used QuadTrees on Yelp to find the location. QuadTrees help to divide the map into segments. 
+If the number of drivers exceeds a certain limit, for example, 500, then we split that segment into four more child nodes and divide the drivers into them.
+Each leaf node in QuadTrees contains segments that can’t be divided further. 
+We can use the same QuadTrees for finding the drivers. 
+The most significant difference we have now is that our QuadTree wasn’t designed with regular upgrades in consideration. 
+So, we have the following issues with our dynamic segment solution.
+We must update our data structures to point out that all active drivers update their location every four seconds. 
+It takes a longer amount of time to modify the QuadTree whenever a driver’s position changes. 
+To identify the driver’s new location, we must first find a proper grid depending on the driver’s previous position. 
+If the new location doesn’t match the current grid, we should remove the driver from the current grid and shift it to the correct grid. 
+We have to repartition the new grid if it exceeds the driver limit, which is the number of drivers for each region that we set initially. 
+Furthermore, our platform must tell both the driver and the rider, of the car’s current location while the ride is in progress.
+To overcome the above problem, we can use a hash table to store the latest position of the drivers and update our QuadTree occasionally, say after 10–15 seconds. 
+We can update the driver’s location in the QuadTree around every 15 seconds instead of four seconds, and we use a hash table that updates every four seconds and reflects the drivers’ latest location. 
+By doing this, we use fewer resources and time
+
+The rider contacts the request vehicle service to request a ride. 
+The rider adds the drop-off location here. The request vehicle service then communicates with the find driver service to book a vehicle and get the details of the vehicle using the location manager service
+
+The find driver service finds the driver who can complete the trip. 
+It sends the information of the selected driver and the trip information back to the request vehicle service to communicate the details to the rider. 
+The find driver service also contacts the trip manager to manage the trip information
+
+The trip manager service manages all the trip-related tasks. 
+It creates a trip in the database and stores all the information of the trip in the database
+
+The ETA service deals with the estimated time of arrival. 
+It shows riders the pickup ETA when their trip is scheduled. This service considers factors such as route and traffic. 
+The two basic components of predicting an ETA given an origin and destination on a road network are the following:
+- Calculate the shortest route from origin to destination.
+- Compute the time required to travel the route.
+
+We use a machine learning component named DeepETA to deliver an immediate improvement to metrics in production. 
+It establishes a model foundation that can be reused for multiple consumer use cases.
+We also use a routing engine that uses real-time traffic information and map data to predict an ETA to traverse the best path between the source and the destination. 
+We use a post-processing ML model that considers spatial and temporal parameters, such as the source, destination, time of the request, and knowledge about real
+
+Let’s select the database according to our requirements:
+- The database must be able to scale horizontally. There are new customers and drivers on a regular basis, so we should be able to add more storage without any problems.
+ - The database should handle a large number of reads and writes because the location of drivers is updated every four seconds.
+- Our system should never be down
+
+we can use Cassandra to store the driver’s last known location and the trip information after the trip has been completed, and there will be no updates to it.
+
+We can use a MySQL database to store trip information while it’s in progress. 
+We use MySQL for in-progress trips for frequent updates since the trip information is relational, and it needs to be consistent across tables. 
+We use Cassandra because the data we store is enormous and it increases continuously.
+
+For availability, we need to have replicas of our database. 
+We use the primary-secondary replication model. We have one primary database and a few secondary databases. 
+We synchronously replicate data from primary to secondary databases. Whenever our primary database is down, we can use a secondary database as a primary one.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 22 may 23
+**System design - uber**
+Uber is an application that provides ride-hailing services to its users. 
+Anyone who needs a ride can register and book a vehicle to travel from source to destination. 
+Anyone who has a vehicle can register as a driver and take riders to their destination. 
+Drivers and riders can communicate through the Uber app on their smartphones
+
+The functional requirements of our system are as follows:
+- Update driver location: The driver is a moving entity, so the driver’s location should be automatically updated at regular intervals.
+- Find nearby drivers: The system should find and show the nearby available drivers to the rider.
+- Request a ride: A rider should be able to request a ride, after which the nearest driver should be notified about the rider’s requests.
+- Manage payments: At the start of the trip, the system must initiate the payment process and manage the payments.
+- Show driver estimated time of arrival (ETA): The rider should be able to see the estimated time of arrival of the driver.
+- Confirm pickup: Drivers should be able to confirm that they have picked up the rider.
+- Show trip updates: Once a driver and a rider accept a ride, they should be able to constantly see trip updates like ETA and current location until the trip finishes.
+- End the trip: The driver marks the journey complete upon reaching the destination, and they then become available for the next ride
+
+The non-functional requirements of our system are as follows:
+- Availability: The system should be highly available. The downtime of even a fraction of a second can result in a trip failure, in the driver being unable to locate the rider, or in the rider being unable to contact the driver.
+- Scalability: The system should be scalable to handle an ever-increasing number of drivers and riders with time.
+- Reliability: The system should provide fast and error-free services. Ride requests and location updates should happen smoothly.
+- Consistency: The system must be strongly consistent. The drivers and riders in an area should have a consistent view of the system.
+- Fraud detection: The system should have the ability to detect any fraudulent activity related to payment.
+
+At a high level, our system should be able to take requests for a ride from the rider and return the matched driver information and trip information to the rider. 
+It also regularly takes the driver’s location. Additionally, it returns the trip and rider information to the driver when the driver is matched to a rider
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 17 may 23
+**System design - quora**
+If a node has the places we need, we stop there. 
+Otherwise, we explore more nodes until we reach our search radius. 
+After finding the node, we query the database for information related to the places and return the desired ones
+
+Keeping 20% growth per year in mind, the number of places will increase. We can partition data on the following basis:
+- Regions: We can split our places into regions on the basis of zip codes. 
+This way, all the places that belong to a specific region are stored on a single node. 
+We store information on the region along with the place, so that we can query on the basis of regions too. 
+We can use the user’s region to find the places in that specific region. This data partitioning comes with a few challenges. 
+For example, if a region becomes popular during tourist season, it can affect the performance of our system. 
+We might have numerous queries on the server that might result in slow responsiveness to user queries.
+
+- PlaceID: We can partition data on the basis of PlaceID instead of the region to avoid the query overload in popular seasons or rush hours. 
+We can use a key-value store to store the places. In this case, the key is the PlaceID and the value contains the server in which that place is stored. 
+This will make the process of fetching places more efficient.
+
+Consider a scenario where multiple people in the same radius place a search request. 
+If we have a single QuadTree, it’ll affect the availability of the users. 
+So, we can’t rely on a single QuadTree. To cater to this problem, we replicate our QuadTrees on multiple servers to ensure availability.
+ This allows us to distribute the read traffic and decrease the response time. 
+ QuadTrees are built on a server, so we can use the server ID as a key to identify the server on which the QuadTree is present. 
+ The value is the list of places that the QuadTree holds. 
+ The key-value store eases the rebuilding of the QuadTree in case we lose it.
+
+We need a service, a rating calculator, which calculates the overall rating of a service. 
+We can store the rating of a place in the database and also in the QuadTree, along with the ID, latitude, and longitude of the place. 
+The QuadTree returns the top 50 or 100 popular places within the given radius. 
+The aggregator service determines the actual top places and returns them to the user
+
+Let’s see how our system design fulfills our requirements.
+- Availability: We partitioned the data into smaller segments instead of having to deal with a huge dataset consisting of all the places on the world map. 
+This made our system highly available. We also replicated the QuadTrees data using key-value stores to ensure availability.
+
+- Scalability: We split the whole world into smaller dynamic segments. This allows us to search for a place within a specific radius and shorten our search area. 
+We then used QuadTrees in which each child node holds a single segment. Upon adding or removing a place, we can restructure our QuadTrees. 
+So, we were able to make our system scalable.
+- Performance: We reduced the latency by using caches. We cached all the famous and popular places, so request time was minimized.
+- Consistency: The users have a consistent view of the data regarding places, reviews, and photos because we used reliable and fault-tolerant databases like key-value stores and relational databases.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 16 may 23
+**System design - quora**
+
+The user puts in a search request. 
+We find all the relevant places in the given radius, while considering the user’s location (latitude, longitude).
+We explain the detailed workflow of our system in terms of the required functionalities below:
+- Searching a place: The load balancers route read requests to the read servers upon receiving them. 
+The read servers direct them to the QuadTree servers to find all the places that fall within the given radius. 
+The QuadTree servers then send the results to the aggregators to refine them and send them to the user.
+
+- Adding a place or feedback: The load balancers route the write requests to the write servers upon receiving them. 
+Depending on the provided content, meaning the place information or review, the write servers add an entry in the relational database and put all the related images in the blob storage
+
+- Making segments: The segment’s producer splits the world map taken from the third-party map service into smaller segments. 
+The places inside each segment are stored in a key-value store. 
+Even though this is a one-time job, this process is repeated periodically for newer segments and places. 
+Since the probability of new places being added is low, we update our segments every month
+
+From Google Maps, we were able to connect segments and meet the scalability challenge to process a large graph efficiently. 
+The graph of the world had numerous nodes and vertices, and traversing them was time-consuming. 
+Therefore, we divided the whole world into smaller segments/subgraphs to process and query them simultaneously. 
+The segmentation helps us improve the scalability of the system.
+
+We can store all the places in a table and uniquely identify a segment by having a segment_ID. 
+We can index each segment in the database. 
+Now, we have limited the number of segments we need to search, so the query will be optimized and return results quickly
+
+We use a key-value store for quick access to places in the segments. The key is the segment_ID, while the value contains the list of places in that segment. 
+Let’s estimate how much space we need to store the indexes
+
+A user may select a radius for searching places that aren’t present in a single segment. 
+So, we need to combine multiple segments by connecting the segments to find locations within the specified radius—say, five miles.
+
+First, we constrain the number of segments. 
+This reduces the graph size and makes the searching process optimizable. 
+Then, we identify all the relevant locations, compute the distance from the searching point, and show it to the user.
+
+We solve the problem of uneven distribution of places in a segment by dynamically sizing the segments. 
+We do this by focusing on the number of places. We split a segment into four more segments if the number of places reaches a certain limit. 
+We assume 500 places as our limit. While using this approach, we need to decide on the following questions:
+
+We use a QuadTree to manage our segments. Each node contains the information of a segment. 
+If the number of places exceeds 500, then we split that segment into four more child nodes and divide the places between them. 
+In this way, the leaf nodes will be those segments that can’t be broken down any further. 
+Each leaf node will have a list of places in it too
+
+We start searching from the root node and continue to visit the nodes to find our desired segment.
+We check every node to see if it has more child nodes. If a node has no more children, then we stop our search because that node is the required one. 
+We also connect each child node with its neighboring nodes with a doubly-linked list. 
+All the child nodes of all the parents nodes are connected through the doubly-linked list. 
+This list allows us to find the neighboring segments when we can move forward and backward as per our requirement.
+After identifying the segments, we have the required PlaceID values of the places and we can search our database
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 15 may 23
+**System design - quora**
+Yelp is a one-stop platform for consumers to discover, connect, and transact with local businesses. 
+With it, users can join a waitlist, make a reservation, schedule an appointment, or purchase goods easily. 
+Yelp also provides information, photos, and reviews about local businesses
+
+The user provides the name of a place or its GPS location, and the system finds places that are nearby. 
+The user can also upload their opinions on this platform in the form of text, pictures, or ratings for a place they visited. 
+Other location-based services include Foursquare and Google Nearby
+
+Services based on proximity servers are helpful in finding nearby attractions such as restaurants, theaters, or recreational sites. 
+Designing such a system is challenging because we have to efficiently find all the possible places in a given radius with minimum latency. 
+This means that we have to narrow down all the locations in the world, which could be in the billions, and only pinpoint the relevant ones.
+
+The functional requirements:
+- User accounts: Users will have accounts where they’re able to perform different functionalities like log in, log out, add, delete, and update places’ information.
+- Search: The users should be able to search for nearby places or places of interest based on their GPS location (longitude, latitude) and/or the name of a place.
+- Feedback: The users should be able to add a review about a place. The review can consist of images, text, and a rating.
+
+The non functional requirements:
+- High availability: The system should be highly available to the users.
+- Scalability: The system should be able to scale up and down, depending on the number of requests. 
+- Consistency: The system should be consistent for the users. All the users should have a consistent view of the data regarding places, reviews, and images.
+- Performance: Upon searching, the system should respond with suggestions with minimal latency
+
+Let’s assume that we have:
+- A total of 178 million unique users.
+- 60 million daily active users.
+-500 million places.
+- 8000 rps per server
+
+we need 7500 servers
+
+These are the components of our system:
+- Segments producer: This component is responsible for communicating with the third-party world map data services (for example, Google Maps). 
+It takes up that data and divides the world into smaller regions called segments. 
+The segment producer helps us narrow down the number of places to be searched.
+
+- QuadTree servers: These are a set of servers that have trees that contain the places in the segments. 
+A QuadTree server finds a list of places based on the given radius and the user’s provided location and returns that list to the user. 
+This component mainly aids the search functionality.
+
+- Aggregators: The QuadTrees accumulate all the places and send them to the aggregators. 
+Then, the aggregators aggregate the results and return the search result to the user.
+- Read servers: We use a set of read servers that we use to handle all the read requests. 
+Since we have more read requests, it’s efficient to separate these requests from the write requests. 
+Each read server directs the search requests to the QuadTrees’ servers and returns the results to the user.
+
+- Write server: We use a set of write servers to handle all the write requests. 
+Each write server handles the write requests of the user and updates the storage accordingly. 
+Examples for write requests include adding a place, writing a comment, rating a place, and so on.
+
+- Storage: We’ll use two types of storage to fulfill our diverse needs.
+
+- SQL database: Our system will have different tables like “Users,” “Place,” “Reviews,” “Photos,” and others as described below. 
+The data in these tables is inherently relational and structured. 
+We need to perform queries like places a user visited, reviews they added, or view all the reviews of a specific place. 
+It’s easy to perform such queries in a SQL-based database. We also want all users to have a consistent view of the data, and SQL-based databases are better suited for such use cases. 
+
+- Key-value stores: We’ll need to fetch the places in a segment efficiently. For that, we store the list of places against a segment ID in a key-value store to minimize searching time. 
+We also save the QuadTree information in the key-value store, by storing the QuadTree data against a unique ID.
+- Load balancer: A load balancer distributes users’ incoming requests to all the servers uniformly.
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 13 may 23
 **Team lead - прозрачность**
 Связь с командой и окружающим миром – руководством, соседними отделами, всей компанией. 
