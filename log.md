@@ -4,6 +4,238 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 21 june 23
+**System design - tinyurl**
+
+We need high availability for users generating new short URLs and redirecting them based on the existing short URLs.
+Most of our building blocks, like databases, caches, and application servers have built-in replication that ensures availability and fault tolerance. 
+The short URL generation system will not impact the availability either, as it depends on an easily replicable database of available and used unique IDs.
+
+To handle disasters, we can perform frequent backups of the storage and application servers, preferably twice a day, as we can’t risk losing URLs data. 
+We can use the Amazon S3 storage service for backups, as it facilitates cross-zonal replicating and restoration as well. 
+In the worst-case scenario, we might lose 3.3 Million (with 6.6 Million daily requests assumed) newly generated short URLs that are not backed up on that specific day.
+
+Our design uses global server load balancing (GSLB) to handle our system traffic. 
+It ensures intelligent request distribution among different global servers, especially in the case of on-site failures.
+We also apply a limit on the requests from clients to secure the intrinsic points of failures. 
+To protect the system against DoS attacks, we use rate limiters between the client and web servers to limit each user’s resource allocation. 
+This will ensure a good and smooth traffic influx and mitigate the exploitation of system resources
+
+Our design is scalable because our data can easily be distributed among horizontally sharded databases. 
+We can employ a consistent hashing scheme to balance the load between the application and database layers
+
+Our choice of the database for mapping URLs, MongoDB, also facilitates horizontal scaling. Some interesting reasons for selecting a NoSQL database are:
+- When a user accesses our system without logging in, our system doesn’t save the UserID. Since we’re flexible with storing data values, 
+and it aligns more with the schematic flexibility provided by the NoSQL databases, using one for our design is preferable.
+- Scaling a traditional relational database horizontally is a daunting process and poses challenges to meeting our scalability requirements. 
+We want to scale and automatically distribute our system’s data across multiple servers. For this requirement, a NoSQL database would best serve our purpose.
+Moreover, the large number of unique IDs available in the sequencer’s design also ensures the scalability of our system.
+
+Our system ensures low latency with its following features:
+- Even the most time-consuming step across the short URL generation process, encoding, takes a few milliseconds. 
+The overall time to generate a short URL is relatively low, ensuring there are no significant delays in this process.
+- Our system is redirection-heavy. Writing on the database is minimal compared to reading, and its performance depends 
+on how well it copes with all the redirection requests, compared to the shortening requests. 
+We deliberately chose MongoDB because of its low latency and high throughput in reading-intensive tasks.
+
+- Moreover, the probability of the user using the freshly generated short URL in the next few seconds is relatively low. 
+During this time, synchronous replication to other locations is feasible and therefore adds to the overall low latency of the system for the user.
+- The deployment of a distributed cache in our design also ensures that the system redirects the user with the minimum delay possible.
+As a result of such design modifications, the system enjoys low latency and high throughput, providing good performance.
+
+One of the requirements is to make our system’s short URLs unpredictable, enhancing the security of our system.
+As the sequencer generates unique IDs in a sequence and distributes ranges among servers. 
+Each server has a pre-assigned range of unique IDs, assigning them serially to the requests will make it easy to predict the following short URL. 
+To counter it, we can randomly select a unique ID from the available ones and associate it to the long URL, encompassing the unpredictability of our system.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 20 june 23
+**System design - tinyurl**
+Assumptions
+- We assume that the shortening:redirection request ratio is 1 : 100  1:100  1:100 .
+- There are 200 million new URL shortening requests per month.
+- A URL shortening entry requires 500 Bytes of database storage.
+- Each entry will have a maximum of five years of expiry time, unless explicitly deleted.
+- There are 100 million Daily Active Users (DAU).
+
+Database: For services like URL shortening, there isn’t a lot of data to store. 
+However, the storage has to be horizontally scalable. The type of data we need to store includes:
+- User details.
+- Mappings of the URLs, that is, the long URLs that are mapped onto short URLs.
+
+Our service doesn’t require user registration for the generation of a short URL, so we can skip adding certain data to our database. 
+Additionally, the stored records will have no relationships among themselves other than linking the URL-creating user’s details, 
+so we don’t need structured storage for record-keeping. Considering the reasons above and the fact that our system will be read-heavy, 
+NoSQL is a suitable choice for storing data. In particular, MongoDB is a good choice for the following reasons
+- It uses leader-follower protocol, making it possible to use replicas for heavy reading.
+- MongoDB ensures atomicity in concurrent write operations and avoids collisions by returning duplicate-key errors for record-duplication issues;
+
+- NoSQL databases like Cassandra, Riak, and DynamoDB need read-repair during the reading stage and hence provide slower reads to write performance.
+- They are leader-less NoSQL databases that provide weaker atomicity upon concurrent writes. Being a single leader database, 
+MongoDB provides a higher read throughput as we can either read from the leader replica or follower replicas. 
+The write operations have to pass through the leader replica. 
+It ensures our system’s availability for reading-intensive tasks even in cases where the leader dies.
+
+Short URL generator: Our short URL generator will comprise a building block and an additional component:
+- A sequencer to generate unique IDs
+- A Base-58 encoder to enhance the readability of the short URL
+We built a sequencer in our building blocks section to generate 64-bit unique numeric IDs. 
+However, our proposed design requires 64-bit alphanumeric short URLs in base-58. 
+To convert the numeric (base-10) IDs to alphanumeric (base-58), we’ll need a base-10 for the base-58 encoder.
+
+- Load balancing: We can employ Global Server Load Balancing (GSLB) apart from local load balancing to improve availability. 
+Since we have plenty of time between a short URL being generated and subsequently accessed, 
+we can safely assume that our DB is geographically consistent and that distributing requests globally won’t cause any issues.
+
+- Cache: For our specific read-intensive design problem, Memcached is the best choice for a cache solution. 
+We require a simple, horizontally scalable cache system with minimal data structure requirements. 
+Moreover, we’ll have a data-center-specific caching layer to handle native requests. 
+Having a global caching layer will result in higher latency.
+
+- Rate limiter: Limiting each user’s quota is preferable for adding a security layer to our system. 
+We can achieve this by uniquely identifying users through their unique api_dev_key and applying one of the discussed rate-limiting algorithms 
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 19 june 23
+**System design - tinyurl**
+URL shortening is a service that produces short aliases for long URLs, commonly referred to as short links. 
+Upon clicking, these short links direct to the original URLs. The following illustration depicts how the process works
+The key advantages of a URL shortening service are:
+- Shortened URLs are convenient to use: they optimize link usage across different forms of devices due to their enhanced accessibility and non-breakability.-
+- They are visually professional, engaging and facilitate a higher degree of sharing possibilities.
+- They are less error-prone while typing.
+- They require smaller storage space at the user’s end.
+
+Some of disadvantages are follows:
+- We lose the originality of our brand by using a short URL generated by a third-party service. 
+Many different brands using the same service get short URLs containing the same domain.
+- Since we’re using a third-party service for URL shortening, the possibility of it getting shut down and wiping all our shortened URLs will always be there.
+- Our business brand image depends on the trustworthiness of a URL shortening service. The wrong business move might negatively impact our business. 
+The competition for acquiring the in-demand custom short URLs is immense, 
+so it might be possible that the best custom URLs are already taken by the time we start generating short URLs
+
+Functional requirements
+- Short URL generation: Our service should be able to generate a unique shorter alias of the given URL.
+- Redirection: Given a short link, our system should be able to redirect the user to the original URL.
+- Custom short links: Users should be able to generate custom short links for their URLs using our system.
+- Deletion: Users should be able to delete a short link generated by our system, given the rights.
+- Update: Users should be able to update the long URL associated with the short link, given the proper rights.
+- Expiry time: There must be a default expiration time for the short links, but users should be able to set the expiration time based on their requirements
+
+Non-functional requirements
+- Availability: Our system should be highly available, because even a fraction of the second downtime would result in URL redirection failures. Since our system’s domain is in URLs, we don’t have the leverage of downtime, and our design must have fault-tolerance conditions instilled in it.
+- Scalability: Our system should be horizontally scalable with increasing demand.
+- Readability: The short links generated by our system should be easily readable, distinguishable, and typeable.
+- Latency: The system should perform at low latency to provide the user with a smooth experience.
+- Unpredictability: From a security standpoint, the short links generated by our system should be highly unpredictable. This ensures that the next-in-line short URL is not serially produced, eliminating the possibility of someone guessing all the short URLs that our system has ever produced or will produce
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 13 june 23
+**System design - instagram**
+
+Most modern services use both SQL and NoSQL stores. 
+Instagram officially uses a combination of SQL (PostgreSQL) and No-SQL (Cassandra) databases. T
+he loosely structured data like timeline generation is usually stored in No-SQL, while relational data is saved in SQL-based storage.
+
+Let’s add a few more components to our design:
+- Load balancer: To balance the load of the requests from the end users.
+- Application servers: To host our service to the end users.
+- Relational database: To store our data.
+- Blob storage: To store the photos and videos uploaded by the users.
+
+We also need to cache the data to handle millions of reads. 
+It improves the user experience by making the fetching process fast. 
+We’ll also opt for lazy loading, which minimizes the client’s waiting time. 
+It allows us to load the content when the user scrolls and therefore save the bandwidth and focus on loading the content the user is currently viewing. 
+It improves the latency to view or search a particular photo or video on Instagram
+
+The read requests are more than write requests and it takes time to upload the content in the system. 
+It is efficient if we separate the write (uploads) and read services. 
+The multiple services operated by many servers handle the relevant requests. 
+The read service performs the tasks of fetching the required content for the user, while the write service helps upload content to the system.
+
+When a user opens their Instagram, we send a request for timeline generation. 
+First, we fetch the list of people the user follows, get the photos they recently posted, store them in queues, and display them to the user. 
+But this approach is slow to respond as we generate a timeline every time the user opens Instagram
+
+We can substantially reduce user-perceived latency by generating the timeline offline. 
+For example, we define a service that fetches the relevant data for the user before, and as the person opens Instagram, it displays the timeline. 
+This decreases the latency rate to show the timeline.
+
+In a push approach, every user is responsible for pushing the content they posted to the people’s timelines who are following them. 
+In the previous approach, we pulled the post from each follower, but in the current approach, we push the post to each follower.
+Now we only need to fetch the data that is pushed towards that particular user to generate the timeline. 
+The push approach has stopped a lot of requests that return empty results when followed users have no post in a specified time
+
+Consider an account that belongs to a celebrity, like Cristiano Ronaldo, who has over 400 million followers. 
+So if he posts a photo or a video, we will push the links of the photo/video to 400 million+ users, which is inefficient
+
+Let’s split our users into two categories:
+- Push-based users: The users who have a followers count of hundreds or thousands.
+- Pull-based users: The users who are celebrities and have followers count of a hundred thousand or millions.
+
+We store a user’s timeline against a userID in a key-value store. 
+Upon request, we fetch the data from the key-value store and show it to the user.
+ The key is userID, while the value is timeline content (links to photos and videos). 
+ Because the storage size of the value is often limited to a few MegaBytes, we can store the timeline data in a blob and put the link to the blob in the value of the key as we approach the size limit.
+
+We’ll also use CDN (content delivery network) in our design. 
+We can keep images and videos of celebrities in CDN which make it easier for the followers to fetch them. 
+The load balancer first routes the read request to the nearest CDN, if the requested content is not available there, 
+then it forwards the request to the particular read application server \
+The CDN helps our system to be available to millions of concurrent users and minimizes latency.
+
+We evaluate the Instagram design with respect to its non-functional requirements:
+- Scalability: We can add more servers to application service layers to make the scalability better and handle numerous requests from the clients. 
+We can also increase the number of databases to store the growing users’ data.
+- Latency: The use of cache and CDNs have reduced the content fetching time.
+- Availability: We have made the system available to the users by using the storage and databases that are replicated across the globe.
+- Durability: We have persistent storage that maintains the backup of the data so any uploaded content (photos and videos) never gets lost.
+- Consistency: We have used storage like blob stores and databases to keep our data consistent globally.
+- Reliability: Our databases handle replication and redundancy, so our system stays reliable and data is not lost. 
+The load balancing layer routes requests around failed servers.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 12 june 23
+**System design - instagram**
+Instagram is a free social networking application that allows users to post photos and short videos. 
+Users can add a caption for each post and utilize hashtags or location-based geotags to index them and make them searchable within the application
+
+Functional requirements
+- Post photos and videos: The users can post photos and videos on Instagram.
+- Follow and unfollow users: The users can follow and unfollow other users on Instagram.
+- Like or dislike posts: The users can like or dislike posts of the accounts they follow.
+- Search photos and videos: The users can search photos and videos based on captions and location.
+- Generate news feed: The users can view the news feed consisting of the photos and videos (in chronological order) from all the users they follow. Users can also view suggested and promoted photos in their news feed
+
+Non-functional requirements
+- Scalability: The system should be scalable to handle millions of users in terms of computational resources and storage.
+- Latency: The latency to generate a news feed should be low.
+- Availability: The system should be highly available.
+- Durability Any uploaded content (photos and videos) should never get lost.
+- Consistency: We can compromise a little on consistency. It is acceptable if the content (photos or videos) takes time to show in followers’ feeds located in a distant region.
+- Reliability: The system must be able to tolerate hardware and software failures
+
+Our system is read-heavy because service users spend substantially more time browsing the feeds of others than creating and posting new content
+
+Let’s assume the following:
+- We have 1 billion users, with 500 million as daily active users.
+- Assume 60 million photos and 35 million videos are shared on Instagram per day.
+- We can consider 3 MB as the maximum size of each photo and 150 MB as the maximum size of each video uploaded on Instagram.
+- On average, each user sends 20 requests (of any type) per day to our service.
+
+
+It is essential to choose the right kind of database for our Instagram system 
+Our data is inherently relational, and we need an order for the data (posts should appear in chronological order) and no data loss even in case of failures (data durability). 
+Moreover, in our case, we would benefit from relational queries like fetching the followers or images based on a user ID. Hence, SQL-based databases fulfill these requirements.
+So, we’ll opt for a relational database and store our relevant data in that database.
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 6 june 23
 **System design - newsfeed**
 
