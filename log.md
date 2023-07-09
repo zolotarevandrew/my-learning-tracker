@@ -4,6 +4,340 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 5 july 23
+**System design - Whatsapp**
+Support for group messages
+WebSocket servers don’t keep track of groups because they only track active users. 
+However, some users could be online and others could be offline in a group. 
+For group messages, the following three main components are responsible for delivering messages to each user in a group:
+- Group message handler
+- Group message service
+- Kafka
+
+Let’s assume that user A wants to send a message to a group with some unique ID—for example, Group/A. 
+- Since user A is connected to a WebSocket server, it sends a message to the message service intended for Group/A.
+- The message service sends the message to Kafka with other specific information about the group. 
+The message is saved there for further processing. In Kafka terminology, a group can be a topic, and the senders and receivers can be producers and consumers, respectively.
+- Now, here comes the responsibility of the group service. The group service keeps all 
+information about users in each group in the system. It has all the information about each group, 
+including user IDs, group ID, status, group icon, number of users, and so on. 
+This service resides on top of the MySQL database cluster, with multiple secondary replicas distributed geographically. 
+A Redis cache server also exists to cache data from the MySQL servers. Both geographically distributed replicas and Redis cache aid in reducing latency.
+- The group message handler communicates with the group service to retrieve data of Group/A users.
+- In the last step, the group message handler follows the same process as a WebSocket server and delivers the message to each user.
+
+Summary
+- Low latency: We can minimize the latency of the system at various levels:
+We can do this through geographically distributed WebSocket servers and the cache associated with them.
+We can use Redis cache clusters on top of MySQL database clusters.
+We can use CDNs for frequently sharing documents and media content.
+
+- Consistency: The system also provides high consistency in messages with the help of a FIFO messaging queue with strict ordering. 
+However, the ordering of messages would require the Sequencer to provide ID with appropriate causality inference mechanisms to each message. 
+For offline users, the Mnesia database stores messages in a queue. The messages are sent later in a sequence after the user goes online.
+
+- Availability: The system can be made highly available if we have enough WebSocket servers and replicate data across multiple servers. 
+When a user gets disconnected due to some fault in the WebSocket server, the session is re-created via a load balancer with a different server. 
+Moreover, the messages are stored on the Mnesia cluster following the primary-secondary replication model, which provides high availability and durability.
+
+- Security: The system also provides an end-to-end encryption mechanism that secures the chat between users.
+
+- Scalability: Due to high-performance engineering, scalability might not be a significant issue, 
+as WhatsApp can handle around 10 million connections per server. However, our proposed system is flexible, 
+as more servers can be added or removed as the load increases or decreases.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 4 july 23
+**System design - Whatsapp**
+
+Connection with a WebSocket server
+In WhatsApp, each active device is connected with a WebSocket server via WebSocket protocol. 
+A WebSocket server keeps the connection open with all the active (online) users. 
+Since one server isn’t enough to handle billions of devices, there should be enough servers to handle billions of users. 
+The responsibility of each of these servers is to provide a port to every online user. 
+The mapping between servers, ports, and users is stored in the WebSocket manager that resides on top of a cluster of the data store. 
+In this case, that’s Redis.
+
+The WebSocket manager is responsible for maintaining a mapping between an active user and a port assigned to the user. 
+Whenever a user is connected to another WebSocket server, this information will be updated in the data store.
+
+A WebSocket server also communicates with another service called message service. 
+Message service is a repository of messages on top of the Mnesia database cluster. 
+It acts as an interface to the Mnesia database for other services interacting with the databases. 
+It is responsible for storing and retrieving messages from the Mnesia database. 
+It also deletes messages from the Mnesia database after a configurable amount of time. 
+And, it exposes APIs to receive messages by various filters, such as user ID, message ID, and so on.
+
+Now, let’s assume that user A wants to send a message to user B. both users are connected to different WebSocket servers. 
+The system performs the following steps to send messages from user A to user B:
+- User A communicates with the corresponding WebSocket server to which it is connected.
+- The WebSocket server associated with user A identifies the WebSocket to which user B is connected via the WebSocket manager. 
+If user B is online, the WebSocket manager responds back to user A’s WebSocket server that user B is connected with its WebSocket server.
+- Simultaneously, the WebSocket server sends the message to the message service and is stored in the Mnesia database 
+where it gets processed in the first-in-first-out order. As soon as these messages are delivered to the receiver, they are deleted from the database.
+- Now, user A’s WebSocket server has the information that user B is connected with its own WebSocket server. 
+The communication between user A and user B gets started via their WebSocket servers.
+- If user B is offline, messages are kept in the Mnesia database. 
+Whenever they become online, all the messages intended for user B are delivered via push notification. 
+Otherwise, these messages are deleted permanently after 30 days.
+
+Both users (sender and receiver) communicate with the WebSocket manager to find each other’s WebSocket server. 
+Consider a case where there can be a continuous conversation between both users. This way, many calls are made to the WebSocket manager. 
+To minimize the latency and reduce the number of these calls to the WebSocket manager, each WebSocket server caches the following information:
+- If both users are connected to the same server, the call to the WebSocket manager is avoided.
+- It caches information of recent conversations about which user is connected to which WebSocket server.
+
+Sending media:
+Moreover, the sending of media files consists of the following steps:
+- The media file is compressed and encrypted on the device side.
+- The compressed and encrypted file is sent to the asset service to store the file on blob storage. 
+The asset service assigns an ID that’s communicated with the sender.
+ The asset service also maintains a hash for each file to avoid duplication of content on the blob storage. 
+ For example, if a user wants to upload an image that’s already there in the blob storage, the image won’t be uploaded. Instead, the same ID is forwarded to the receiver.
+- The asset service sends the ID of media files to the receiver via the message service. The receiver downloads the media file from the blob storage using the ID.
+- The content is loaded onto a CDN if the asset service receives a large number of requests for some particular content.
+
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 3 july 23
+**System design - Whatsapp**
+
+Functional requirements
+- Conversation: The system should support one-on-one and group conversations between users.
+- Acknowledgment: The system should support message delivery acknowledgment, such as sent, delivered, and read.
+- Sharing: The system should support sharing of media files, such as images, videos, and audio.
+- Chat storage: The system must support the persistent storage of chat messages when a user is offline until the successful delivery of messages.
+- Push notifications: The system should be able to notify offline users of new messages once their status becomes online.
+
+Non-functional requirements
+- Low latency: Users should be able to receive messages with low latency.
+- Consistency: Messages should be delivered in the order they were sent. Moreover, users must see the same chat history on all of their devices.
+- Availability: The system should be highly available. However, the availability can be compromised in the interest of consistency.
+- Security: The system must be secure via end-to-end encryption. The end-to-end encryption ensures that only the two communicating parties can see the content of messages. Nobody in between, not even WhatsApp, should have access.
+- Scalability: The system should be highly scalable to support an ever-increasing number of users and messages per day.
+
+As there are more than 100 billion messages shared per day over WhatsApp, let’s estimate the storage capacity based on this figure. Assume that each message takes 100 Bytes on average. Moreover, the WhatsApp servers keep the messages only for 30 days. 
+So, if the user doesn’t get connected to the server within these days, the messages will be permanently deleted from the server.
+10 TB/day, For 30 days, 300 tb a month + 200 char servers.
+
+At an abstract level, the high-level design consists of a chat server responsible for communication between the sender and the receiver. 
+When a user wants to send a message to another user, both connect to the chat server. 
+Both users send their messages to the chat server. 
+The chat server then sends the message to the other intended user and also stores the message in the database.
+
+communication between both clients:
+- User A and user B create a communication channel with the chat server.
+- User A sends a message to the chat server.
+- Upon receiving the message, the chat server acknowledges back to user A.
+- The chat server sends the message to user B and stores the message in the database if the receiver’s status is offline.
+- User B sends an acknowledgment to the chat server.
+- The chat server notifies user A that the message has been successfully delivered.
+- When user B reads the message, the application notifies the chat server.
+- The chat server notifies user A that user B has read the message.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 29 june 23
+**System design - webcrawler**
+It’s essential to categorize the crawling traps to correctly identify them and think of design adjustments accordingly.
+- Analyzing the URL scheme: The URLs with a poor URL structure, 
+for example, those with cyclic directories: HTTP://www.abc.com/first/second/first/second/... will create crawler traps. 
+Hence, filtering such URLs beforehand will rescue our crawler resources.
+- Analyzing the total number of web pages against a domain: An impossibly large number of web pages against a domain in the URL frontier is a strong indicator of a crawler trap. 
+So, limiting the crawl at such a domain will be of utmost importance.
+
+Crawling is a resource and time-consuming task, and it’s of extreme importance to efficiently avoid crawler traps in order to achieve timely and helpful crawling. 
+Once the crawler starts communicating with the server for downloading the web page content, there are multiple factors that it needs to take into consideration, 
+mainly at the HTML-fetcher level. Let’s go over these factors individually.
+
+The crawler must implement an application-layer logic to counter the crawler traps. 
+This logic might be based on the observed number of web pages exceeding a specified threshold.
+
+The crawler must be intelligent enough to limit its crawling at a specific domain after a finite amount of time or web page visits. 
+A crawler should smartly exit a web page and store that URL as a no-go area for future traversals to ensure performance effectiveness.
+
+When initiating communication with the web server, the crawler needs to fetch a file named robots.txt. 
+This file contains the dos and don’ts for a crawler listed by the web masters. Adhering to this document is an integral part of the crawling process. 
+It also allows the crawler to access certain domain-specified web pages prioritized for crawling, without limiting its access to specific web pages.
+
+Another essential component of this document is the revisit frequency instructions for the crawler. 
+A popular website might demand a frequent revisit, contrary to a website that rarely updates its content. 
+This standard of websites communicating with the web crawlers is called the Robots Exclusion Protocol. 
+This protocol prevents the crawlers from unnecessarily spending crawling resources on uncrawlable web pages.
+
+Since each domain has a limited incoming and outgoing bandwidth allocation, the crawler needs to be polite enough to limit its crawling at a specific domain. 
+Instead of having a static crawl speed for every domain, a better approach is to adjust the crawl speed based on a domain’s Time to First Byte (TTFB) value. 
+The higher the TTFB value, the slower the server. And so, crawling that domain too fast might lead to more time-out requests and incomplete crawling.
+
+Evaluation
+
+- Scalability
+Our design states that scaling our system horizontally is vital. 
+Therefore, the proposed design incorporates the following design choices to meet the scalability requirements:
+The system is scalable to handle the ever-increasing number of URLs. It includes all the required resources, including schedulers, 
+web crawler workers, HTML fetchers, extractors, and blob stores, which are added/removed on demand.
+In the case of a distributed URL frontier, the system utilizes consistent hashing to distribute the hostnames among various crawling workers, 
+where each worker is running on a server. With this, adding or removing a crawler server isn’t a problem.
+
+- Consistency
+Our system consists of several crawling workers. 
+Data consistency among crawled content is crucial. 
+So, to avoid data inconsistency and crawl duplication, our system computes the checksums of URLs and documents and compares them 
+with the existing checksums of the URLs and documents in the URL and document checksum data stores, respectively.
+
+- Performance
+
+URLs crawled per second: We can improve this factor by adding new workers to the system.
+Utilizing blob storage for content storing: This ensures higher throughput for the massive amount of unstructured data. It also indicates a fast retrieval of the stored content, because a single blob can support up to 500 requests per second.
+Efficient implementation of the robots.txt file guideline: We can implement this performance factor by having an application-layer logic of setting the highest precedence of robots.txt guidelines while crawling.
+Self-throttling: We can have various application-level checks to ensure that our web crawler doesn’t hamper the performance of the website host servers by exhausting their resources.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 28 june 23
+**System design - webcrawler**
+The duplicate eliminator repeats the same process with the extracted content and adds the new webpage’s checksum value in the document checksum data store for future matchings.
+duplicate eliminator can be made robust against these two issues:
+- By using URL redirection, the new URL can pass through the URL dedup test. 
+But, the second stage of the document dedup wouldn’t allow content duplication in the blob storage.
+- By changing just one Byte in a document, the checksum of the modified document is going to come out different than the original one.
+- Blob store: Since a web crawler is the backbone of a search engine, storing and indexing the fetched content and relevant metadata is immensely important. 
+The design needs to have a distributed storage, such as a blob store, because we need to store large volumes of unstructured data.
+
+Workflow
+- Assignment to a worker: The crawler (service host) initiates the process by loading a URL from the URL frontier’s priority queue and assigns it to the available worker.
+- DNS resolution: The worker sends the incoming URL for DNS resolution. 
+Before resolving the URL, the DNS resolver checks the cache and returns the requested IP address if it’s found. 
+Otherwise, it determines the IP address, sends it back to the worker instance of the crawler, and stores the result in the cache.
+- Communication initiation by the HTML fetcher: The worker forwards the URL and the associated IP address to the HTML fetcher, which initiates the communication between the crawler and the host server.
+- Content extraction: Once the worker establishes the communication, it extracts the URLs and the HTML document from the web page and places 
+the document in a cache for other components to process it.
+- Dedup testing: The worker sends the extracted URLs and the document for dedup testing to the duplicate eliminator. 
+The duplicate eliminator calculates and compares the checksum of both the URL and the document with the checksum values that have already been stored.
+The duplicate eliminator discards the incoming request in case of a match. If there’s no match, it places the newly-calculated checksum values in the respective data stores and gives the go-ahead to the extractor to store the content.
+- Content storing: The extractor sends the newly-discovered URLs to the scheduler, which stores them in the database and sets 
+the values for the priority and recrawl frequency variables.
+- The extractor also writes the required portions of the newly discovered document—currently in the DIS—into the database.
+- Recrawling: Once a cycle is complete, the crawler goes back to the first point and repeats the same process until the URL frontier queue is empty.
+The URLs stored in the scheduler’s database have priority and periodicity assigned to them. Enqueuing new URLs into the URL frontier depends on these two factors.
+
+Design imporovements
+- Shortcoming: Currently, our design supports the HTTP protocol and only extracts textual content. 
+This leads to the question of how we can extend our crawler to facilitate multiple communication protocols and extract various types of files.
+- Adjustment: Since we have two separate components for serving communication handling and extracting, HTML Fetcher and Extractor, let’s discuss their modifications one by one.
+HTML Fetcher: We have only discussed the HTTP module in this component so far because of the widely-used HTTP URLs scheme. 
+We can easily extend our design to incorporate other communication protocols like File Transfer Protocol (FTP). 
+The workflow will then have an intermediary step where the crawler invokes the concerned communication module based on the URL’s scheme. 
+The subsequent steps will remain the same.
+Extractor: Currently, we only extract the textual content from the downloaded document placed in the Document Input Stream (DIS). 
+This document contains other file types as well, for example, images and videos. 
+If we wish to extract other content from the stored document, we need to add new modules with functionalities to process those media types. 
+Since we use a blob store for content storage, storing the newly-extracted content comprising text, images, and videos won’t be a problem
+
+- Shortcoming: The current design doesn’t explain how the multi-worker concept integrates into this system.
+- Adjustment: Every worker needs a URL to work on from the priority queue. 
+Different websites require different times for workers to finish crawling, so each worker will dequeue a new URL upon its availability.
+
+crawler trap is a URL or a set of URLs that cause indefinite crawler resource exhaustion. 
+This section dedicates itself to the classification, identification, and prevention of crawler traps.
+
+Mostly, web crawler traps are the result of poor website structuring, such as:
+- URLs with query parameters: These query parameters can hold an immense amount of values, 
+all while generating a large number of useless web pages for a single domain: HTTP://www.abc.com?query.
+- URLs with internal links: These links redirect in the same domain and can create an infinite cycle of redirection between the web pages of a single domain, making the crawler crawl the same content over and over again.
+- URLs with infinite calendar pages: These have never-ending combinations of web pages based on the varying date values, and can create a large number of pointless web pages for a single domain.
+- URLs for the dynamic content generation: These are query-based and can generate a massive number of web pages based on the dynamic content resulting from these queries. Such URLs might become a never-ending crawl on a single domain.
+- URLs with repeated/cyclic directories: They form an indefinite loop of redirections.
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 27 june 23
+**System design - webcrawler**
+
+These are the assumptions we’ll use when estimating our resource requirements:
+- There are a total of 5 billion web pages.
+- The text content per webpage is 2070 KB.
+- The metadata for one web page is 500 Bytes.
+
+Since the traversal time is just as important as the storage requirements, 
+let’s calculate the approximate time for one-time crawling. 
+Assuming that the average HTTP traversal per webpage is 60 ms, the time to traverse all 5 billion pages will be 9.5 years.
+
+Let’s calculate the number of servers required to finish crawling in one day. Assume that there is only one worker per server - 3468 days.
+
+One server takes 3,468 days to complete the task.
+We would need 3,468 servers to complete the same task in just one day.
+
+Building blocks and the components needed for our design:
+- Scheduler: This is one of the key building blocks that schedules URLs for crawling. It’s composed of two units: a priority queue and a relational database.
+A priority queue (URL frontier): The queue hosts URLs that are made ready for crawling based on the two properties associated with each entry: priority and updates frequency.
+Relational database: It stores all the URLs along with the two associated parameters mentioned above. The database gets populated by new requests from the following two input streams:
+The user’s added URLs, which include seed and runtime added URLs.
+The crawler’s extracted URLs.
+- DNS resolver: The web crawler needs a DNS resolver to map hostnames to IP addresses for HTML content fetching. Since DNS lookup is a time-consuming process, 
+a better approach is to create a customized DNS resolver and cache frequently-used IP addresses within their time-to-live because they’re bound to change after their time-to-live.
+- HTML fetcher: The HTML fetcher initiates communication with the server that’s hosting the URL(s). 
+It downloads the file content based on the underlying communication protocol. 
+We focus mainly on the HTTP protocol for textual content, but the HTML fetcher is easily extendable to other communication protocols, 
+as is mentioned in the section on the non-functional requirements of the web crawler.
+- Service host: This component acts as the brain of the crawler and is composed of worker instances. 
+For simplicity, we will refer to this whole component or a single worker as a crawler. There are three main tasks that this service host/crawler performs:
+It handles the multi-worker architecture of the crawling operation. Based on the availability, each worker communicates with the URL frontier to dequeue the next available URL for crawling.
+Each worker is responsible for acquiring the DNS resolutions of the incoming URLs from the DNS resolver.
+Each worker acts as a gateway between the scheduler and the HTML fetcher by sending the necessary DNS resolution information to the HTML fetcher for communication initiation.
+
+- Extractor: Once the HTML fetcher gets the web page, the next step is to extract two things from the webpage: URLs and the content. 
+The extractor sends the extracted URLs directly and the content with the document input stream (DIS) to the duplicate eliminator. 
+DIS is a cache that’s used to store the extracted document, so that other components can access and process it. 
+Over here, we can use Redis as our cache choice because of its advanced data structure functionality.
+Once it’s verified that the duplicates are absent in the data stores, the extractor sends the URLs to the task scheduler 
+that contains the URL frontier and stores the content in blob storage for indexing purposes.
+
+- Duplicate eliminator: Since the web is all interconnected, the probability of two different URLs referring to the same web page or different 
+URLs referring to various web pages having the same content is evident. The crawler needs a component 
+to perform a dedup test to eliminate the risk of exploiting resources by storing and processing the same content twice. 
+The duplicate eliminator calculates the checksum value of each extracted URL and compares it against the URLs checksum data store. 
+If found, it discards the extracted URL. Otherwise, it adds a new entry to the database with the calculated checksum value.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 26 june 23
+**System design - webcrawler**
+
+A web crawler is an Internet bot that systematically scours the world wide web (WWW) for content, 
+starting its operation from a pool of seed URLs. 
+This process of acquiring content from the WWW is called crawling. 
+It further saves the crawled content in the data stores. 
+The process of efficiently saving data for subsequent use is called storing.
+
+The additional utilities of a web crawler are as follows:
+- Web pages testing: We use web crawlers to check the validity of the links and structures of web pages;
+- Web page monitoring: We use web crawlers to monitor the content or structure updates on web pages;
+- Site mirroring: Web crawlers are an effective way to mirror popular websites;
+- Copyright infringement check: Web crawlers fetch content and check for copyright infringement issues;
+
+Functional requirements
+- Crawling: The system should scour the WWW, spanning from a queue of seed URLs provided initially by the system administrator;
+- Storing: The system should be able to extract and store the content of a URL in a blob store. 
+This makes that URL and its content processable by the search engines for indexing and ranking purposes;
+- Scheduling: Since crawling is a process that’s repeated, the system should have regular scheduling to update its blob stores’ records.
+
+Non-functional requirements
+- Scalability: The system should inherently be distributed and multithreaded, because it has to fetch hundreds of millions of web documents.
+- Extensibility: Currently, our design supports HTTP(S) communication protocol and text files storage facilities. 
+For augmented functionality, it should also be extensible for different network communication protocols, able to add multiple modules to process, and store various file formats.
+- Consistency: Since our system involves multiple crawling workers, having data consistency among all of them is necessary.
+- Performance: The system should be smart enough to limit its crawling to a domain, either by time spent or by the count of the visited URLs of that domain. This process is called self-throttling. The URLs crawled per second and the throughput of the content crawled should be optimal.
+- Improved user interface—customized scheduling: Besides the default recrawling, which is a functional requirement, 
+the system should also support the functionality to perform non-routine customized crawling on the system administrator’s demands.
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 21 june 23
 **System design - tinyurl**
 
