@@ -4,6 +4,352 @@
 |:---:|:---------------------------------------|
 |     |Learnt, thoughts, progress, ideas, links|
 ---------------------------------------------------------
+## 19 july 23
+**System design - Google docs**
+
+
+Consistency
+- We’ve looked at how we’ll achieve strong consistency for conflict resolution in a document through two technologies: operational transformation (OT) 
+and Conflict-free Resolution Data Types (CRDTs). In addition, a time series database enables us to preserve the order of events. 
+Once OT or CRDT has resolved any conflicts, the final result is saved in the database. 
+This helps us achieve consistency in terms of individual operations.
+We’re also interested in keeping the document state consistent across different servers in a data center. 
+To replicate an updated state of a document within the same data center at the same time, we can use peer-to-peer protocols like Gossip protocol. 
+Not only will this strategy improve consistency, it will also improve availability.
+
+Latency
+- Latency may feel like a challenge, specifically when two users are distant from each other or the server. 
+However, users maintain a replica of documents at their end while data is being propagated through WebSockets to end-servers. 
+Therefore, user-perceived latency will be low. Apart from this, users mostly tend to write textual data in a document that’s small. 
+Therefore, dissemination of data among different servers within the same facility and among different data centers or zones 
+will be carried out with low latency. Also, files like videos and images can be stored in CDNs for quick serving because this content doesn’t change frequently.
+Practically speaking, there will be a limited number of readers and writers of an online document. 
+For readers specifically, latency won’t be an issue because the document will be loaded only once. 
+So, most readers can be served from the same data center. For writers, an optimal zone should be selected as the centralized location between collaborators of the same document. 
+However, for popular documents, asynchronous replication will be an effective method to achieve good performance and low latency for a large number of users. 
+In general, achieving strong consistency becomes a challenge when replication is asynchronous.
+
+Availability#
+- Our design ensures availability by using replicas and monitoring the primary and replica servers using monitoring services. 
+Key components like the operations queue and data stores internally manage their replication.
+Since we use WebSockets, our WebSocket servers can connect users to the session maintenance servers that will determine if a user is actively viewing 
+or collaborating on a document. Therefore, keeping multiple WebSocket servers will increase the availability of the design. 
+Lastly, we employ caching services and CDNs to improve availability in case of failures.
+However, at the moment, we haven't devised a disaster recovery management scheme
+
+Scalability
+- Since we've used microservice architecture, we can easily scale each component individually 
+in case the number of requests on the operations queue exceeds its capacity. 
+We can use multiple operations queues. In that case, each operations queue will be responsible for a single document. 
+We can forward operations requested by different users that are associated with a single document to a specific queue. 
+The number of spawned queues will be equal to the number of active documents. 
+As a result, we’re able to achieve horizontal scalability
+
+![image](https://github.com/zolotarevandrew/courses_skillsmart/assets/49956820/184f7088-8f35-47d9-a1c6-a070e9647756)
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 18 july 23
+**System design - Google docs**
+
+The job of the text or document editor is to perform operations like insert(), delete(), edit(), and more on the characters within the document.
+
+Collaboration on the same document by different users can lead to concurrency issues. 
+Conflicts may arise whenever multiple users edit the same portion of a document. 
+Since users have a local copy of the document, the final status of the document may be different at the server from what the users see at their end. 
+After the server pushes the updated version, users discover the unexpected outcome.
+
+Conflict resolution is necessary where multiple collaborators are editing the same portion of the document at the same time.
+From the examples above, we understand that a solution to concurrency issues in collaborative editing should respect two rules:
+
+- Commutativity: The order of applied operations shouldn’t affect the end result.
+-Idempotency: Similar operations that have been repeated should apply only once.
+
+Operational transformation (OT) is a technique that’s widely used for conflict resolution in collaborative editing. 
+OT emerged in 1989 and has improved throughout the years. It’s a lock-free and non-blocking approach for conflict resolution. 
+If operations between collaborators conflict, OT resolves conflicts and pushes the correct converged state to end users. 
+As a result, OT provides consistency for users.
+
+Collaborative editors based on OT are consistent if they have the following two properties:
+- Causality preservation: If operation a happened before operation b, then operation a is executed before operation b.
+- Convergence: All document replicas at different clients will eventually be identical.
+The properties above are a part of the CC consistency model, which is a model for consistency maintenance in collaborative editing
+
+OT has two disadvantages:
+- Each operation to characters may require changes to the positional index. This means that operations are order dependent on each other.
+- It’s challenging to develop and implement.
+
+Operational transformation is a set of complex algorithms, and its correct implementation has proved challenging for real-world applications. 
+For example, the Google Wave team took two years to implement an OT algorithm.
+
+
+The Conflict-free Replicated Data Type (CRDT) was developed in an effort to improve OT. A CRDT has a complex data structure but a simplified algorithm.
+A CRDT satisfies both commutativity and idempotency by assigning two key properties to each character:
+- It assigns a globally unique identity to each character.
+-  It globally orders each character.
+Each operation now has an updated data structure
+
+CRDTs ensure strong consistency between users. 
+Even if some users are offline, the local replicas at end users will converge when they come back online.
+
+Although well-known online editing platforms like Google Docs, Etherpad, and Firepad use OT, CRDTs have made concurrency and consistency in collaborative document editing easy. 
+In fact, with CRDTs, it’s possible to implement a serverless peer-to-peer collaborative document editing service
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 17 july 23
+**System design - Google docs**
+Google Docs
+To combat the problem above, we can use an online collaborative document editing service like Google Docs. 
+Some advantages of using an online document editing service instead of a desktop application are as follows:
+- Users can review and comment on a document while it’s being edited.
+- There are no special hardware specifications required to get the latest features. A machine that can run a browser will suffice.
+- It's possible to work from any location.
+- Unlike local desktop editors, users can view long-term document history and restore an older version if need be.
+- The service is free of cost.
+
+Other than Google docs, some popular online editing services include Etherpad, Microsoft Office 365, Slite, and many others.
+
+Functional requirements
+The activities a user will be able to perform using our collaborative document editing service are listed below:
+- Document collaboration: Multiple users should be able to edit a document simultaneously. 
+Also, a large number of users should be able to view a document.-
+- Conflict resolution: The system should push the edits done by one user to all the other collaborators. 
+The system should also resolve conflicts between users if they’re editing the same portion of the document.
+- Suggestions: The user should get suggestions about completing frequently used words, phrases, and keywords in a document, 
+as well as suggestions about fixing grammatical mistakes.
+- View count: Editors of the document should be able to see the view count of the document.
+- History: The user should be able to see the history of collaboration on the document.
+A real-world document editor also has to have functions like document creation, deletion, and managing user access. 
+We focus on the core functionalities listed above, but we also discuss the possibility of other functionalities in the lessons ahead
+
+
+Non-functional Requirements
+- Latency: Different users can be connected to collaborate on the same document. 
+Maintaining low latency is challenging for users connected from different regions.
+- Consistency: The system should be able to resolve conflicts between users editing the document concurrently, thereby enabling a consistent view of the document. 
+At the same time, users in different regions should see the updated state of the document. 
+Maintaining consistency is important for users connected to both the same and different zones.
+- Availability: The service should be available at all times and show robustness against failures.
+- Scalability: A large number of users should be able to use the service at the same time. They can either view the same document or create new documents.
+
+We’ve utilized the following set of components to complete our design:
+- API gateway: Different client requests will get intercepted through the API gateway. 
+Depending on the request, it’s possible to forward a single request to multiple components, reject a request, or reply instantly using an already cached response, 
+all through the API gateway. Edit requests, comments on a document, notifications, authentication, and data storing requests will all go through the API gateway.
+
+- Application servers: The application servers will run business logic and tasks that generally require computational power. 
+For instance, some documents may be converted from one file type to another (for example, from a PDF to a Word document) 
+or support features like import and export. It’s also central to the attribute collection for the recommendation engine.
+- Data stores: Various data stores will be used to fulfill our requirements. We’ll employ a relational database for saving users’ information 
+and document-related information for imposing privilege restrictions. We can use NoSQL for storing user comments for quicker access. 
+To save the edit history of documents, we can use a time series database. 
+We’ll use blob storage to store videos and images within a document. 
+Finally, we can use distributed cache like Redis and a CDN to provide end users good performance. 
+We use Redis specifically to store different data structures, including user sessions, features for the typeahead service, and frequently accessed documents. 
+The CDN stores frequently accessed documents and heavy objects, like images and videos.
+
+- Processing queue: Since document editing requires frequently sending small-sized data (usually characters) to the server, 
+it’s a good idea to queue this data for periodic batch processing. We’ll add characters, images, videos, and comments to the processing queue. 
+Using an HTTP call for sending every minor character is inefficient. Therefore, we’ll use WebSockets to reduce overhead and observe live changes to the document by different users.
+
+- Other components: Other components include the session servers that maintain the user’s session information. 
+We’ll manage document access privileges through the session servers. 
+Essentially, there will also be configuration, monitoring, pub-sub, and logging services 
+that will handle tasks like monitoring and electing leaders in case of server failures, queueing tasks like user notifications, and logging debugging information.
+
+Workflow
+- Collaborative editing and conflict resolution: Each request gets forwarded to the operations queue. 
+This is where conflicts get resolved between different collaborators of the same document. 
+If there are no conflicts, the data is batched and stored in the time series database via session servers. 
+Data like videos and images get compressed for storage optimization, while characters are processed right away.
+- History: It’s possible to recover different versions of the document with the help of a time series database. 
+Different versions can be compared using DIFF operations that compare the versions and identify the differences to recover older versions of the same document.
+- Asynchronous operations: Notifications, emails, view counts, and comments are asynchronous operations that can be queued through a pub-sub component like Kafka. 
+The API gateway generates these requests and forwards them to the pub-sub module. 
+Users sharing documents can generate notifications through this process.
+
+- Suggestions: Suggestions are in the form of the typeahead service that offers autocomplete suggestions for typically used words and phrases. 
+The typeahead service can also extract attributes and keywords from within the document and provide suggestions to the user. 
+Since the number of words can be high, we’ll use a NoSQL database for this purpose. 
+In addition, most frequently used words and phrases will be stored in a caching system like Redis.
+
+- Import and export documents: The application servers perform a number of important tasks, including importing and exporting documents.
+ Application servers also convert documents from one format to another. For example, a .doc or .docx document can be converted in to .pdf or vice versa. 
+ Application servers are also responsible for feature extraction for the typeahead service
+
+A document is a composition of characters in a specific order. Each character has a value and a positional index. 
+The character can be a letter, a number, an enter (↵), or a space. An index represents the character’s position within the ordered list of characters.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 12 july 23
+**System design - typeahead suggestiongs**
+
+The non-functional requirements of the proposed typeahead suggestion system are low latency, fault tolerance, and scalability.
+- Low latency: There are various levels at which we can minimize the system’s latency. We can minimize the latency with the following options:
+- Reduce the depth of the tree, which reduces the overall traversal time.
+- Update the trie offline, which means that the time taken by the update operation isn’t on the clients’ critical path.
+- Use geographically distributed application and database servers. 
+This way, the service is provided near the user, which also reduces any communication delays and aids in reducing latency.
+- Use Redis and Cassandra cache clusters on top of NoSQL database clusters.
+- Appropriately partition tries, which leads to a proper distribution of the load and results in better performance.
+- Fault tolerance: Since the replication and partitioning of the trees are provided, the system operates with high resilience. 
+If one server fails, others are on standby to deliver the services.
+- Scalability: Since our proposed system is flexible, more servers can be added or removed as the load increases. 
+For example, if the number of queries increases, the number of partitions or shards of the trees is increased accordingly
+
+can implement the following client-side optimizations
+- The client should only attempt to contact the server if the user hasn’t pressed any keys for some time—for example, any delay greater than 160 ms, which is the average delay between two keystrokes. This way, we can also avoid unnecessary bandwidth consumption. This suggestion might not be useful when a user is typing rapidly.
+- The client can initially wait till the user types a few characters.
+- Clients can save a local copy of the recent history of suggestions. 
+The rate of reuse of recent history in the suggestions list is relatively high.
+- One of the most crucial elements is establishing a connection with the server as soon as possible. 
+The client can establish a connection with the server as soon as the user visits the search page. 
+As a result, the client doesn’t waste time establishing the connection when the user inputs the first character. 
+Usually, the connection is established with the server via a WebSocket protocol.
+
+- For efficiency, the server can push a portion of its cache to CDNs and other edge caches at Internet exchange points (IXPs) 
+or even inside a client’s Internet service provider (ISP).
+
+![image](https://github.com/zolotarevandrew/courses_skillsmart/assets/49956820/b9d737b1-1505-42f3-9871-c3b60ac0b620)
+
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 11 july 23
+**System design - typeahead suggestiongs**
+Furthermore, we also need load balancers to distribute the incoming requests evenly. 
+We also add application servers as entry points for clients so that they can forward requests to the appropriate microservices. 
+These web servers encapsulate the internal system architecture and provide other services, 
+such as authentication, monitoring, request shaping, management, and more.
+
+We must choose an efficient data structure to store the prefixes. 
+Prefixes are the groups of characters a user types. The issue we’re attempting to tackle is that we have many strings 
+that we need to store in a way that allows users to search for them using any prefix. 
+Our service suggests the next words that match the provided prefix. 
+
+Let’s suppose our database contains the phrases UNITED, UNIQUE, UNIVERSAL, and UNIVERSITY. 
+Our system should suggest “UNIVERSAL” and “UNIVERSITY” when the user types “UNIV.”
+
+There should be a method that can efficiently store our data and help us conduct fast searches because we have to handle a lot of requests with minimal latency. W
+e can’t rely on a database for this because providing suggestions from the database takes longer as compared to reading suggestions from the RAM. 
+Therefore, we need to store our index in memory in an efficient data structure. However, for durability and availability, this data is stored in the database.
+
+The trie (pronounced “try”) is one of the data structures that’s best suited to our needs. 
+A trie is a tree-like data structure for storing phrases, with each tree node storing a character in the phrase in order. 
+
+If the user types “UNIV,” our service can traverse the trie to go to the node V to find all the terms that start with this prefix—for example, UNIVERSAL, UNIVERSITY, and so on.
+The trie can combine nodes as one where only a single branch exists, which reduces the depth of the tree. 
+This also reduces the traversal time, which in turn increases the efficiency.
+
+Since our system keeps track of the top searches and returns the top suggestion, 
+we store the number of times each term is searched in the trie node. 
+Let’s say that a user searches for UNITED 15 times, UNIQUE 20 times, UNIVERSAL 21 times, and UNIVERSITY 25 times. 
+In order to provide the top suggestions to the user, these counts are stored in each node where these terms terminate.
+
+We aim to design a system like Google that we can use to handle billions of queries every second. 
+One server isn’t sufficient to handle such an enormous amount of requests. 
+
+In addition to this, storing all the prefixes in a single trie isn’t a viable option for the system’s availability, scalability, and durability.
+
+A good solution is to split the trie into multiple tries for a better user experience.
+Let’s assume that the trie is split into two parts, and each part has a replica for durability purposes. 
+
+All the prefixes starting from “A” to “M” are stored on Server/01, and the replica is stored on Server/02. 
+
+Similarly, all the prefixes starting from “N” to “Z” are stored on Server/03, and the replica is stored on Server/04. 
+It should be noted that this simple technique doesn’t always balance the load equally because some prefixes have many more words while others have fewer. 
+We use this simple technique to understand partitioning.
+We can split the trie into as many parts as we wish to distribute the load on to different servers and achieve the desired performance
+
+When a user types a query, it hits the load balancer and is forwarded to one of the application servers. 
+The application server searches the appropriate trie depending on the prefix typed by the user. 
+For example, if a user types something starting from “U,” it either accesses Server/03 or Server/04 since both have the tries stored on them that have prefixes starting with “U.”
+
+Billions of searches every day give us hundreds of thousands of queries per second. 
+Therefore, the process of updating a trie for every query is highly resource intensive and time-consuming and could hamper our read requests. 
+This issue can be resolved by updating the trie offline after a specific interval. 
+To update the trie offline, we log the queries and their frequency in a hash table and aggregate the data at regular intervals. 
+After a specific amount of time, the trie is updated with the aggregated information. 
+After the update of the trie, all the previous entries are deleted from the hash
+
+We can put up a MapReduce (MR) job to process all of the logging data regularly, let’s say every 15 minutes. 
+These MR services calculate the frequency of all the searched phrases in the previous 15 minutes and dump the results into a hash table in a database like Cassandra. 
+After that, we may further update the trie with the new data.
+ We can update the current copy of the trie with all of the new words and their frequencies. 
+ We should perform this offline because our priority is to provide suggestions to users instead of keeping them waiting.
+
+Suggestion service
+At the same time that a user types a query in the search box, the getSuggestions(prefix) API calls hit the suggestions services. 
+The top ten popular queries are returned from the distributed cache, Redis.
+
+Assembler
+- There could be millions of users entering queries every second. 
+During such phases with large amounts of incoming traffic, updating the trie in real time on every query can slow down our suggestion service.
+
+- We have to provide top suggestions that might not frequently change after the creation or updation of the trie. 
+So, it’s less important to update the trie frequently.
+In light of the reasons given above, we have a separate service called an assembler that’s responsible for creating and updating tries after a certain configurable amount of time. 
+The assembler consists of the following different services:
+- Collection service: Whenever a user types, this service collects the log that consists of phrases, time, and other metadata and dumps it in a database that’s processed later. 
+Since the size of this data is huge, the Hadoop Distributed File System (HDFS) is considered a suitable storage system for storing this raw data. 
+An example of the raw data from the collection service is shown in the following table. 
+We record the time so that the system knows when to update the frequency of a certain phrase.
+
+Aggregator 
+- The raw data collected by the collection service is usually not in a consolidated shape. 
+We need to consolidate the raw data to process it further and to create or update the tries. 
+An aggregator retrieves the data from the HDFS and distributes it to different workers. 
+Generally, the MapReducer is responsible for aggregating the frequency of the prefixes over a given interval of time, and the frequency 
+is updated periodically in the associated Cassandra database. 
+Cassandra is suitable for this purpose because it can store large amounts of data in a tabular format.
+
+---------------------------------------------------------
+---------------------------------------------------------
+## 10 july 23
+**System design - typeahead suggestiongs**
+Typeahead suggestion, also referred to as the autocomplete feature, enables users to search for a known and frequently searched query. 
+This feature comes into play when a user types a query in the search box. 
+The typeahead system provides a list of suggestions to complete a query based on the user’s search history, 
+the current context of the search, and trending content across different users and regions. 
+Frequently searched queries always appear at the top of the suggestion list.
+
+Functional requirements:
+The system should suggest topN(let’s say top ten) frequent and relevant terms to the user based on the text a user types in the search box.
+
+Non-functional requirements:
+- Low latency: The system should show all the suggested queries in real time after a user types. 
+The latency shouldn’t exceed 200 ms. 
+A study suggests that the average time between two keystrokes is 160 milliseconds. 
+So, our time-budget of suggestions should be greater than 160 ms to give a real-time response. 
+This is because if a user is typing fast, they already know what to search and might not need suggestions. 
+At the same time, our system response should be greater than 160 ms. 
+However, it should not be too high because in that case, a suggestion might be stale and less useful.
+
+- Fault tolerance: The system should be reliable enough to provide suggestions despite the failure of one or more of its components.
+- Scalability: The system should support the ever-increasing number of users over time
+
+As was stated earlier, the typeahead feature is used to enhance the user experience while typing a query. 
+We need to design a system that works on a scale that’s similar to Google Search. 
+Google receives more than 3.5 billion searches every day. Designing such an enormous system is a challenging task that requires different resources. 
+Let’s estimate the storage and bandwidth requirements for the proposed system.
+
+According to our requirements, the system shouldn’t just suggest queries in real time with minimum latency but should also store the new search queries in the database. 
+This way, the user gets suggestions based on popular and recent searches.
+Our proposed system should do the following:
+- Provide suggestions based on the search history of the user.
+= Store all the new and trending queries in the database to include them in the list of suggestions.
+
+When a user starts typing a query, every typed character hits one of the application servers. 
+Let’s assume that we have a suggestions service that obtains the top ten suggestions from the cache, Redis, and returns them as a response to the client. 
+In addition to this, suppose we have another service known as an assembler. 
+
+An assembler collects the user searches, applies some analytics to rank the searches, and stores them in a NoSQL database that’s distributed across several nodes.
+
+---------------------------------------------------------
+---------------------------------------------------------
 ## 5 july 23
 **System design - Whatsapp**
 Support for group messages
